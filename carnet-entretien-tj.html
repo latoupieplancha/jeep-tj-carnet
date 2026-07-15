@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carnet d'entretien — Jeep TJ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --bg:#F4F6F8;
+  --card:#FFFFFF;
+  --line:#E7EBEF;
+  --teal:#0E9F8F;
+  --teal-light:#E3F7F4;
+  --orange:#FF7A45;
+  --orange-light:#FFEDE3;
+  --red:#E4574C;
+  --red-light:#FDEBEA;
+  --green:#3BAF6B;
+  --green-light:#E7F7EC;
+  --text:#1B2430;
+  --text-dim:#8891A0;
+  --disp:'Manrope',sans-serif;
+  --body:'Inter',sans-serif;
+  --radius:16px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  padding-bottom:70px;
+}
+
+.hero{
+  background:linear-gradient(135deg, var(--teal), #0B7E72);
+  color:#fff;
+  padding:26px 20px 62px;
+  border-radius:0 0 28px 28px;
+  position:relative;
+}
+.hero-eyebrow{
+  font-family:var(--disp);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  opacity:.85;
+}
+.hero-title{
+  font-family:var(--disp);
+  font-size:23px;
+  font-weight:800;
+  margin:4px 0 8px;
+}
+.hero-specs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  font-size:12px;
+  opacity:.9;
+}
+
+.odo-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:0 10px 30px -12px rgba(16,40,60,0.18);
+  padding:16px 18px;
+  margin:-42px 16px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:relative;
+  z-index:2;
+}
+.odo-label{
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.odo-value{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  margin-top:2px;
+}
+.odo-value input{
+  border:none;
+  background:transparent;
+  font-family:var(--disp);
+  font-size:26px;
+  font-weight:800;
+  color:var(--teal);
+  width:120px;
+  outline:none;
+}
+.odo-value span{color:var(--text-dim); font-size:13px; font-weight:600;}
+.odo-btn{
+  background:var(--teal);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  padding:10px 16px;
+  font-family:var(--body);
+  font-weight:700;
+  font-size:12.5px;
+  cursor:pointer;
+}
+.odo-btn:active{opacity:.85;}
+
+.section{
+  padding:26px 16px 4px;
+  max-width:640px;
+  margin:0 auto;
+}
+.section-title{
+  font-family:var(--disp);
+  font-size:16px;
+  font-weight:800;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.section-title .hint{font-size:11.5px; font-weight:600; color:var(--text-dim);}
+
+.banner{
+  border-radius:var(--radius);
+  padding:14px 16px;
+  margin-bottom:18px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+}
+.banner.danger{background:var(--red-light);}
+.banner.warn{background:var(--orange-light);}
+.banner-icon{font-size:22px;}
+.banner-title{font-weight:800; font-family:var(--disp); font-size:14.5px;}
+.banner.danger .banner-title{color:var(--red);}
+.banner.warn .banner-title{color:var(--orange);}
+.banner-sub{font-size:12.5px; color:var(--text-dim); margin-top:2px;}
+
+.cards{display:flex; flex-direction:column; gap:10px;}
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  box-shadow:0 4px 14px -8px rgba(16,40,60,0.12);
+}
+.card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.card-name{font-family:var(--disp); font-weight:700; font-size:14.5px; line-height:1.3;}
+.pill{
+  font-size:10.5px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:999px;
+  white-space:nowrap;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+}
+.pill.ok{background:var(--green-light); color:var(--green);}
+.pill.warn{background:var(--orange-light); color:var(--orange);}
+.pill.danger{background:var(--red-light); color:var(--red);}
+.card-meta{
+  font-size:12px;
+  color:var(--text-dim);
+  margin-top:7px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.bar{height:6px; background:var(--line); border-radius:6px; margin-top:10px; overflow:hidden;}
+.bar-fill{height:100%; border-radius:6px;}
+.pill.ok ~ .bar .bar-fill, .card:has(.pill.ok) .bar-fill{background:var(--green);}
+.card:has(.pill.warn) .bar-fill{background:var(--orange);}
+.card:has(.pill.danger) .bar-fill{background:var(--red);}
+.card-actions{margin-top:11px; display:flex; gap:8px;}
+
+button{
+  font-family:var(--body);
+  font-weight:700;
+  font-size:12.5px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+.btn-primary{background:var(--teal); color:#fff; padding:9px 14px;}
+.btn-ghost{background:var(--teal-light); color:var(--teal); padding:8px 12px;}
+.btn-text{background:none; color:var(--text-dim); padding:6px 4px; font-weight:600;}
+.btn-danger-text{background:none; color:var(--red); padding:6px 4px; font-weight:600;}
+
+.log-entry{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+.log-entry:last-child{border-bottom:none;}
+.log-type{font-family:var(--disp); font-weight:700; font-size:14px;}
+.log-sub{font-size:11.5px; color:var(--text-dim); margin-top:2px;}
+.log-notes{font-size:12px; color:var(--text-dim); margin-top:5px; line-height:1.5;}
+.log-cost{font-family:var(--disp); font-weight:800; font-size:13.5px; color:var(--teal); white-space:nowrap;}
+
+.empty{color:var(--text-dim); font-size:13px; padding:26px 0; text-align:center;}
+
+.fab-add{
+  display:block;
+  width:100%;
+  margin-top:14px;
+  padding:13px;
+  text-align:center;
+  border-radius:var(--radius);
+}
+.fab-primary{background:var(--teal); color:#fff;}
+.fab-outline{background:var(--card); color:var(--text-dim); border:1.5px dashed var(--line);}
+
+.modal-overlay{
+  position:fixed; inset:0;
+  background:rgba(20,30,40,0.45);
+  display:flex; align-items:flex-end; justify-content:center;
+  z-index:50;
+}
+.modal{
+  background:var(--card);
+  border-radius:24px 24px 0 0;
+  width:100%; max-width:520px;
+  padding:22px 18px 26px;
+  max-height:88vh;
+  overflow-y:auto;
+}
+.modal h3{font-family:var(--disp); font-size:17px; font-weight:800; margin:0 0 16px;}
+.field{margin-bottom:13px;}
+.field label{display:block; font-size:11.5px; font-weight:700; color:var(--text-dim); margin-bottom:6px;}
+.field input, .field select, .field textarea{
+  width:100%;
+  background:#F7F9FA;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  color:var(--text);
+  padding:10px 12px;
+  font-family:var(--body);
+  font-size:14px;
+  outline:none;
+}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--teal);}
+.field textarea{resize:vertical; min-height:52px;}
+.field-row{display:flex; gap:10px;}
+.field-row .field{flex:1;}
+.modal-actions{display:flex; gap:10px; margin-top:18px;}
+.modal-actions button{flex:1; padding:13px;}
+
+.loading{text-align:center; padding:50px; color:var(--text-dim); font-size:13px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow" style="display:flex; justify-content:space-between; align-items:center;">
+    <span>Carnet d'entretien</span>
+    <span id="versionBadge" style="background:rgba(255,255,255,0.22); padding:3px 9px; border-radius:999px; font-size:11px; letter-spacing:0;"></span>
+  </div>
+  <div class="hero-title">Jeep Wrangler TJ Sahara</div>
+  <div class="hero-specs">
+    <span>🔧 4.0L I6</span>
+    <span>📅 1997 · Manuelle</span>
+    <span>🪪 1J4FYN9S8VP531671</span>
+  </div>
+</div>
+
+<div class="odo-card">
+  <div>
+    <div class="odo-label">Kilométrage actuel</div>
+    <div class="odo-value"><input id="odoInput" type="number" inputmode="numeric" placeholder="——"><span>km</span></div>
+  </div>
+  <button class="odo-btn" id="saveOdoBtn">Mettre à jour</button>
+</div>
+
+<div style="max-width:640px; margin:14px auto 0; padding:0 16px;">
+  <button class="fab-add fab-primary" onclick="openLogModal(null)">+ Ajouter un contrôle technique, une facture, une intervention…</button>
+</div>
+
+<div id="app" class="section">
+  <div class="loading">Chargement du carnet…</div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+const STORAGE_KEY = 'jeep-tj-carnet-v1';
+const APP_VERSION = '1.2';
+
+const DEFAULT_TYPES = [
+  { id:'vidange',    name:'Vidange moteur (huile + filtre)', intervalKm:5000,  intervalMonths:6  },
+  { id:'filtre_air', name:'Filtre à air',                     intervalKm:15000, intervalMonths:12 },
+  { id:'liq_frein',  name:'Liquide de frein',                 intervalKm:null,  intervalMonths:24 },
+  { id:'refroid',    name:'Liquide de refroidissement',       intervalKm:30000, intervalMonths:24 },
+  { id:'boite_vit',  name:'Huile boîte de vitesses (AX15)',   intervalKm:30000, intervalMonths:null },
+  { id:'bte_transf', name:'Huile boîte de transfert (NP231)', intervalKm:30000, intervalMonths:null },
+  { id:'ponts',      name:'Huile ponts av/ar (Dana 30/35)',    intervalKm:30000, intervalMonths:null },
+  { id:'bougies',    name:"Bougies d'allumage",                intervalKm:30000, intervalMonths:null },
+  { id:'courroie',   name:'Courroie accessoires',              intervalKm:60000, intervalMonths:60 },
+  { id:'silent_blocs', name:'Contrôle silent blocs / train roulant', intervalKm:null, intervalMonths:12 },
+  { id:'ct',         name:'Contrôle technique',                intervalKm:null,  intervalMonths:24 },
+];
+
+let state = {
+  currentMileage: 103900,
+  types: DEFAULT_TYPES,
+  entries: [
+    { id:'e_ct_20260704', typeId:'ct', typeName:'Contrôle technique', date:'2026-07-04', mileage:103900, cost:null, notes:"Défavorable pour défaillances majeures — Nico Auto Contrôle, Vias (04 67 21 24 63). Majeure: freins AR déséquilibrés. Mineures: disques/tambours usés AVG/AVD, jeu direction, ripage excessif, silent blocs AVG/AVD/ARG/ARD, échappement endommagé. ⚠ Ripage mesuré +14,4 m/km — au-dessus du seuil habituel (réf. forum: ~8 m/km max, 2 m/km typique). Probable souci de parallélisme/géométrie train avant, indépendant des silent blocs — à vérifier avec Fred et à contrôler lors de la visite physique." }
+  ],
+  reminders: [
+    { id:'r_contre_visite', label:'Contre-visite à faire (freins + échappement)', date:'2026-09-03', notes:'Limite légale de validité du CT du 04/07/2026. Prendre RDV avec Fred / le garage — Nico Auto Contrôle, Vias, 04 67 21 24 63.' }
+  ]
+};
+
+async function loadState(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      state = { ...state, ...parsed, types: parsed.types || DEFAULT_TYPES };
+    }
+  }catch(e){ /* first run, no data yet */ }
+  render();
+}
+
+async function saveState(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+  }catch(e){ console.error('Erreur de sauvegarde', e); }
+}
+
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+
+function computeStatus(type){
+  const lastEntries = state.entries
+    .filter(e=>e.typeId===type.id)
+    .sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const last = lastEntries[0] || null;
+
+  let kmRemaining = null, monthsInfo = null, ratio = 0;
+
+  if(type.intervalKm && last && last.mileage!=null && state.currentMileage!=null){
+    const nextDueKm = last.mileage + type.intervalKm;
+    kmRemaining = nextDueKm - state.currentMileage;
+    const used = state.currentMileage - last.mileage;
+    ratio = Math.max(ratio, used / type.intervalKm);
+  } else if(type.intervalKm && !last){
+    ratio = Math.max(ratio, 0.5);
+  }
+
+  if(type.intervalMonths && last){
+    const lastDate = new Date(last.date);
+    const dueDate = new Date(lastDate);
+    dueDate.setMonth(dueDate.getMonth()+type.intervalMonths);
+    const today = new Date();
+    const totalDays = daysBetween(lastDate, dueDate);
+    const usedDays = daysBetween(lastDate, today);
+    monthsInfo = { dueDate, daysRemaining: daysBetween(today, dueDate) };
+    ratio = Math.max(ratio, usedDays/totalDays);
+  } else if(type.intervalMonths && !last){
+    ratio = Math.max(ratio, 0.5);
+  }
+
+  let level = 'ok';
+  if(ratio >= 1) level = 'danger';
+  else if(ratio >= 0.8) level = 'warn';
+
+  return { last, kmRemaining, monthsInfo, ratio: Math.min(ratio,1), level };
+}
+
+function fmtDate(d){
+  return new Date(d).toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function fmtKm(n){ return n==null? '—' : n.toLocaleString('fr-FR')+' km'; }
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.innerText = s;
+  return d.innerHTML;
+}
+
+function showToast(message){
+  const existing = document.getElementById('toastEl');
+  if(existing) existing.remove();
+  const t = document.createElement('div');
+  t.id = 'toastEl';
+  t.textContent = message;
+  t.style.cssText = 'position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#1B2430; color:#fff; padding:11px 20px; border-radius:12px; font-family:Inter,sans-serif; font-size:13px; font-weight:600; box-shadow:0 8px 24px -8px rgba(0,0,0,0.4); z-index:100; opacity:0; transition:opacity .2s;';
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{ t.style.opacity='1'; });
+  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),250); }, 2200);
+}
+
+function render(){
+  const app = document.getElementById('app');
+  document.getElementById('odoInput').value = state.currentMileage ?? '';
+  const vb = document.getElementById('versionBadge');
+  if(vb) vb.textContent = 'v' + APP_VERSION;
+
+  let html = '';
+  const today = new Date();
+  const sortedReminders = [...(state.reminders||[])].sort((a,b)=> new Date(a.date)-new Date(b.date));
+  const urgent = sortedReminders.find(r=> daysBetween(today, new Date(r.date)) <= 30);
+
+  if(urgent){
+    const daysLeft = daysBetween(today, new Date(urgent.date));
+    const overdue = daysLeft < 0;
+    html += `
+    <div class="banner ${overdue?'danger':'warn'}">
+      <div class="banner-icon">${overdue? '🔴':'🟠'}</div>
+      <div>
+        <div class="banner-title">${escapeHtml(urgent.label)}</div>
+        <div class="banner-sub">${overdue? 'Dépassé — ' : daysLeft===0? "Aujourd'hui — " : daysLeft+' jours restants — '}échéance ${fmtDate(urgent.date)}</div>
+        ${urgent.notes? `<div class="banner-sub" style="margin-top:4px;">${escapeHtml(urgent.notes)}</div>`:''}
+      </div>
+    </div>`;
+  }
+
+  html += `<div class="section-title">📅 Rappels &amp; RDV</div>`;
+  html += `<div class="cards">`;
+  if(sortedReminders.length===0){
+    html += `<div class="empty">Aucun rappel programmé.</div>`;
+  } else {
+    sortedReminders.forEach(r=>{
+      const daysLeft = daysBetween(today, new Date(r.date));
+      const level = daysLeft<0 ? 'danger' : daysLeft<=30 ? 'warn' : 'ok';
+      const label = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)}j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft}j restants`;
+      html += `
+      <div class="card">
+        <div class="card-top">
+          <div class="card-name">${escapeHtml(r.label)}</div>
+          <div class="pill ${level}">${label}</div>
+        </div>
+        <div class="card-meta"><span>${fmtDate(r.date)}</span></div>
+        ${r.notes? `<div class="log-notes">${escapeHtml(r.notes)}</div>`:''}
+        <div class="card-actions"><button class="btn-danger-text" onclick="deleteReminder('${r.id}')">Supprimer</button></div>
+      </div>`;
+    });
+  }
+  html += `</div>`;
+  html += `<button class="fab-add fab-outline" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
+
+  html += `<div class="section-title" style="margin-top:28px;">🛠️ Échéances <span class="hint">${state.currentMileage!=null? fmtKm(state.currentMileage) : 'km non renseigné'}</span></div>`;
+  html += `<div class="cards">`;
+  state.types.forEach(type=>{
+    const s = computeStatus(type);
+    const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : 'À jour';
+    let metaParts = [];
+    if(s.last){
+      metaParts.push(`Dernier : ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
+    } else {
+      metaParts.push('Jamais renseigné');
+    }
+    if(type.intervalKm){
+      if(s.kmRemaining!=null){
+        metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
+      } else {
+        metaParts.push(`Intervalle ${type.intervalKm.toLocaleString('fr-FR')} km`);
+      }
+    }
+    if(type.intervalMonths && s.monthsInfo){
+      metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
+    } else if(type.intervalMonths && !s.last){
+      metaParts.push(`Intervalle ${type.intervalMonths} mois`);
+    }
+
+    html += `
+    <div class="card">
+      <div class="card-top">
+        <div class="card-name">${type.name}</div>
+        <div class="pill ${s.level}">${statusLabel}</div>
+      </div>
+      <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
+      <div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>
+      <div class="card-actions">
+        <button class="btn-ghost" onclick="openLogModal('${type.id}')">✓ Marquer comme fait</button>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  html += `<div class="section-title" style="margin-top:28px;">📖 Journal d'entretien</div>`;
+  const sortedEntries = [...state.entries].sort((a,b)=> new Date(b.date)-new Date(a.date));
+  if(sortedEntries.length===0){
+    html += `<div class="empty">Aucune intervention enregistrée pour l'instant.</div>`;
+  } else {
+    html += `<div class="cards"><div class="card" style="padding:4px 16px;">`;
+    sortedEntries.forEach(e=>{
+      html += `
+      <div class="log-entry">
+        <div>
+          <div class="log-type">${e.typeName}</div>
+          <div class="log-sub">${fmtDate(e.date)}${e.mileage!=null? ' · '+fmtKm(e.mileage):''}</div>
+          ${e.notes? `<div class="log-notes">${escapeHtml(e.notes)}</div>` : ''}
+          ${e.attachment? `<img src="${e.attachment}" onclick="viewAttachment('${e.id}')" style="width:52px; height:52px; object-fit:cover; border-radius:8px; margin-top:8px; border:1px solid var(--line); cursor:pointer;">` : ''}
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+          <div class="log-cost">${e.cost? e.cost+' €':''}</div>
+          <button class="btn-text" onclick="deleteEntry('${e.id}')">✕</button>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  html += `<button class="fab-add fab-primary" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
+  html += `<button class="fab-add fab-outline" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
+
+  app.innerHTML = html;
+}
+
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dateStr = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `carnet-entretien-tj-backup-${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function openLogModal(typeId){
+  pendingAttachment = null;
+  const root = document.getElementById('modalRoot');
+  const typeOptions = state.types.map(t=>`<option value="${t.id}" ${t.id===typeId?'selected':''}>${t.name}</option>`).join('');
+  const today = new Date().toISOString().slice(0,10);
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Nouvelle intervention</h3>
+      <div class="field">
+        <label>Type d'entretien</label>
+        <select id="f_type">${typeOptions}<option value="__custom__">+ Autre / personnalisé…</option></select>
+      </div>
+      <div class="field" id="f_customwrap" style="display:none;">
+        <label>Nom de l'intervention</label>
+        <input id="f_customname" type="text" placeholder="ex: Remplacement silent blocs">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Date</label>
+          <input id="f_date" type="date" value="${today}">
+        </div>
+        <div class="field">
+          <label>Kilométrage</label>
+          <input id="f_mileage" type="number" placeholder="${state.currentMileage ?? ''}" value="${state.currentMileage ?? ''}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Coût (€)</label>
+        <input id="f_cost" type="number" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="f_notes" placeholder="Détails, garage, référence pièce…"></textarea>
+      </div>
+      <div class="field">
+        <label>Photo (facture, PV de CT…) — optionnel</label>
+        <input id="f_photo" type="file" accept="image/*">
+        <div id="f_photo_preview" style="margin-top:8px;"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-text" style="background:#F1F3F5;" onclick="closeModal()">Annuler</button>
+        <button class="btn-primary" onclick="saveEntry()">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('f_type').addEventListener('change', (e)=>{
+    document.getElementById('f_customwrap').style.display = e.target.value==='__custom__' ? 'block' : 'none';
+  });
+  document.getElementById('f_photo').addEventListener('change', handlePhotoSelect);
+}
+
+let pendingAttachment = null;
+
+function handlePhotoSelect(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    img.onload = ()=>{
+      const maxW = 900;
+      const scale = Math.min(1, maxW / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      pendingAttachment = canvas.toDataURL('image/jpeg', 0.65);
+      document.getElementById('f_photo_preview').innerHTML =
+        `<img src="${pendingAttachment}" style="max-width:120px; border-radius:10px; border:1px solid var(--line);">`;
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function viewAttachment(id){
+  const e = state.entries.find(x=>x.id===id);
+  if(!e || !e.attachment) return;
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="closeModal()">
+    <div style="max-width:520px; width:100%; padding:20px;">
+      <img src="${e.attachment}" style="width:100%; border-radius:16px;">
+    </div>
+  </div>`;
+}
+
+function closeModal(){ document.getElementById('modalRoot').innerHTML = ''; }
+
+async function saveEntry(){
+  const typeSel = document.getElementById('f_type').value;
+  let typeId = typeSel, typeName;
+  if(typeSel === '__custom__'){
+    const customName = document.getElementById('f_customname').value.trim();
+    if(!customName){ alert('Merci de nommer l\'intervention.'); return; }
+    typeId = 'custom_' + customName.toLowerCase().replace(/[^a-z0-9]+/g,'_');
+    typeName = customName;
+    if(!state.types.find(t=>t.id===typeId)){
+      state.types.push({ id: typeId, name: customName, intervalKm:null, intervalMonths:null });
+    }
+  } else {
+    typeName = state.types.find(t=>t.id===typeId).name;
+  }
+
+  const date = document.getElementById('f_date').value;
+  const mileageVal = document.getElementById('f_mileage').value;
+  const costVal = document.getElementById('f_cost').value;
+  const notes = document.getElementById('f_notes').value.trim();
+
+  if(!date){ alert('Merci de renseigner une date.'); return; }
+
+  const entry = {
+    id: 'e_' + Date.now(),
+    typeId, typeName,
+    date,
+    mileage: mileageVal ? parseInt(mileageVal,10) : null,
+    cost: costVal ? parseFloat(costVal) : null,
+    notes,
+    attachment: pendingAttachment || null
+  };
+  state.entries.push(entry);
+  if(entry.mileage!=null && (state.currentMileage==null || entry.mileage > state.currentMileage)){
+    state.currentMileage = entry.mileage;
+  }
+  await saveState();
+  closeModal();
+  render();
+  showToast('Intervention enregistrée ✓');
+}
+
+async function deleteEntry(id){
+  const entry = state.entries.find(e=>e.id===id);
+  const label = entry ? `« ${entry.typeName} » du ${fmtDate(entry.date)}` : 'cette intervention';
+  if(!confirm(`Supprimer définitivement ${label} du journal d'entretien ?\n\nCette action est irréversible.`)) return;
+  state.entries = state.entries.filter(e=>e.id!==id);
+  await saveState();
+  render();
+  showToast('Intervention supprimée ✓');
+}
+
+function openReminderModal(){
+  const root = document.getElementById('modalRoot');
+  const today = new Date().toISOString().slice(0,10);
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Nouveau rappel de RDV</h3>
+      <div class="field">
+        <label>Intitulé</label>
+        <input id="r_label" type="text" placeholder="ex: RDV garage - contre-visite">
+      </div>
+      <div class="field">
+        <label>Date d'échéance</label>
+        <input id="r_date" type="date" value="${today}">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="r_notes" placeholder="Détails, contact, garage…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-text" style="background:#F1F3F5;" onclick="closeModal()">Annuler</button>
+        <button class="btn-primary" onclick="saveReminder()">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveReminder(){
+  const label = document.getElementById('r_label').value.trim();
+  const date = document.getElementById('r_date').value;
+  const notes = document.getElementById('r_notes').value.trim();
+  if(!label || !date){ alert('Merci de renseigner un intitulé et une date.'); return; }
+  state.reminders = state.reminders || [];
+  state.reminders.push({ id:'r_'+Date.now(), label, date, notes });
+  await saveState();
+  closeModal();
+  render();
+  showToast('Rappel ajouté ✓');
+}
+
+async function deleteReminder(id){
+  const reminder = (state.reminders||[]).find(r=>r.id===id);
+  const label = reminder ? `« ${reminder.label} »` : 'ce rappel';
+  if(!confirm(`Supprimer définitivement ${label} ?\n\nCette action est irréversible.`)) return;
+  state.reminders = (state.reminders||[]).filter(r=>r.id!==id);
+  await saveState();
+  render();
+  showToast('Rappel supprimé ✓');
+}
+
+document.getElementById('saveOdoBtn').addEventListener('click', async ()=>{
+  const val = document.getElementById('odoInput').value;
+  state.currentMileage = val ? parseInt(val,10) : null;
+  await saveState();
+  render();
+  showToast('Kilométrage mis à jour ✓');
+});
+
+loadState();
+</script>
+</body>
+</html>
