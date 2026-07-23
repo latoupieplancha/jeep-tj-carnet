@@ -266,11 +266,11 @@ button{
     <span>Carnet d'entretien</span>
     <span id="versionBadge" style="background:rgba(255,255,255,0.22); padding:3px 9px; border-radius:999px; font-size:11px; letter-spacing:0;"></span>
   </div>
-  <div class="hero-title">Jeep Wrangler TJ Sahara</div>
+  <div class="hero-title">Jeep Wrangler TJ (Lacanau)</div>
   <div class="hero-specs">
     <span>🔧 4.0L I6</span>
-    <span>📅 1997 · Manuelle</span>
-    <span>🪪 1J4FYN9S8VP531671</span>
+    <span>📅 1998 · Automatique</span>
+    <span>🪪 EJ-475-JK · 1J4FYA9S0VP531754</span>
   </div>
 </div>
 
@@ -293,7 +293,7 @@ button{
 <div id="modalRoot"></div>
 
 <script>
-const STORAGE_KEY = 'jeep-tj-carnet-v1';
+const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
 const APP_VERSION = '1.2';
 
 const DEFAULT_TYPES = [
@@ -301,7 +301,7 @@ const DEFAULT_TYPES = [
   { id:'filtre_air', name:'Filtre à air',                     intervalKm:15000, intervalMonths:12 },
   { id:'liq_frein',  name:'Liquide de frein',                 intervalKm:null,  intervalMonths:24 },
   { id:'refroid',    name:'Liquide de refroidissement',       intervalKm:30000, intervalMonths:24 },
-  { id:'boite_vit',  name:'Huile boîte de vitesses (AX15)',   intervalKm:30000, intervalMonths:null },
+  { id:'boite_vit',  name:'Huile boîte de vitesses automatique', intervalKm:30000, intervalMonths:null },
   { id:'bte_transf', name:'Huile boîte de transfert (NP231)', intervalKm:30000, intervalMonths:null },
   { id:'ponts',      name:'Huile ponts av/ar (Dana 30/35)',    intervalKm:30000, intervalMonths:null },
   { id:'bougies',    name:"Bougies d'allumage",                intervalKm:30000, intervalMonths:null },
@@ -311,13 +311,16 @@ const DEFAULT_TYPES = [
 ];
 
 let state = {
-  currentMileage: 103900,
+  currentMileage: 95000,
   types: DEFAULT_TYPES,
   entries: [
-    { id:'e_ct_20260704', typeId:'ct', typeName:'Contrôle technique', date:'2026-07-04', mileage:103900, cost:null, notes:"Défavorable pour défaillances majeures — Nico Auto Contrôle, Vias (04 67 21 24 63). Majeure: freins AR déséquilibrés. Mineures: disques/tambours usés AVG/AVD, jeu direction, ripage excessif, silent blocs AVG/AVD/ARG/ARD, échappement endommagé. ⚠ Ripage mesuré +14,4 m/km — au-dessus du seuil habituel (réf. forum: ~8 m/km max, 2 m/km typique). Probable souci de parallélisme/géométrie train avant, indépendant des silent blocs — à vérifier avec Fred et à contrôler lors de la visite physique." }
+    { id:'e_ct_20251215', typeId:'ct', typeName:'Contrôle technique', date:'2025-12-15', mileage:94687, cost:null, notes:"Contre-visite FAVORABLE — Auto Bilan Canaulais, Lacanau (05 57 70 16.81). Fait suite au PV défavorable initial n°25036829 du 21/10/2025 (mêmes defaillances à faire vérifier auprès de la vendeuse). Validité jusqu'au 20/10/2027 pour la circulation. ⚠ Pour une VENTE entre particuliers, un CT de moins de 6 mois est obligatoire (art. R323-22) — celui-ci est donc caduc pour la transaction et doit être repassé par la vendeuse avant signature." },
+    { id:'e_histo_20231207', typeId:'custom_historique', typeName:'Historique véhicule (Histovec/LeBoncoin)', date:'2023-12-07', mileage:89100, cost:null, notes:"Reprise par un professionnel dans le Puy-de-Dôme (nov. 2023), puis changement de titulaire (propriétaire actuelle) en décembre 2023. Véhicule à parcours français continu depuis 2002 (Côte-d'Or → Essonne → Var → Puy-de-Dôme). Pas d'import récent malgré le VIN US (1J...)." }
   ],
   reminders: [
-    { id:'r_contre_visite', label:'Contre-visite à faire (freins + échappement)', date:'2026-09-03', notes:'Limite légale de validité du CT du 04/07/2026. Prendre RDV avec Fred / le garage — Nico Auto Contrôle, Vias, 04 67 21 24 63.' }
+    { id:'r_ct_vente', label:'Exiger un CT < 6 mois avant la vente', date:'2026-07-23', notes:"Le CT du 15/12/2025 a dépassé les 6 mois de validité pour une vente entre particuliers. La vendeuse doit repasser un contrôle technique complet avant la signature (art. R323-22 du Code de la route)." },
+    { id:'r_carnet', label:"Demander le carnet d'entretien depuis l'achat (déc. 2023)", date:'2026-08-01', notes:"Propriétaire actuelle : usage saisonnier avril–septembre, ~10 km/jour (trajet domicile-travail). Demander aussi la facture du garage repreneur (Puy-de-Dôme, nov. 2023) pour l'historique de remise en état." },
+    { id:'r_visite', label:'Visite physique + essai routier', date:'2026-08-01', notes:"Points de vigilance TJ : corrosion châssis/bas de caisse, étanchéité capote, fuites moteur/boîte auto/pont, transfer case NP231 (bruit en 4H→2H), death wobble à 90-100 km/h." }
   ]
 };
 
