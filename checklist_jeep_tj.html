@@ -230,14 +230,14 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>🚙 Récupération Jeep TJ — Jeudi</h1>
-    <div class="subtitle">Fred, Sérignan (34) — Sahara 4.0L, 1997</div>
+    <h1>🚙 Inspection Jeep TJ — Samedi</h1>
+    <div class="subtitle">Agnès Brande — Lacanau (33) — 4.0L, 1998, boîte auto 32RH</div>
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-label" id="progressLabel">0 / 0</div>
   </header>
 
   <div class="alert">
-    <strong>Rappel :</strong> contre-visite le mercredi matin, récupération jeudi quel que soit le résultat. Priorité absolue jeudi : facture frein AR + PV de contre-visite (dès disponible) + comportement au freinage à l'essai routier.
+    <strong>Rappel :</strong> le CT du 15/12/2025 est caduc pour la vente (> 6 mois) — exiger un CT frais avant signature. Priorité absolue samedi : vérifier l'attestation officielle de re-frappe du numéro de série (VIN manquant au CT du 21/10/2025), historique des vidanges, double de clé, ouverture des 2 boîtes à gants avec la même clé.
   </div>
 
   <div id="sections"></div>
@@ -250,13 +250,14 @@ const DATA = [
   {
     title: "📄 Documents à récupérer",
     items: [
-      { id: "doc1", text: "Facture de réparation du frein arrière (nature exacte : garnitures / cylindres / réglage / purge)", tag: "fred" },
-      { id: "doc2", text: "Facture de réparation échappement / silencieux", tag: "fred" },
-      { id: "doc3", text: "PV de contre-visite validé (si disponible jeudi, sinon à réclamer)", tag: "priority" },
-      { id: "doc4", text: "Carte grise du véhicule" },
+      { id: "doc1", text: "CT à jour (< 6 mois) — celui de déc. 2025 est caduc pour la vente : exiger un CT frais avant signature", tag: "priority", note: "Art. R323-22 : le CT du 15/12/2025 dépasse 6 mois pour une vente entre particuliers." },
+      { id: "doc2", text: "Attestation officielle de re-frappe du numéro de série (VIN)", tag: "priority", note: "🚨 Le CT du 21/10/2025 indiquait une défaillance MAJEURE : numéro de série manquant/introuvable. La facture du 17/12/2025 mentionne une 'FRAPPE NUMERO DE SERIE' (150€) par Alex Garage-Méca. Exiger le justificatif officiel de cette opération (normalement encadrée par un expert agréé/DREAL, pas un simple acte de garage) et comprendre la cause initiale (corrosion, choc, plaque remplacée...)." },
+      { id: "doc3", text: "Carte grise du véhicule" },
       { id: "doc6", text: "Certificat de non-gage (certificat de situation administrative)", tag: "priority", note: "À demander daté de moins de 15 jours — vérifie l'absence de gage/opposition et le statut administratif du véhicule." },
-      { id: "doc7", text: "Code de cession du véhicule", tag: "priority", note: "Transmis par Fred lors de la déclaration de cession — indispensable pour finaliser la démarche d'immatriculation en ligne (ANTS)." },
-      { id: "doc5", text: "Carnet d'entretien si existant" }
+      { id: "doc7", text: "Code de cession du véhicule", tag: "priority", note: "Indispensable pour finaliser la démarche d'immatriculation en ligne (ANTS)." },
+      { id: "doc5", text: "Carnet d'entretien" },
+      { id: "doc8", text: "Justificatifs d'achat auprès du garage (novembre 2023)" },
+      { id: "doc9", text: "Historique des vidanges (dates/km) : moteur, boîte auto 32RH, boîte de transfert NP231, différentiels avant/arrière", note: "Vidange huile moteur (0W30) confirmée le 15/12/2025 à 94 987 km (facture Alex Garage-Méca n°4823). Reste à obtenir : boîte auto, boîte de transfert, différentiels." }
     ]
   },
   {
@@ -264,8 +265,9 @@ const DATA = [
     items: [
       { id: "mot1", text: "Démarrage à froid : bruit, fumée à l'échappement" },
       { id: "mot2", text: "Niveaux huile moteur / liquide de refroidissement" },
-      { id: "mot3", text: "Niveaux boîte de vitesses / boîte de transfert" },
-      { id: "mot4", text: "Fuites visibles sous moteur / boîte / pont" }
+      { id: "mot3", text: "Niveaux boîte de vitesses automatique (32RH) / boîte de transfert" },
+      { id: "mot4", text: "Fuites visibles sous moteur / boîte / pont" },
+      { id: "mot5", text: "Aspect et odeur de l'huile moteur (couleur, niveau) et de l'huile de boîte auto (couleur = indicateur d'une vidange récente ou non)" }
     ]
   },
   {
@@ -274,8 +276,10 @@ const DATA = [
       { id: "rte1", text: "Enclenchement 4H / 4L" },
       { id: "rte2", text: "Transition 4H → 2H en manœuvre : écouter la boîte de transfert NP231 (fourchette, chaîne, dog clutches)" },
       { id: "rte3", text: "Test death wobble à 90–100 km/h sur route lisse" },
-      { id: "rte4", text: "Tenue de route en ligne droite (lien avec jeu direction + ripage)", tag: "priority", note: "Ripage CT : +14,4 m/km, au-dessus du seuil habituel (~8 m/km max). Contrôle géométrie prévu chez un spécialiste 4x4 après achat — pas bloquant jeudi." },
-      { id: "rte5", text: "Freinage à vitesse : tirage d'un côté, distance, bruit", tag: "priority", note: "Garnitures neuves pas encore rodées : mordant possiblement inégal les premiers km, à ne pas confondre avec un vrai déséquilibre résiduel." }
+      { id: "rte4", text: "Tenue de route en ligne droite / volant bien centré", note: "Ripage avant mesuré au CT du 21/10/2025 : +0,7 m/km — excellent (seuil 8 m/km), à l'opposé de la TJ de Fred (+14,4 m/km). Point rassurant, à confirmer quand même à l'essai." },
+      { id: "rte5", text: "Freinage à vitesse : tirage d'un côté, distance, bruit" },
+      { id: "rte6", text: "Comportement de la boîte automatique 32RH : passages de rapports, à-coups, kick-down" },
+      { id: "rte7", text: "Frein de service : déséquilibre arrière", tag: "priority", note: "CT 21/10/2025 : déséquilibre AR de 22% (seuil 20%) — défaillance mineure. À sentir/écouter précisément au freinage." }
     ]
   },
   {
@@ -285,8 +289,10 @@ const DATA = [
       { id: "des2", text: "Cardans avant / arrière" },
       { id: "des3", text: "Différentiels (jeu, fuites)" },
       { id: "des4", text: "Durites de frein (état, craquelures)" },
-      { id: "des5", text: "Silent blocs des 4 points de suspension", note: "Déjà notés dégradés au CT (mineur) — à la charge de l'acheteur, priorité post-achat." },
-      { id: "des6", text: "Usure des pneus (dents de scie sur les bords = signe de parallélisme à revoir)" }
+      { id: "des5", text: "Silent blocs des 4 points de suspension" },
+      { id: "des6", text: "Usure des pneus (dents de scie sur les bords = signe de parallélisme à revoir)", note: "CT 21/10/2025 : usure anormale relevée sur les 4 pneus (AVD, AVG, ARD, ARG) — à réexaminer, avec attention particulière si les pneus n'ont pas été changés depuis." },
+      { id: "des7", text: "Amortisseurs avant : écart droite/gauche", tag: "priority", note: "CT 21/10/2025 : écart de 32% entre l'avant droit et l'avant gauche (seuil 30%) — défaillance mineure. Tester le rebond de chaque côté." },
+      { id: "des8", text: "Numéro de série (VIN) : lisibilité et conformité de la frappe sur le châssis", tag: "priority", note: "À vérifier physiquement suite à la re-frappe facturée le 17/12/2025 (VIN était illisible/introuvable au CT du 21/10/2025)." }
     ]
   },
   {
@@ -294,20 +300,41 @@ const DATA = [
     items: [
       { id: "car1", text: "Bas de caisse / seuils de porte (rouille, perforation)" },
       { id: "car2", text: "Plancher intérieur (sous tapis si possible)" },
-      { id: "car3", text: "Configuration toit 1 (étanchéité, fixations)" },
-      { id: "car4", text: "Configuration toit 2 (étanchéité, fixations)" }
+      { id: "car3", text: "Hard top (étanchéité, fixations)" }
     ]
   },
   {
     title: "🎛️ Direction / divers",
     items: [
-      { id: "dir1", text: "Jeu de direction au point mort avant de tourner", note: "Noté mineur au CT — à re-tester." },
-      { id: "dir2", text: "Bruits suspects généraux (habitacle, suspension) sur bosses" }
+      { id: "dir1", text: "Jeu de direction au point mort avant de tourner" },
+      { id: "dir2", text: "Bruits suspects généraux (habitacle, suspension) sur bosses" },
+      { id: "dir3", text: "Fonctionnement de la climatisation", note: "Sa présence dans l'annonce ne garantit pas son fonctionnement sur un véhicule de plus de 20 ans." },
+      { id: "dir4", text: "Présence et fixation des sièges arrière", note: "CT 21/10/2025 : sièges arrière absents lors du contrôle (ARD, ARG) — à vérifier qu'ils sont bien présents et correctement fixés." }
+    ]
+  },
+  {
+    title: "🔑 Clés / accessoires",
+    items: [
+      { id: "cle1", text: "Présence d'un double de clé" },
+      { id: "cle2", text: "Ouverture des 2 boîtes à gants avec la même clé" }
+    ]
+  },
+  {
+    title: "🕰️ Usage saisonnier / vigilance âge",
+    items: [
+      { id: "age1", text: "Échappement : état général", note: "Ligne complète remplacée le 18/03/2025 à 92 657 km (silencieux AV/AR + colliers, facture Alex Garage-Méca n°3880) — confirme le risque de corrosion par usage saisonnier. Vérifier juste l'état actuel (pas de rouille naissante déjà)." },
+      { id: "age2", text: "Freins : disques/étriers grippés ou rouille de surface après inactivité — sentir/écouter spécifiquement au freinage", tag: "priority" },
+      { id: "age3", text: "Pneus BF Goodrich : date de fabrication (DOT sur le flanc) + craquelures/durcissement du flanc, indépendamment de l'usure de la bande de roulement", tag: "priority" },
+      { id: "age4", text: "Durites (frein, radiateur) et joints caoutchouc : fissures/sécheresse liées à l'âge plus qu'au kilométrage" },
+      { id: "age5", text: "Liquide de frein : âge/couleur (absorption d'humidité même sans rouler → corrosion circuit)" },
+      { id: "age6", text: "Batterie : âge, état des cosses/connecteurs (oxydation liée aux cycles irréguliers)" },
+      { id: "age7", text: "Démarrage et tenue de ralenti : signes de vernis/encrassement du circuit d'alimentation après stockage prolongé" },
+      { id: "age8", text: "Silent blocs / biellettes : durcissement du caoutchouc par l'âge, à ne pas confondre avec une usure kilométrique normale" }
     ]
   }
 ];
 
-const TAG_LABEL = { fred: "Fred", priority: "Priorité" };
+const TAG_LABEL = { priority: "Priorité" };
 
 function render() {
   const container = document.getElementById('sections');
