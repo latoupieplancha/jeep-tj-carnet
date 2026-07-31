@@ -2,558 +2,438 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Checklist récupération Jeep TJ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Inspection Jeep TJ — Lacanau</title>
 <style>
-  :root {
-    --bg: #14171c;
-    --card: #1d2129;
-    --card-border: #2a2f3a;
-    --text: #e8eaed;
-    --text-dim: #9aa1ac;
-    --accent: #d4602a;
-    --accent-soft: rgba(212, 96, 42, 0.15);
-    --ok: #4caf7d;
-    --warn: #e0b23c;
-    --danger: #d9534f;
+  :root{
+    --bg:#12161b;
+    --card:#1b2129;
+    --card-border:#2a323d;
+    --accent:#c9622a;
+    --accent-soft:#c9622a22;
+    --text:#e8e8e6;
+    --text-dim:#9aa3ad;
+    --ok:#4caf7d;
+    --warn:#e0a339;
+    --danger:#d9534f;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    padding: 20px;
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.45;
+    padding-bottom:60px;
   }
-  .wrap { max-width: 640px; margin: 0 auto; }
-  header {
-    margin-bottom: 20px;
+  header{
+    background:linear-gradient(135deg,#1b2129,#12161b);
+    padding:24px 18px 18px;
+    border-bottom:3px solid var(--accent);
   }
-  h1 {
-    font-size: 1.4em;
-    margin: 0 0 4px 0;
-    font-weight: 700;
+  header h1{
+    margin:0 0 4px;
+    font-size:1.4rem;
+    letter-spacing:.3px;
   }
-  .subtitle {
-    color: var(--text-dim);
-    font-size: 0.9em;
+  header p{
+    margin:0;
+    color:var(--text-dim);
+    font-size:.9rem;
   }
-  .progress-bar {
-    height: 8px;
-    background: var(--card-border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 14px 0 4px 0;
+  .wrap{max-width:760px;margin:0 auto;padding:0 14px;}
+  nav.toc{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin:16px 0;
   }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    transition: width 0.3s ease;
-    width: 0%;
+  nav.toc a{
+    font-size:.75rem;
+    color:var(--text-dim);
+    text-decoration:none;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    padding:5px 9px;
+    border-radius:20px;
   }
-  .progress-label {
-    font-size: 0.8em;
-    color: var(--text-dim);
-    text-align: right;
+  nav.toc a:hover{color:var(--accent);border-color:var(--accent);}
+  section{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:16px 16px 18px;
+    margin:14px 0;
   }
-  .alert {
-    background: rgba(217, 83, 79, 0.12);
-    border: 1px solid rgba(217, 83, 79, 0.4);
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 18px;
-    font-size: 0.88em;
-    line-height: 1.4;
+  section h2{
+    margin:0 0 10px;
+    font-size:1.05rem;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
-  .alert strong { color: var(--danger); }
-  .section {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    margin-bottom: 14px;
-    overflow: hidden;
+  section h3{
+    font-size:.92rem;
+    margin:14px 0 6px;
+    color:var(--text);
+    border-bottom:1px solid var(--card-border);
+    padding-bottom:4px;
   }
-  .section-header {
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    user-select: none;
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:7px 0;
+    border-bottom:1px dashed #2a323d55;
   }
-  .section-title {
-    font-weight: 600;
-    font-size: 0.95em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .item:last-child{border-bottom:none;}
+  .item input[type=checkbox]{
+    width:19px;height:19px;
+    accent-color:var(--accent);
+    margin-top:2px;
+    flex-shrink:0;
   }
-  .section-count {
-    font-size: 0.78em;
-    color: var(--text-dim);
-    background: var(--card-border);
-    padding: 2px 8px;
-    border-radius: 10px;
+  .item label{font-size:.92rem;flex:1;}
+  .item .note{
+    display:block;
+    color:var(--text-dim);
+    font-size:.78rem;
+    margin-top:2px;
   }
-  .chevron {
-    color: var(--text-dim);
-    transition: transform 0.2s ease;
-    font-size: 0.8em;
+  .badge{
+    font-size:.68rem;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    padding:2px 7px;
+    border-radius:5px;
+    font-weight:600;
   }
-  .section.collapsed .chevron { transform: rotate(-90deg); }
-  .section-body {
-    padding: 0 16px 12px 16px;
+  .badge.critical{background:var(--danger)33;color:#ff8f8c;}
+  .badge.priority{background:var(--warn)33;color:var(--warn);}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.85rem;
+    margin-top:6px;
   }
-  .section.collapsed .section-body { display: none; }
-  .item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 9px 0;
-    border-top: 1px solid var(--card-border);
-    font-size: 0.9em;
-    line-height: 1.35;
+  table caption{
+    text-align:left;
+    font-size:.78rem;
+    color:var(--text-dim);
+    margin-bottom:6px;
   }
-  .item:first-child { border-top: none; }
-  .item input[type="checkbox"] {
-    margin-top: 2px;
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-    accent-color: var(--accent);
-    cursor: pointer;
+  th,td{
+    text-align:left;
+    padding:7px 8px;
+    border-bottom:1px solid var(--card-border);
   }
-  .item label { cursor: pointer; flex: 1; }
-  .item.checked label { color: var(--text-dim); text-decoration: line-through; }
-  .tag {
-    display: inline-block;
-    font-size: 0.72em;
-    font-weight: 600;
-    padding: 1px 7px;
-    border-radius: 8px;
-    margin-left: 6px;
-    vertical-align: middle;
+  th{
+    color:var(--text-dim);
+    font-weight:600;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.3px;
   }
-  .tag-fred { background: rgba(224, 178, 60, 0.18); color: var(--warn); }
-  .tag-priority { background: rgba(217, 83, 79, 0.18); color: var(--danger); }
-  .note {
-    display: block;
-    font-size: 0.8em;
-    color: var(--text-dim);
-    margin-top: 2px;
+  tr.total td{
+    font-weight:700;
+    color:var(--accent);
+    border-top:2px solid var(--accent);
+    border-bottom:none;
+    font-size:.95rem;
   }
-  .reset-btn {
-    display: block;
-    margin: 22px auto 4px auto;
-    background: none;
-    border: 1px solid var(--card-border);
-    color: var(--text-dim);
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 0.82em;
-    cursor: pointer;
+  .range{color:var(--text-dim);font-size:.8rem;}
+  .callout{
+    background:var(--accent-soft);
+    border-left:3px solid var(--accent);
+    padding:10px 12px;
+    border-radius:6px;
+    font-size:.85rem;
+    margin-top:10px;
   }
-  .reset-btn:hover { color: var(--text); border-color: var(--text-dim); }
-  .item-main {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    width: 100%;
+  .callout.danger{
+    background:var(--danger)22;
+    border-left-color:var(--danger);
   }
-  .comment-btn {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 0.95em;
-    cursor: pointer;
-    padding: 0 2px;
-    line-height: 1;
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:8px;
   }
-  .comment-btn.has-comment { color: var(--accent); }
-  .comment-btn:hover { color: var(--text); }
-  .comment-box {
-    display: none;
-    margin-top: 8px;
-    width: 100%;
+  @media(max-width:480px){.grid2{grid-template-columns:1fr;}}
+  .stat{
+    background:#161b21;
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    padding:10px 12px;
   }
-  .comment-box.open { display: flex; gap: 6px; align-items: flex-end; }
-  .comment-box textarea {
-    flex: 1;
-    min-height: 34px;
-    max-height: 120px;
-    resize: vertical;
-    background: var(--bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.85em;
-    padding: 7px 9px;
+  .stat .label{font-size:.72rem;color:var(--text-dim);text-transform:uppercase;}
+  .stat .value{font-size:1.15rem;font-weight:700;color:var(--accent);margin-top:2px;}
+  textarea{
+    width:100%;
+    background:#161b21;
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    color:var(--text);
+    font-family:inherit;
+    font-size:.85rem;
+    padding:10px;
+    margin-top:8px;
+    resize:vertical;
   }
-  .comment-box textarea:focus {
-    outline: none;
-    border-color: var(--accent);
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:.75rem;
+    margin-top:24px;
+    padding:0 14px;
   }
-  .mic-btn {
-    flex-shrink: 0;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--card-border);
-    background: var(--card);
-    color: var(--text-dim);
-    font-size: 0.95em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .progress-wrap{
+    background:#161b21;
+    border-radius:20px;
+    height:8px;
+    overflow:hidden;
+    margin:10px 0 4px;
   }
-  .mic-btn:hover { color: var(--text); border-color: var(--text-dim); }
-  .mic-btn.recording {
-    color: #fff;
-    background: var(--danger);
-    border-color: var(--danger);
-    animation: pulse 1.1s infinite;
+  .progress-bar{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .25s;
   }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.5); }
-    70% { box-shadow: 0 0 0 8px rgba(217, 83, 79, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); }
-  }
-  .mic-unsupported {
-    font-size: 0.72em;
-    color: var(--text-dim);
-    align-self: center;
-  }
+  .progress-label{font-size:.75rem;color:var(--text-dim);}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>🚙 Inspection Jeep TJ — Samedi</h1>
-    <div class="subtitle">Agnès Brande — Lacanau (33) — 4.0L, 1998, boîte auto 32RH</div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-    <div class="progress-label" id="progressLabel">0 / 0</div>
-  </header>
 
-  <div class="alert">
-    <strong>Rappel :</strong> le CT du 15/12/2025 est caduc pour la vente (> 6 mois) — exiger un CT frais avant signature. Priorité absolue samedi : vérifier l'attestation officielle de re-frappe du numéro de série (VIN manquant au CT du 21/10/2025), historique des vidanges, double de clé, ouverture des 2 boîtes à gants avec la même clé. ⚠️ La propriétaire (Agnès Brande) semble n'avoir jamais engagé le 4x4 — tester le passage 4H/4L et le retour en 2H avec attention, de préférence sur terrain meuble ou parking plutôt que sur route sèche.
+<header>
+  <div class="wrap">
+    <h1>🚙 Checklist d'inspection — Jeep TJ Lacanau</h1>
+    <p>1998 · EJ-475-JK · Auto 32RH · ~95 000 km · Vendeuse : Agnès Brande</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 0 points vérifiés</div>
+
+  <nav class="toc">
+    <a href="#priorite">🔴 Priorité absolue</a>
+    <a href="#budget">💶 Budget</a>
+    <a href="#moteur">Moteur</a>
+    <a href="#essai">Essai routier</a>
+    <a href="#dessous">Dessous</a>
+    <a href="#carrosserie">Carrosserie</a>
+    <a href="#docs">Documents</a>
+    <a href="#eliminatoire">Éliminatoire</a>
+    <a href="#synthese">Synthèse CT</a>
+  </nav>
+
+  <!-- PRIORITÉ ABSOLUE -->
+  <section id="priorite">
+    <h2>🔴 Priorité absolue — Frappe VIN & DREAL</h2>
+    <div class="callout danger">
+      Une re-frappe du numéro de série a été réalisée par Alex Garage-Méca (Sainte-Hélène, 33) le 17/12/2025, sans autorisation DREAL vérifiable dans les registres publics. C'est le point le plus critique de l'inspection — à traiter avant tout le reste.
+    </div>
+    <div class="item">
+      <input type="checkbox" id="p1"><label for="p1">Exiger l'attestation DREAL originale (autorisation de re-frappe demandée par Agnès Brande, propriétaire, pas par le garage)</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="p2"><label for="p2">Comparer le VIN frappé avec la carte grise et le VIN sur la plaque constructeur / tablier</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="p3"><label for="p3">Vérifier l'absence de traces d'outillage, de bavures ou de désalignement des caractères sur la frappe</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="p4"><label for="p4">Contrôler le certificat de non-gage (Histovec) à jour</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" id="p5"><label for="p5">CT de décembre 2025 : exiger un CT neuf (moins de 6 mois) avant transaction — obligation légale (R323-22)</label>
+    </div>
+  </section>
+
+  <!-- BUDGET -->
+  <section id="budget">
+    <h2>💶 Budget prévisionnel post-achat</h2>
+    <p style="color:var(--text-dim);font-size:.85rem;margin-top:-4px;">Estimation basée sur les constats du CT de décembre 2025 — hors prix d'acquisition du véhicule.</p>
+
+    <table>
+      <thead>
+        <tr><th>Poste</th><th>Constat CT</th><th>Estimation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>4 pneus BFGoodrich AT KO2 30x9.50R15</td>
+          <td>Usure anormale (4 pneus)</td>
+          <td>800 – 900 €</td>
+        </tr>
+        <tr>
+          <td>Amortisseurs avant (paire)</td>
+          <td>Asymétrie 32%</td>
+          <td>250 – 450 €</td>
+        </tr>
+        <tr>
+          <td>Frein arrière</td>
+          <td>Déséquilibrage 22%</td>
+          <td>150 – 300 €</td>
+        </tr>
+        <tr>
+          <td>Géométrie / parallélisme</td>
+          <td>Lié usure pneus + amortisseurs</td>
+          <td>80 – 150 €</td>
+        </tr>
+        <tr>
+          <td>Vidange boîte de transfert NP231</td>
+          <td>Non-usage suspecté (4x4 jamais engagé)</td>
+          <td>50 – 90 €</td>
+        </tr>
+        <tr>
+          <td>Banquette arrière</td>
+          <td>Absente lors du CT</td>
+          <td>150 – 300 €</td>
+        </tr>
+        <tr>
+          <td>Attestation DREAL frappe VIN</td>
+          <td>Re-frappe non couverte</td>
+          <td>Faible coût, délai à anticiper</td>
+        </tr>
+        <tr class="total">
+          <td colspan="2">Total estimé</td>
+          <td>≈ 1 480 – 2 190 €</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      Le poste le plus incertain reste le <strong>frein arrière</strong> et le <strong>NP231</strong> : leur coût réel dépend de ce que révèle l'inspection physique (jeu, corrosion, grippage). Chiffrage ci-dessus en scénario "réparation simple" — un scénario dégradé pourrait doubler ces montants.
+    </div>
+    <div class="callout">
+      La banquette absente et l'usure sur les 4 pneus sont déjà objectivées par un document officiel (le CT) — levier de négociation factuel sur le prix de vente.
+    </div>
+
+    <h3>Notes budget (montants réels constatés sur place)</h3>
+    <textarea rows="4" placeholder="Ex : pneus datés 2018 (DOT), amortisseur AVD qui suinte, etc."></textarea>
+  </section>
+
+  <!-- MOTEUR -->
+  <section id="moteur">
+    <h2>🔧 Moteur à froid / à chaud</h2>
+    <h3>À froid (avant démarrage)</h3>
+    <div class="item"><input type="checkbox"><label>Niveau et aspect de l'huile moteur (0W30 changée 15/12/2025 à ~95 000 km — vérifier propreté)</label></div>
+    <div class="item"><input type="checkbox"><label>Niveau liquide de refroidissement, absence de mousse (signe de joint de culasse)</label></div>
+    <div class="item"><input type="checkbox"><label>Absence de fuite visible (cache-culbuteurs, carter, pompe à eau)</label></div>
+    <div class="item"><input type="checkbox"><label>État des durites (craquelures, suintements)</label></div>
+    <div class="item"><input type="checkbox"><label>Démarrage : bruit au démarreur, fumée à l'échappement (bleue = huile, blanche = culasse)</label></div>
+    <h3>À chaud (après 15-20 min de route)</h3>
+    <div class="item"><input type="checkbox"><label>Ralenti stable, pas d'à-coups</label></div>
+    <div class="item"><input type="checkbox"><label>Absence de claquement / cliquetis (chaîne de distribution, linguet)</label></div>
+    <div class="item"><input type="checkbox"><label>Température moteur stable en roulant et à l'arrêt moteur tournant</label></div>
+    <div class="item"><input type="checkbox"><label>Contrôle jauge boîte auto 32RH (huile rouge, propre, niveau moteur chaud au ralenti)</label></div>
+    <div class="item"><input type="checkbox"><label>Échappement : contrôle visuel de la ligne refaite 18/03/2025 (~92 657 km) — corrosion naissante possible (usage saisonnier = risque accru)</label></div>
+  </section>
+
+  <!-- ESSAI ROUTIER -->
+  <section id="essai">
+    <h2>🛣️ Essai routier</h2>
+    <div class="callout">
+      Le 4x4 semble n'avoir jamais été engagé par Agnès Brande. Tester le passage en 4H/4L avec prudence — grippage de fourchettes/chaîne possible, moyeux avant oxydés, joints dégradés par la non-utilisation.
+    </div>
+    <div class="item"><input type="checkbox"><label>Passage 2H → 4H à l'arrêt ou à faible vitesse : souplesse du levier, absence de bruit de chaîne/fourchette</label></div>
+    <div class="item"><input type="checkbox"><label>Passage 4H → 4L à l'arrêt, point mort, ressenti de l'engagement</label></div>
+    <div class="item"><input type="checkbox"><label>Retour 4H → 2H <strong>en manœuvrant</strong>, de préférence sur sol meuble ou parking (pas sur bitume sec)</label></div>
+    <div class="item"><input type="checkbox"><label>Essai death wobble : 90–100 km/h, léger appui sur nid de poule ou ligne de peinture, ressenti du volant</label></div>
+    <div class="item"><input type="checkbox"><label>Freinage : ligne droite maintenue, absence de tirage d'un côté, absence de vibration</label></div>
+    <div class="item"><input type="checkbox"><label>Direction : jeu au volant, alignement en ligne droite (rappel du problème rencontré sur le TJ de Fred — steering wheel désaligné)</label></div>
+    <div class="item"><input type="checkbox"><label>Ripage au banc si possible (référence : ~2 m/km normal, jusqu'à 8 m/km acceptable, +14,4 m/km = défaut avéré)</label></div>
+    <div class="item"><input type="checkbox"><label>Bruits de suspension sur dos d'âne / pavés (silent-blocs, biellettes)</label></div>
+  </section>
+
+  <!-- DESSOUS -->
+  <section id="dessous">
+    <h2>🔩 Dessous de caisse</h2>
+    <div class="item"><input type="checkbox"><label>Longerons (frame rails) : corrosion, points de rouille perforante, traces de choc</label></div>
+    <div class="item"><input type="checkbox"><label>Cardans (avant et arrière) : jeu, graisse aux croisillons</label></div>
+    <div class="item"><input type="checkbox"><label>Différentiels avant/arrière : niveau d'huile, absence de fuite au niveau des joints</label></div>
+    <div class="item"><input type="checkbox"><label>Boîte de transfert NP231 : niveau d'huile, état du joint de sortie, traces de suintement</label></div>
+    <div class="item"><input type="checkbox"><label>Silent-blocs (triangles, barres Panhard, barre de direction)</label></div>
+    <div class="item"><input type="checkbox"><label>Durites de frein : craquelures, gonflement, corrosion des raccords métalliques</label></div>
+    <div class="item"><input type="checkbox"><label>Amortisseurs : suintement, état des fixations (cf. asymétrie 32% relevée au CT — identifier lequel)</label></div>
+  </section>
+
+  <!-- CARROSSERIE -->
+  <section id="carrosserie">
+    <h2>🚗 Carrosserie</h2>
+    <div class="item"><input type="checkbox"><label>Bas de caisse / seuils de porte : corrosion, perforation, mastic suspect</label></div>
+    <div class="item"><input type="checkbox"><label>Plancher intérieur : tapis soulevé pour vérifier absence de rouille</label></div>
+    <div class="item"><input type="checkbox"><label>Hard top : fixations, joints, absence de fissure</label></div>
+    <div class="item"><input type="checkbox"><label>Vérifier présence d'une clé de secours</label></div>
+    <div class="item"><input type="checkbox"><label>Les deux boîtes à gants s'ouvrent avec la même clé</label></div>
+  </section>
+
+  <!-- DOCUMENTS -->
+  <section id="docs">
+    <h2>📄 Documents</h2>
+    <div class="item"><input type="checkbox"><label>CT valide (moins de 6 mois) — <span class="badge critical">obligatoire</span></label></div>
+    <div class="item"><input type="checkbox"><label>Attestation DREAL pour la frappe VIN — <span class="badge critical">obligatoire</span></label></div>
+    <div class="item"><input type="checkbox"><label>Carnet d'entretien et facture concessionnaire 2023</label></div>
+    <div class="item"><input type="checkbox"><label>Certificat de non-gage à jour</label></div>
+    <div class="item"><input type="checkbox"><label>Carte grise conforme (immatriculation France depuis 2002)</label></div>
+  </section>
+
+  <!-- ÉLIMINATOIRE -->
+  <section id="eliminatoire">
+    <h2>⛔ Critères éliminatoires</h2>
+    <div class="item"><input type="checkbox"><label>Absence d'attestation DREAL pour la frappe VIN au moment de la signature</label></div>
+    <div class="item"><input type="checkbox"><label>CT non renouvelé (plus de 6 mois)</label></div>
+    <div class="item"><input type="checkbox"><label>Corrosion perforante sur longeron ou point d'ancrage de suspension</label></div>
+    <div class="item"><input type="checkbox"><label>Death wobble marqué et reproductible</label></div>
+    <div class="item"><input type="checkbox"><label>Boîte de transfert grippée / bruit anormal en 4H ou 4L</label></div>
+    <div class="item"><input type="checkbox"><label>VIN frappé ne correspondant pas à la carte grise</label></div>
+  </section>
+
+  <!-- SYNTHÈSE CT -->
+  <section id="synthese">
+    <h2>📋 Synthèse des constats CT (déc. 2025)</h2>
+    <table>
+      <thead><tr><th>Point</th><th>Valeur / constat</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>Frein arrière</td><td>Déséquilibre 22%</td><td><span class="badge priority">à surveiller</span></td></tr>
+        <tr><td>Pneus (4)</td><td>Usure anormale</td><td><span class="badge priority">à remplacer</span></td></tr>
+        <tr><td>Amortisseurs avant</td><td>Asymétrie 32%</td><td><span class="badge priority">à remplacer</span></td></tr>
+        <tr><td>Banquette arrière</td><td>Absente lors du CT</td><td><span class="badge priority">à clarifier</span></td></tr>
+        <tr><td>Huile moteur</td><td>Changée 15/12/2025, 0W30, ~95 000 km</td><td><span class="badge">à jour</span></td></tr>
+        <tr><td>Ligne d'échappement</td><td>Remplacée 18/03/2025, ~92 657 km</td><td><span class="badge">à jour</span></td></tr>
+        <tr><td>Frappe VIN</td><td>17/12/2025, DREAL non vérifiable</td><td><span class="badge critical">critique</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="grid2">
+    <div class="stat"><div class="label">Budget cible achat</div><div class="value">≤ 24 000 €</div></div>
+    <div class="stat"><div class="label">Budget visé</div><div class="value">~22 000 €</div></div>
   </div>
 
-  <div id="sections"></div>
-
-  <button class="reset-btn" id="resetBtn">Réinitialiser la checklist</button>
 </div>
 
+<footer>
+  Checklist Jeep TJ — Lacanau · Mise à jour 31/07/2026 · repo latoupieplancha/jeep-tj-carnet
+</footer>
+
 <script>
-const DATA = [
-  {
-    title: "📄 Documents à récupérer",
-    items: [
-      { id: "doc1", text: "CT à jour (< 6 mois) — celui de déc. 2025 est caduc pour la vente : exiger un CT frais avant signature", tag: "priority", note: "Art. R323-22 : le CT du 15/12/2025 dépasse 6 mois pour une vente entre particuliers." },
-      { id: "doc2", text: "Attestation officielle de re-frappe du numéro de série (VIN)", tag: "priority", note: "🚨 Le CT du 21/10/2025 indiquait une défaillance MAJEURE : numéro de série manquant/introuvable. La facture du 17/12/2025 mentionne une 'FRAPPE NUMERO DE SERIE' (150€) par Alex Garage-Méca. Exiger le justificatif officiel de cette opération (normalement encadrée par un expert agréé/DREAL, pas un simple acte de garage) et comprendre la cause initiale (corrosion, choc, plaque remplacée...)." },
-      { id: "doc3", text: "Carte grise du véhicule" },
-      { id: "doc6", text: "Certificat de non-gage (certificat de situation administrative)", tag: "priority", note: "À demander daté de moins de 15 jours — vérifie l'absence de gage/opposition et le statut administratif du véhicule." },
-      { id: "doc7", text: "Code de cession du véhicule", tag: "priority", note: "Indispensable pour finaliser la démarche d'immatriculation en ligne (ANTS)." },
-      { id: "doc5", text: "Carnet d'entretien" },
-      { id: "doc8", text: "Justificatifs d'achat auprès du garage (novembre 2023)" },
-      { id: "doc9", text: "Historique des vidanges (dates/km) : moteur, boîte auto 32RH, boîte de transfert NP231, différentiels avant/arrière", note: "Vidange huile moteur (0W30) confirmée le 15/12/2025 à 94 987 km (facture Alex Garage-Méca n°4823). Reste à obtenir : boîte auto, boîte de transfert, différentiels." }
-    ]
-  },
-  {
-    title: "🔧 Moteur froid puis chaud",
-    items: [
-      { id: "mot1", text: "Démarrage à froid : bruit, fumée à l'échappement" },
-      { id: "mot2", text: "Niveaux huile moteur / liquide de refroidissement" },
-      { id: "mot3", text: "Niveaux boîte de vitesses automatique (32RH) / boîte de transfert" },
-      { id: "mot4", text: "Fuites visibles sous moteur / boîte / pont" },
-      { id: "mot5", text: "Aspect et odeur de l'huile moteur (couleur, niveau) et de l'huile de boîte auto (couleur = indicateur d'une vidange récente ou non)" }
-    ]
-  },
-  {
-    title: "🛣️ Essai routier",
-    items: [
-      { id: "rte1", text: "Enclenchement 4H / 4L", tag: "priority", note: "La propriétaire semble n'avoir jamais utilisé le 4x4. Tester avec attention la dureté du levier et les éventuels bruits de chaîne/fourchette au passage. À faire de préférence sur terrain meuble ou parking plutôt que sur route sèche (évite de forcer la transmission)." },
-      { id: "rte2", text: "Transition 4H → 2H en manœuvre : écouter la boîte de transfert NP231 (fourchette, chaîne, dog clutches)", tag: "priority", note: "Point renforcé par le fait que le système n'a probablement jamais été sollicité — risque de grippage léger (fourchettes, chaîne) ou de moyeux avant oxydés si présence de moyeux débrayables." },
-      { id: "rte3", text: "Test death wobble à 90–100 km/h sur route lisse" },
-      { id: "rte4", text: "Tenue de route en ligne droite / volant bien centré", note: "Ripage avant mesuré au CT du 21/10/2025 : +0,7 m/km — excellent (seuil 8 m/km), à l'opposé de la TJ de Fred (+14,4 m/km). Point rassurant, à confirmer quand même à l'essai." },
-      { id: "rte5", text: "Freinage à vitesse : tirage d'un côté, distance, bruit" },
-      { id: "rte6", text: "Comportement de la boîte automatique 32RH : passages de rapports, à-coups, kick-down" },
-      { id: "rte7", text: "Frein de service : déséquilibre arrière", tag: "priority", note: "CT 21/10/2025 : déséquilibre AR de 22% (seuil 20%) — défaillance mineure. À sentir/écouter précisément au freinage." }
-    ]
-  },
-  {
-    title: "🔩 Dessous de caisse",
-    items: [
-      { id: "des1", text: "Longerons de châssis (rouille, chocs)" },
-      { id: "des2", text: "Cardans avant / arrière" },
-      { id: "des3", text: "Différentiels (jeu, fuites)" },
-      { id: "des4", text: "Durites de frein (état, craquelures)" },
-      { id: "des5", text: "Silent blocs des 4 points de suspension" },
-      { id: "des6", text: "Usure des pneus (dents de scie sur les bords = signe de parallélisme à revoir)", note: "CT 21/10/2025 : usure anormale relevée sur les 4 pneus (AVD, AVG, ARD, ARG) — à réexaminer, avec attention particulière si les pneus n'ont pas été changés depuis." },
-      { id: "des7", text: "Amortisseurs avant : écart droite/gauche", tag: "priority", note: "CT 21/10/2025 : écart de 32% entre l'avant droit et l'avant gauche (seuil 30%) — défaillance mineure. Tester le rebond de chaque côté." },
-      { id: "des8", text: "Numéro de série (VIN) : lisibilité et conformité de la frappe sur le châssis", tag: "priority", note: "À vérifier physiquement suite à la re-frappe facturée le 17/12/2025 (VIN était illisible/introuvable au CT du 21/10/2025)." }
-    ]
-  },
-  {
-    title: "🚪 Carrosserie",
-    items: [
-      { id: "car1", text: "Bas de caisse / seuils de porte (rouille, perforation)" },
-      { id: "car2", text: "Plancher intérieur (sous tapis si possible)" },
-      { id: "car3", text: "Hard top (étanchéité, fixations)" }
-    ]
-  },
-  {
-    title: "🎛️ Direction / divers",
-    items: [
-      { id: "dir1", text: "Jeu de direction au point mort avant de tourner" },
-      { id: "dir2", text: "Bruits suspects généraux (habitacle, suspension) sur bosses" },
-      { id: "dir3", text: "Fonctionnement de la climatisation", note: "Sa présence dans l'annonce ne garantit pas son fonctionnement sur un véhicule de plus de 20 ans." },
-      { id: "dir4", text: "Présence et fixation des sièges arrière", note: "CT 21/10/2025 : sièges arrière absents lors du contrôle (ARD, ARG) — à vérifier qu'ils sont bien présents et correctement fixés." }
-    ]
-  },
-  {
-    title: "🔑 Clés / accessoires",
-    items: [
-      { id: "cle1", text: "Présence d'un double de clé" },
-      { id: "cle2", text: "Ouverture des 2 boîtes à gants avec la même clé" }
-    ]
-  },
-  {
-    title: "🕰️ Usage saisonnier / vigilance âge",
-    items: [
-      { id: "age1", text: "Échappement : état général", note: "Ligne complète remplacée le 18/03/2025 à 92 657 km (silencieux AV/AR + colliers, facture Alex Garage-Méca n°3880) — confirme le risque de corrosion par usage saisonnier. Vérifier juste l'état actuel (pas de rouille naissante déjà)." },
-      { id: "age2", text: "Freins : disques/étriers grippés ou rouille de surface après inactivité — sentir/écouter spécifiquement au freinage", tag: "priority" },
-      { id: "age3", text: "Pneus BF Goodrich : date de fabrication (DOT sur le flanc) + craquelures/durcissement du flanc, indépendamment de l'usure de la bande de roulement", tag: "priority" },
-      { id: "age4", text: "Durites (frein, radiateur) et joints caoutchouc : fissures/sécheresse liées à l'âge plus qu'au kilométrage" },
-      { id: "age5", text: "Liquide de frein : âge/couleur (absorption d'humidité même sans rouler → corrosion circuit)" },
-      { id: "age6", text: "Batterie : âge, état des cosses/connecteurs (oxydation liée aux cycles irréguliers)" },
-      { id: "age7", text: "Démarrage et tenue de ralenti : signes de vernis/encrassement du circuit d'alimentation après stockage prolongé" },
-      { id: "age8", text: "Silent blocs / biellettes : durcissement du caoutchouc par l'âge, à ne pas confondre avec une usure kilométrique normale" }
-    ]
+  const boxes = document.querySelectorAll('input[type=checkbox]');
+  const bar = document.getElementById('progressBar');
+  const label = document.getElementById('progressLabel');
+  function updateProgress(){
+    const total = boxes.length;
+    const checked = Array.from(boxes).filter(b=>b.checked).length;
+    bar.style.width = total ? (checked/total*100)+'%' : '0%';
+    label.textContent = checked + ' / ' + total + ' points vérifiés';
   }
-];
-
-const TAG_LABEL = { priority: "Priorité" };
-
-function render() {
-  const container = document.getElementById('sections');
-  container.innerHTML = '';
-  DATA.forEach((section, sIdx) => {
-    const secEl = document.createElement('div');
-    secEl.className = 'section';
-    secEl.id = 'sec-' + sIdx;
-
-    const header = document.createElement('div');
-    header.className = 'section-header';
-    header.innerHTML = `
-      <span class="section-title">${section.title}</span>
-      <span style="display:flex; align-items:center; gap:8px;">
-        <span class="section-count" id="count-${sIdx}"></span>
-        <span class="chevron">▾</span>
-      </span>
-    `;
-    header.addEventListener('click', () => {
-      secEl.classList.toggle('collapsed');
-    });
-
-    const body = document.createElement('div');
-    body.className = 'section-body';
-
-    section.items.forEach(item => {
-      const row = document.createElement('div');
-      row.className = 'item';
-      row.id = 'row-' + item.id;
-      const tagHtml = item.tag ? `<span class="tag tag-${item.tag}">${TAG_LABEL[item.tag]}</span>` : '';
-      const noteHtml = item.note ? `<span class="note">${item.note}</span>` : '';
-      row.innerHTML = `
-        <div class="item-main">
-          <input type="checkbox" id="chk-${item.id}">
-          <label for="chk-${item.id}" style="flex:1;">${item.text}${tagHtml}${noteHtml}</label>
-          <button class="comment-btn" id="cbtn-${item.id}" title="Ajouter un commentaire">💬</button>
-        </div>
-        <div class="comment-box" id="cbox-${item.id}">
-          <textarea id="ctext-${item.id}" placeholder="Commentaire..."></textarea>
-          <button class="mic-btn" id="mic-${item.id}" title="Dicter">🎤</button>
-        </div>
-      `;
-      body.appendChild(row);
-    });
-
-    secEl.appendChild(header);
-    secEl.appendChild(body);
-    container.appendChild(secEl);
-  });
-}
-
-function totalItems() {
-  return DATA.reduce((sum, s) => sum + s.items.length, 0);
-}
-
-function updateProgress() {
-  const total = totalItems();
-  let checked = 0;
-  DATA.forEach(section => {
-    section.items.forEach(item => {
-      if (document.getElementById('chk-' + item.id).checked) checked++;
-    });
-  });
-  document.getElementById('progressFill').style.width = (total ? (checked/total*100) : 0) + '%';
-  document.getElementById('progressLabel').textContent = `${checked} / ${total}`;
-
-  DATA.forEach((section, sIdx) => {
-    let c = 0;
-    section.items.forEach(item => {
-      if (document.getElementById('chk-' + item.id).checked) c++;
-    });
-    document.getElementById('count-' + sIdx).textContent = `${c}/${section.items.length}`;
-  });
-}
-
-async function loadState() {
-  try {
-    const result = await window.storage.get('jeep-checklist-state');
-    if (result && result.value) {
-      const state = JSON.parse(result.value);
-      const checks = state.checks || {};
-      const comments = state.comments || {};
-      Object.keys(checks).forEach(id => {
-        const el = document.getElementById('chk-' + id);
-        if (el) {
-          el.checked = checks[id];
-          el.closest('.item').classList.toggle('checked', checks[id]);
-        }
-      });
-      Object.keys(comments).forEach(id => {
-        const ta = document.getElementById('ctext-' + id);
-        if (ta && comments[id]) {
-          ta.value = comments[id];
-          document.getElementById('cbox-' + id).classList.add('open');
-          document.getElementById('cbtn-' + id).classList.add('has-comment');
-        }
-      });
-    }
-  } catch (e) {
-    // no saved state yet
-  }
+  boxes.forEach(b=>b.addEventListener('change', updateProgress));
   updateProgress();
-}
-
-async function saveState() {
-  const checks = {};
-  const comments = {};
-  DATA.forEach(section => {
-    section.items.forEach(item => {
-      checks[item.id] = document.getElementById('chk-' + item.id).checked;
-      const val = document.getElementById('ctext-' + item.id).value.trim();
-      if (val) comments[item.id] = val;
-    });
-  });
-  try {
-    await window.storage.set('jeep-checklist-state', JSON.stringify({ checks, comments }));
-  } catch (e) {
-    console.error('Erreur de sauvegarde', e);
-  }
-}
-
-function setupDictation(item) {
-  const micBtn = document.getElementById('mic-' + item.id);
-  const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognitionCtor) {
-    micBtn.classList.add('mic-unsupported');
-    micBtn.textContent = '🎤';
-    micBtn.title = 'Dictée vocale non supportée par ce navigateur';
-    micBtn.addEventListener('click', () => {
-      alert("La dictée vocale n'est pas supportée par ce navigateur. Essaie avec Chrome ou Safari.");
-    });
-    return;
-  }
-
-  let recognition = null;
-  let recording = false;
-
-  micBtn.addEventListener('click', () => {
-    if (recording) {
-      recognition.stop();
-      return;
-    }
-    recognition = new SpeechRecognitionCtor();
-    recognition.lang = 'fr-FR';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-
-    recognition.onstart = () => {
-      recording = true;
-      micBtn.classList.add('recording');
-    };
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      const ta = document.getElementById('ctext-' + item.id);
-      ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + transcript;
-      document.getElementById('cbtn-' + item.id).classList.add('has-comment');
-      saveState();
-    };
-    recognition.onerror = () => {
-      recording = false;
-      micBtn.classList.remove('recording');
-    };
-    recognition.onend = () => {
-      recording = false;
-      micBtn.classList.remove('recording');
-    };
-    recognition.start();
-  });
-}
-
-function attachHandlers() {
-  DATA.forEach(section => {
-    section.items.forEach(item => {
-      const chk = document.getElementById('chk-' + item.id);
-      chk.addEventListener('change', () => {
-        chk.closest('.item').classList.toggle('checked', chk.checked);
-        updateProgress();
-        saveState();
-      });
-
-      const cbtn = document.getElementById('cbtn-' + item.id);
-      const cbox = document.getElementById('cbox-' + item.id);
-      cbtn.addEventListener('click', () => {
-        cbox.classList.toggle('open');
-      });
-
-      const ctext = document.getElementById('ctext-' + item.id);
-      ctext.addEventListener('input', () => {
-        cbtn.classList.toggle('has-comment', ctext.value.trim().length > 0);
-      });
-      ctext.addEventListener('blur', saveState);
-
-      setupDictation(item);
-    });
-  });
-
-  document.getElementById('resetBtn').addEventListener('click', async () => {
-    DATA.forEach(section => {
-      section.items.forEach(item => {
-        const chk = document.getElementById('chk-' + item.id);
-        chk.checked = false;
-        chk.closest('.item').classList.remove('checked');
-        const ta = document.getElementById('ctext-' + item.id);
-        ta.value = '';
-        document.getElementById('cbox-' + item.id).classList.remove('open');
-        document.getElementById('cbtn-' + item.id).classList.remove('has-comment');
-      });
-    });
-    updateProgress();
-    try {
-      await window.storage.set('jeep-checklist-state', JSON.stringify({ checks: {}, comments: {} }));
-    } catch (e) {}
-  });
-}
-
-render();
-attachHandlers();
-loadState();
 </script>
+
 </body>
 </html>
