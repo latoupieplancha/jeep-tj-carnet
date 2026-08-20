@@ -5,285 +5,334 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carnet d'entretien — Jeep TJ</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
 
 :root{
-  --bg:#F4F6F8;
-  --card:#FFFFFF;
-  --line:#E7EBEF;
-  --teal:#0E9F8F;
-  --teal-light:#E3F7F4;
-  --orange:#FF7A45;
-  --orange-light:#FFEDE3;
-  --red:#E4574C;
-  --red-light:#FDEBEA;
-  --green:#3BAF6B;
-  --green-light:#E7F7EC;
-  --text:#1B2430;
-  --text-dim:#8891A0;
-  --disp:'Manrope',sans-serif;
+  --bg:#15171B;
+  --panel:#1D2025;
+  --panel-raised:#252932;
+  --line:#333844;
+  --brass:#C9A227;
+  --brass-dim:#8a712060;
+  --rust:#C1502E;
+  --ok:#5C8A5C;
+  --warn:#C9A227;
+  --danger:#C1502E;
+  --text:#E9E4D8;
+  --text-dim:#9AA0AC;
+  --mono:'JetBrains Mono',monospace;
+  --disp:'Oswald',sans-serif;
   --body:'Inter',sans-serif;
-  --radius:16px;
 }
 *{box-sizing:border-box;}
 body{
   margin:0;
-  background:var(--bg);
+  background:
+    radial-gradient(circle at 15% -10%, #23262c 0%, transparent 45%),
+    var(--bg);
   color:var(--text);
   font-family:var(--body);
-  padding-bottom:70px;
+  padding-bottom:60px;
 }
-
-.hero{
-  background:linear-gradient(135deg, var(--teal), #0B7E72);
-  color:#fff;
-  padding:26px 20px 62px;
-  border-radius:0 0 28px 28px;
+.plate{
+  background:linear-gradient(180deg,#20232A,#191B20);
+  border-bottom:3px solid var(--brass);
+  padding:22px 20px 18px;
   position:relative;
 }
-.hero-eyebrow{
-  font-family:var(--disp);
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:1px;
+.plate::after{
+  content:'';
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0 2px, transparent 2px 6px);
+  pointer-events:none;
+}
+.plate-eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:3px;
+  color:var(--brass);
   text-transform:uppercase;
-  opacity:.85;
 }
-.hero-title{
-  font-family:var(--disp);
-  font-size:23px;
-  font-weight:800;
-  margin:4px 0 8px;
-}
-.hero-specs{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px 12px;
-  font-size:12px;
-  opacity:.9;
-}
-
-.odo-card{
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:0 10px 30px -12px rgba(16,40,60,0.18);
-  padding:16px 18px;
-  margin:-42px 16px 0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  position:relative;
-  z-index:2;
-}
-.odo-label{
-  font-size:11.5px;
-  font-weight:600;
-  color:var(--text-dim);
-  text-transform:uppercase;
-  letter-spacing:.5px;
-}
-.odo-value{
-  display:flex;
-  align-items:baseline;
-  gap:6px;
-  margin-top:2px;
-}
-.odo-value input{
-  border:none;
-  background:transparent;
+.plate-title{
   font-family:var(--disp);
   font-size:26px;
-  font-weight:800;
-  color:var(--teal);
-  width:120px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin:2px 0 10px;
+}
+.plate-specs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 16px;
+  font-family:var(--mono);
+  font-size:11.5px;
+  color:var(--text-dim);
+}
+.odo-row{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.odo-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:2px;
+  color:var(--text-dim);
+  text-transform:uppercase;
+}
+.odo-display{
+  background:#0E0F12;
+  border:1px solid var(--line);
+  border-radius:4px;
+  padding:8px 14px;
+  font-family:var(--mono);
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:3px;
+  color:var(--brass);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.odo-display input{
+  background:transparent;
+  border:none;
+  color:var(--brass);
+  font-family:var(--mono);
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:3px;
+  width:110px;
   outline:none;
 }
-.odo-value span{color:var(--text-dim); font-size:13px; font-weight:600;}
-.odo-btn{
-  background:var(--teal);
-  color:#fff;
-  border:none;
-  border-radius:12px;
-  padding:10px 16px;
-  font-family:var(--body);
-  font-weight:700;
-  font-size:12.5px;
-  cursor:pointer;
-}
-.odo-btn:active{opacity:.85;}
+.odo-display span{opacity:.6; font-size:14px;}
 
 .section{
-  padding:26px 16px 4px;
-  max-width:640px;
+  padding:24px 18px 4px;
+  max-width:720px;
   margin:0 auto;
 }
 .section-title{
   font-family:var(--disp);
-  font-size:16px;
-  font-weight:800;
-  margin-bottom:12px;
+  font-size:15px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  border-bottom:1px solid var(--line);
+  padding-bottom:8px;
+  margin-bottom:14px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.section-title .hint{font-size:11.5px; font-weight:600; color:var(--text-dim);}
-
-.banner{
-  border-radius:var(--radius);
-  padding:14px 16px;
-  margin-bottom:18px;
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
+.section-title small{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0;
+  color:var(--text-dim);
 }
-.banner.danger{background:var(--red-light);}
-.banner.warn{background:var(--orange-light);}
-.banner-icon{font-size:22px;}
-.banner-title{font-weight:800; font-family:var(--disp); font-size:14.5px;}
-.banner.danger .banner-title{color:var(--red);}
-.banner.warn .banner-title{color:var(--orange);}
-.banner-sub{font-size:12.5px; color:var(--text-dim); margin-top:2px;}
 
 .cards{display:flex; flex-direction:column; gap:10px;}
 .card{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:14px 16px;
-  box-shadow:0 4px 14px -8px rgba(16,40,60,0.12);
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-left:3px solid var(--line);
+  border-radius:6px;
+  padding:12px 14px;
 }
-.card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
-.card-name{font-family:var(--disp); font-weight:700; font-size:14.5px; line-height:1.3;}
-.pill{
-  font-size:10.5px;
-  font-weight:700;
-  padding:4px 10px;
-  border-radius:999px;
-  white-space:nowrap;
-  text-transform:uppercase;
-  letter-spacing:.3px;
-}
-.pill.ok{background:var(--green-light); color:var(--green);}
-.pill.warn{background:var(--orange-light); color:var(--orange);}
-.pill.danger{background:var(--red-light); color:var(--red);}
-.card-meta{
-  font-size:12px;
-  color:var(--text-dim);
-  margin-top:7px;
+.card.ok{border-left-color:var(--ok);}
+.card.warn{border-left-color:var(--warn);}
+.card.danger{border-left-color:var(--danger);}
+.card.unknown{border-left-color:var(--text-dim);}
+.card-top{
   display:flex;
+  justify-content:space-between;
+  align-items:baseline;
   gap:10px;
+}
+.card-name{font-family:var(--disp); font-size:15px; letter-spacing:.5px;}
+.card-status{
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:2px 7px;
+  border-radius:3px;
+  white-space:nowrap;
+}
+.card.ok .card-status{background:#5C8A5C25; color:var(--ok);}
+.card.warn .card-status{background:#C9A22725; color:var(--warn);}
+.card.danger .card-status{background:#C1502E25; color:var(--danger);}
+.card.unknown .card-status{background:#9AA0AC25; color:var(--text-dim);}
+.card-meta{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--text-dim);
+  margin-top:6px;
+  display:flex;
+  gap:14px;
   flex-wrap:wrap;
 }
-.bar{height:6px; background:var(--line); border-radius:6px; margin-top:10px; overflow:hidden;}
-.bar-fill{height:100%; border-radius:6px;}
-.pill.ok ~ .bar .bar-fill, .card:has(.pill.ok) .bar-fill{background:var(--green);}
-.card:has(.pill.warn) .bar-fill{background:var(--orange);}
-.card:has(.pill.danger) .bar-fill{background:var(--red);}
-.card-actions{margin-top:11px; display:flex; gap:8px;}
+.bar{
+  height:5px;
+  background:#0E0F12;
+  border-radius:3px;
+  margin-top:9px;
+  overflow:hidden;
+}
+.bar-fill{height:100%; border-radius:3px;}
+.card.ok .bar-fill{background:var(--ok);}
+.card.warn .bar-fill{background:var(--warn);}
+.card.danger .bar-fill{background:var(--danger);}
+.card.unknown .bar-fill{background:var(--text-dim);}
+.card-actions{margin-top:9px; display:flex; gap:8px;}
 
 button{
   font-family:var(--body);
-  font-weight:700;
+  font-weight:600;
   font-size:12.5px;
-  border-radius:10px;
-  border:none;
+  border-radius:5px;
+  border:1px solid var(--line);
+  background:var(--panel-raised);
+  color:var(--text);
+  padding:7px 12px;
   cursor:pointer;
 }
-.btn-primary{background:var(--teal); color:#fff; padding:9px 14px;}
-.btn-ghost{background:var(--teal-light); color:var(--teal); padding:8px 12px;}
-.btn-text{background:none; color:var(--text-dim); padding:6px 4px; font-weight:600;}
-.btn-danger-text{background:none; color:var(--red); padding:6px 4px; font-weight:600;}
+button:hover{border-color:var(--brass-dim);}
+button.primary{
+  background:var(--brass);
+  color:#191B20;
+  border-color:var(--brass);
+}
+button.primary:hover{filter:brightness(1.08);}
+button.ghost{background:transparent; color:var(--text-dim); border-color:transparent; padding:6px 4px;}
+button.small{padding:5px 9px; font-size:11.5px;}
 
 .log-entry{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-  padding:13px 0;
+  align-items:center;
+  padding:10px 0;
   border-bottom:1px solid var(--line);
+  gap:10px;
 }
 .log-entry:last-child{border-bottom:none;}
-.log-type{font-family:var(--disp); font-weight:700; font-size:14px;}
-.log-sub{font-size:11.5px; color:var(--text-dim); margin-top:2px;}
-.log-notes{font-size:12px; color:var(--text-dim); margin-top:5px; line-height:1.5;}
-.log-cost{font-family:var(--disp); font-weight:800; font-size:13.5px; color:var(--teal); white-space:nowrap;}
+.log-left{display:flex; flex-direction:column; gap:2px;}
+.log-type{font-family:var(--disp); font-size:14px;}
+.log-sub{font-family:var(--mono); font-size:11px; color:var(--text-dim);}
+.log-cost{font-family:var(--mono); font-size:13px; color:var(--brass); white-space:nowrap;}
+.log-notes{font-size:11.5px; color:var(--text-dim); margin-top:2px; max-width:320px;}
 
-.empty{color:var(--text-dim); font-size:13px; padding:26px 0; text-align:center;}
+.empty{
+  color:var(--text-dim);
+  font-size:13px;
+  padding:20px 0;
+  text-align:center;
+  font-style:italic;
+}
 
 .fab-add{
   display:block;
   width:100%;
   margin-top:14px;
-  padding:13px;
+  padding:12px;
   text-align:center;
-  border-radius:var(--radius);
 }
-.fab-primary{background:var(--teal); color:#fff;}
-.fab-outline{background:var(--card); color:var(--text-dim); border:1.5px dashed var(--line);}
 
 .modal-overlay{
   position:fixed; inset:0;
-  background:rgba(20,30,40,0.45);
+  background:rgba(10,11,13,0.72);
   display:flex; align-items:flex-end; justify-content:center;
   z-index:50;
 }
 .modal{
-  background:var(--card);
-  border-radius:24px 24px 0 0;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-top:3px solid var(--brass);
+  border-radius:12px 12px 0 0;
   width:100%; max-width:520px;
-  padding:22px 18px 26px;
+  padding:20px 18px 24px;
   max-height:88vh;
   overflow-y:auto;
 }
-.modal h3{font-family:var(--disp); font-size:17px; font-weight:800; margin:0 0 16px;}
-.field{margin-bottom:13px;}
-.field label{display:block; font-size:11.5px; font-weight:700; color:var(--text-dim); margin-bottom:6px;}
+.modal h3{
+  font-family:var(--disp);
+  font-size:17px;
+  letter-spacing:.5px;
+  margin:0 0 14px;
+  text-transform:uppercase;
+}
+.field{margin-bottom:12px;}
+.field label{
+  display:block;
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--text-dim);
+  margin-bottom:5px;
+}
 .field input, .field select, .field textarea{
   width:100%;
-  background:#F7F9FA;
-  border:1.5px solid var(--line);
-  border-radius:12px;
+  background:#0E0F12;
+  border:1px solid var(--line);
+  border-radius:5px;
   color:var(--text);
-  padding:10px 12px;
+  padding:9px 10px;
   font-family:var(--body);
   font-size:14px;
   outline:none;
 }
-.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--teal);}
-.field textarea{resize:vertical; min-height:52px;}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--brass);}
+.field textarea{resize:vertical; min-height:50px;}
 .field-row{display:flex; gap:10px;}
 .field-row .field{flex:1;}
-.modal-actions{display:flex; gap:10px; margin-top:18px;}
-.modal-actions button{flex:1; padding:13px;}
+.modal-actions{display:flex; gap:10px; margin-top:16px;}
+.modal-actions button{flex:1; padding:11px;}
 
-.loading{text-align:center; padding:50px; color:var(--text-dim); font-size:13px;}
+.settings-toggle{
+  font-family:var(--mono);
+  font-size:10.5px;
+  color:var(--text-dim);
+  background:none;
+  border:none;
+  text-decoration:underline;
+  cursor:pointer;
+  padding:0;
+}
+.interval-edit{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+  align-items:center;
+}
+.interval-edit input{width:70px;}
+
+.loading{text-align:center; padding:40px; color:var(--text-dim); font-family:var(--mono); font-size:12px;}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-eyebrow" style="display:flex; justify-content:space-between; align-items:center;">
-    <span>Carnet d'entretien</span>
-    <span id="versionBadge" style="background:rgba(255,255,255,0.22); padding:3px 9px; border-radius:999px; font-size:11px; letter-spacing:0;"></span>
+<div class="plate">
+  <div class="plate-eyebrow">Carnet d'entretien</div>
+  <div class="plate-title">Jeep Wrangler TJ Sahara</div>
+  <div class="plate-specs">
+    <span>4.0L I6</span>
+    <span>1998 · Automatique (32RH)</span>
+    <span>VIN 1J4FYA9S0VP531754</span>
+    <span>Immat. EJ-475-JK</span>
   </div>
-  <div class="hero-title">Jeep Wrangler TJ (Lacanau)</div>
-  <div class="hero-specs">
-    <span>🔧 4.0L I6</span>
-    <span>📅 1998 · Automatique</span>
-    <span>🪪 EJ-475-JK · 1J4FYA9S0VP531754</span>
+  <div class="odo-row">
+    <span class="odo-label">Kilométrage actuel</span>
+    <div class="odo-display">
+      <input id="odoInput" type="number" inputmode="numeric" placeholder="——————">
+      <span>km</span>
+    </div>
+    <button class="small" id="saveOdoBtn">Mettre à jour</button>
   </div>
-</div>
-
-<div class="odo-card">
-  <div>
-    <div class="odo-label">Kilométrage actuel</div>
-    <div class="odo-value"><input id="odoInput" type="number" inputmode="numeric" placeholder="——"><span>km</span></div>
-  </div>
-  <button class="odo-btn" id="saveOdoBtn">Mettre à jour</button>
-</div>
-
-<div style="max-width:640px; margin:14px auto 0; padding:0 16px;">
-  <button class="fab-add fab-primary" onclick="openLogModal(null)">+ Ajouter un contrôle technique, une facture, une intervention…</button>
 </div>
 
 <div id="app" class="section">
@@ -294,34 +343,36 @@ button{
 
 <script>
 const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
-const APP_VERSION = '1.2';
 
 const DEFAULT_TYPES = [
   { id:'vidange',    name:'Vidange moteur (huile + filtre)', intervalKm:5000,  intervalMonths:6  },
   { id:'filtre_air', name:'Filtre à air',                     intervalKm:15000, intervalMonths:12 },
   { id:'liq_frein',  name:'Liquide de frein',                 intervalKm:null,  intervalMonths:24 },
   { id:'refroid',    name:'Liquide de refroidissement',       intervalKm:30000, intervalMonths:24 },
-  { id:'boite_vit',  name:'Huile boîte de vitesses automatique', intervalKm:30000, intervalMonths:null },
+  { id:'boite_vit',  name:'Huile boîte de vitesses (32RH auto)', intervalKm:30000, intervalMonths:null },
   { id:'bte_transf', name:'Huile boîte de transfert (NP231)', intervalKm:30000, intervalMonths:null },
   { id:'ponts',      name:'Huile ponts av/ar (Dana 30/35)',    intervalKm:30000, intervalMonths:null },
   { id:'bougies',    name:"Bougies d'allumage",                intervalKm:30000, intervalMonths:null },
   { id:'courroie',   name:'Courroie accessoires',              intervalKm:60000, intervalMonths:60 },
   { id:'silent_blocs', name:'Contrôle silent blocs / train roulant', intervalKm:null, intervalMonths:12 },
+  { id:'echappement', name:'Échappement (ligne complète)',     intervalKm:null,  intervalMonths:null },
+  { id:'cession',    name:'Cession / Immatriculation',          intervalKm:null,  intervalMonths:null },
   { id:'ct',         name:'Contrôle technique',                intervalKm:null,  intervalMonths:24 },
 ];
 
 let state = {
-  currentMileage: 95000,
+  currentMileage: 97785,
   types: DEFAULT_TYPES,
   entries: [
-    { id:'e_ct_20251215', typeId:'ct', typeName:'Contrôle technique', date:'2025-12-15', mileage:94687, cost:null, notes:"Contre-visite FAVORABLE — Auto Bilan Canaulais, Lacanau (05 57 70 16.81). Fait suite au PV défavorable initial n°25036829 du 21/10/2025 (mêmes defaillances à faire vérifier auprès de la vendeuse). Validité jusqu'au 20/10/2027 pour la circulation. ⚠ Pour une VENTE entre particuliers, un CT de moins de 6 mois est obligatoire (art. R323-22) — celui-ci est donc caduc pour la transaction et doit être repassé par la vendeuse avant signature." },
-    { id:'e_histo_20231207', typeId:'custom_historique', typeName:'Historique véhicule (Histovec/LeBoncoin)', date:'2023-12-07', mileage:89100, cost:null, notes:"Reprise par un professionnel dans le Puy-de-Dôme (nov. 2023), puis changement de titulaire (propriétaire actuelle) en décembre 2023. Véhicule à parcours français continu depuis 2002 (Côte-d'Or → Essonne → Var → Puy-de-Dôme). Pas d'import récent malgré le VIN US (1J...)." }
+    { id:'e_ct_20251021', typeId:'ct', typeName:'Contrôle technique', date:'2025-10-21', mileage:94643, cost:null, notes:"CT initial DÉFAVORABLE (majeures) — Auto Bilan Canaulais / Norisko, PV n°25036829. Majeures : plaques d'immatriculation non conformes (AV, AR) ; numéro d'identification/VIN manquant ou introuvable. Mineures : freins AR déséquilibrés (22%), essuie-glaces AR/AVD défectueux, éclairage plaque AR, pneus usure anormale (4 roues), amortisseurs AV asymétrie 32%, sièges AR absents lors du contrôle. Ripage +0,7 m/km (excellent). Limite de validité contre-visite : 20/12/2025." },
+    { id:'e_ct_20251215', typeId:'ct', typeName:'Contrôle technique', date:'2025-12-15', mileage:94987, cost:1184.58, notes:"Contre-visite FAVORABLE — facture Alex Garage-Méca n°4823 (17/12/2025, réglée 1200€ en espèces par la venderesse le 30/01/2026). Travaux : 2 plaques d'immatriculation neuves, frappe du numéro de série (150€), forfait peinture aile AVG (250€), poignée levier de vitesse, balais essuie-glace (AVD/AVG/AR), vidange huile 0W30, contrôle technique (64€)." },
+    { id:'e_vidange_20251215', typeId:'vidange', typeName:'Vidange moteur (huile + filtre)', date:'2025-12-15', mileage:94987, cost:null, notes:"Huile 0W30 — inclus dans facture Alex Garage-Méca n°4823." },
+    { id:'e_echap_20250318', typeId:'echappement', typeName:'Échappement (ligne complète)', date:'2025-03-18', mileage:92657, cost:768.11, notes:"Remplacement ligne complète (2 silencieux + colliers AV/AR + silentbloc AR) — facture Alex Garage-Méca n°3880." },
+    { id:'e_ct_20260813', typeId:'ct', typeName:'Contrôle technique', date:'2026-08-13', mileage:97502, cost:null, notes:"Nouveau CT (obtenu pour la vente) DÉFAVORABLE (majeures) — SARL Sodex Autocentre Contrôle, Lacanau, PV n°26059337. Majeures : efficacité du frein de service insuffisante (taux global 47%, seuil ≥50%) ; efficacité du frein de stationnement insuffisante (14%, seuil ≥18%) ; orientation du feu de croisement AVD hors tolérance. Mineures : mauvaise fixation feu de détresse AVG, pneus usure anormale (AVG/ARD/AVD/ARG), sièges AR absents lors du contrôle. Ripage +3,1 m/km. Limite de validité contre-visite : 12/10/2026." },
+    { id:'e_ct_20260820', typeId:'ct', typeName:'Contrôle technique', date:'2026-08-20', mileage:97719, cost:null, notes:"Contre-visite FAVORABLE — Securitest Blanquefort, PV n°26030003. Valable jusqu'au 19/08/2028 (prochain contrôle : périodique normal). Freins corrigés : efficacité globale 51% (≥50% requis), frein de stationnement 20% (≥18% requis). Défaillances mineures résiduelles : jeu direction AVG, balai essuie-glace AVG, fixation feu détresse AVG, éclairage plaque AR, pneus AVD/ARD/ARG, corrosion châssis AVG/ARG, sièges AR absents lors du contrôle. Ripage +2,4 m/km." },
+    { id:'e_cession_20260820', typeId:'cession', typeName:'Cession / Immatriculation', date:'2026-08-20', mileage:97785, cost:null, notes:"Certificat de cession signé à Lacanau, 15h15 — cédante Agnès Brande (12 lot Green Parc, 33680 Lacanau Océan), acquéreur Jean-François Morette (8 allée Beau Pré, 33650 Saucats). Certificat de situation administrative (non-gage) du 20/08/2026 : RAS — aucune opposition, aucun gage, véhicule non volé, immatriculation non volée/perdue/annulée." }
   ],
-  reminders: [
-    { id:'r_ct_vente', label:'Exiger un CT < 6 mois avant la vente', date:'2026-07-23', notes:"Le CT du 15/12/2025 a dépassé les 6 mois de validité pour une vente entre particuliers. La vendeuse doit repasser un contrôle technique complet avant la signature (art. R323-22 du Code de la route)." },
-    { id:'r_carnet', label:"Demander le carnet d'entretien depuis l'achat (déc. 2023)", date:'2026-08-01', notes:"Propriétaire actuelle : usage saisonnier avril–septembre, ~10 km/jour (trajet domicile-travail). Demander aussi la facture du garage repreneur (Puy-de-Dôme, nov. 2023) pour l'historique de remise en état." },
-    { id:'r_visite', label:'Visite physique + essai routier', date:'2026-08-01', notes:"Points de vigilance TJ : corrosion châssis/bas de caisse, étanchéité capote, fuites moteur/boîte auto/pont, transfer case NP231 (bruit en 4H→2H), death wobble à 90-100 km/h." }
-  ]
+  reminders: []
 };
 
 async function loadState(){
@@ -349,7 +400,7 @@ function computeStatus(type){
     .sort((a,b)=> new Date(b.date)-new Date(a.date));
   const last = lastEntries[0] || null;
 
-  let kmRemaining = null, monthsInfo = null, ratio = 0;
+  let kmRemaining = null, monthsInfo = null, ratio = 0, unknown = false;
 
   if(type.intervalKm && last && last.mileage!=null && state.currentMileage!=null){
     const nextDueKm = last.mileage + type.intervalKm;
@@ -357,7 +408,7 @@ function computeStatus(type){
     const used = state.currentMileage - last.mileage;
     ratio = Math.max(ratio, used / type.intervalKm);
   } else if(type.intervalKm && !last){
-    ratio = Math.max(ratio, 0.5);
+    unknown = true;
   }
 
   if(type.intervalMonths && last){
@@ -370,11 +421,12 @@ function computeStatus(type){
     monthsInfo = { dueDate, daysRemaining: daysBetween(today, dueDate) };
     ratio = Math.max(ratio, usedDays/totalDays);
   } else if(type.intervalMonths && !last){
-    ratio = Math.max(ratio, 0.5);
+    unknown = true;
   }
 
   let level = 'ok';
-  if(ratio >= 1) level = 'danger';
+  if(unknown) level = 'unknown';
+  else if(ratio >= 1) level = 'danger';
   else if(ratio >= 0.8) level = 'warn';
 
   return { last, kmRemaining, monthsInfo, ratio: Math.min(ratio,1), level };
@@ -384,50 +436,33 @@ function fmtDate(d){
   return new Date(d).toLocaleDateString('fr-FR', {day:'2-digit',month:'2-digit',year:'numeric'});
 }
 function fmtKm(n){ return n==null? '—' : n.toLocaleString('fr-FR')+' km'; }
-function escapeHtml(s){
-  const d = document.createElement('div');
-  d.innerText = s;
-  return d.innerHTML;
-}
-
-function showToast(message){
-  const existing = document.getElementById('toastEl');
-  if(existing) existing.remove();
-  const t = document.createElement('div');
-  t.id = 'toastEl';
-  t.textContent = message;
-  t.style.cssText = 'position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#1B2430; color:#fff; padding:11px 20px; border-radius:12px; font-family:Inter,sans-serif; font-size:13px; font-weight:600; box-shadow:0 8px 24px -8px rgba(0,0,0,0.4); z-index:100; opacity:0; transition:opacity .2s;';
-  document.body.appendChild(t);
-  requestAnimationFrame(()=>{ t.style.opacity='1'; });
-  setTimeout(()=>{ t.style.opacity='0'; setTimeout(()=>t.remove(),250); }, 2200);
-}
 
 function render(){
   const app = document.getElementById('app');
   document.getElementById('odoInput').value = state.currentMileage ?? '';
-  const vb = document.getElementById('versionBadge');
-  if(vb) vb.textContent = 'v' + APP_VERSION;
 
   let html = '';
+
+  // Bannière rappel le plus urgent
   const today = new Date();
   const sortedReminders = [...(state.reminders||[])].sort((a,b)=> new Date(a.date)-new Date(b.date));
   const urgent = sortedReminders.find(r=> daysBetween(today, new Date(r.date)) <= 30);
-
   if(urgent){
     const daysLeft = daysBetween(today, new Date(urgent.date));
     const overdue = daysLeft < 0;
     html += `
-    <div class="banner ${overdue?'danger':'warn'}">
-      <div class="banner-icon">${overdue? '🔴':'🟠'}</div>
-      <div>
-        <div class="banner-title">${escapeHtml(urgent.label)}</div>
-        <div class="banner-sub">${overdue? 'Dépassé — ' : daysLeft===0? "Aujourd'hui — " : daysLeft+' jours restants — '}échéance ${fmtDate(urgent.date)}</div>
-        ${urgent.notes? `<div class="banner-sub" style="margin-top:4px;">${escapeHtml(urgent.notes)}</div>`:''}
+    <div class="card ${overdue?'danger':'warn'}" style="margin-bottom:18px;">
+      <div class="card-top">
+        <div class="card-name">📅 ${urgent.label}</div>
+        <div class="card-status">${overdue? 'Dépassé' : daysLeft===0? "Aujourd'hui" : daysLeft+' j restants'}</div>
       </div>
+      <div class="card-meta"><span>Échéance : ${fmtDate(urgent.date)}</span></div>
+      ${urgent.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(urgent.notes)}</div>`: ''}
     </div>`;
   }
 
-  html += `<div class="section-title">📅 Rappels &amp; RDV</div>`;
+  // Rappels & RDV
+  html += `<div class="section-title">Rappels &amp; RDV</div>`;
   html += `<div class="cards">`;
   if(sortedReminders.length===0){
     html += `<div class="empty">Aucun rappel programmé.</div>`;
@@ -435,87 +470,104 @@ function render(){
     sortedReminders.forEach(r=>{
       const daysLeft = daysBetween(today, new Date(r.date));
       const level = daysLeft<0 ? 'danger' : daysLeft<=30 ? 'warn' : 'ok';
-      const label = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)}j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft}j restants`;
+      const label = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)} j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft} j restants`;
       html += `
-      <div class="card">
+      <div class="card ${level}">
         <div class="card-top">
           <div class="card-name">${escapeHtml(r.label)}</div>
-          <div class="pill ${level}">${label}</div>
+          <div class="card-status">${label}</div>
         </div>
         <div class="card-meta"><span>${fmtDate(r.date)}</span></div>
-        ${r.notes? `<div class="log-notes">${escapeHtml(r.notes)}</div>`:''}
-        <div class="card-actions"><button class="btn-danger-text" onclick="deleteReminder('${r.id}')">Supprimer</button></div>
+        ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
+        <div class="card-actions">
+          <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
+        </div>
       </div>`;
     });
   }
   html += `</div>`;
-  html += `<button class="fab-add fab-outline" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
+  html += `<button class="fab-add" style="margin-top:10px;" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
 
-  html += `<div class="section-title" style="margin-top:28px;">🛠️ Échéances <span class="hint">${state.currentMileage!=null? fmtKm(state.currentMileage) : 'km non renseigné'}</span></div>`;
-  html += `<div class="cards">`;
-  state.types.forEach(type=>{
-    const s = computeStatus(type);
-    const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : 'À jour';
-    let metaParts = [];
-    if(s.last){
-      metaParts.push(`Dernier : ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
-    } else {
-      metaParts.push('Jamais renseigné');
-    }
-    if(type.intervalKm){
-      if(s.kmRemaining!=null){
-        metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
+
+  // Échéances — regroupées par statut pour une lecture claire
+  html += `<div class="section-title" style="margin-top:26px;">Échéances <small>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'kilométrage non renseigné'}</small></div>`;
+
+  const periodicTypes = state.types.filter(t=> t.intervalKm || t.intervalMonths);
+  const statused = periodicTypes.map(type=> ({ type, s: computeStatus(type) }));
+  const buckets = [
+    { key:'danger',  icon:'🔴', title:'En retard',              items: statused.filter(x=>x.s.level==='danger') },
+    { key:'warn',    icon:'🟡', title:'À prévoir bientôt',       items: statused.filter(x=>x.s.level==='warn') },
+    { key:'unknown', icon:'⚪', title:'Jamais vérifié / renseigné', items: statused.filter(x=>x.s.level==='unknown') },
+    { key:'ok',      icon:'🟢', title:'À jour',                  items: statused.filter(x=>x.s.level==='ok') },
+  ];
+
+  buckets.forEach(bucket=>{
+    if(bucket.items.length===0) return;
+    html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${bucket.icon} ${bucket.title} <small>${bucket.items.length}</small></div>`;
+    html += `<div class="cards" style="margin-bottom:6px;">`;
+    bucket.items.forEach(({type, s})=>{
+      const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : s.level==='unknown' ? 'Jamais renseigné' : 'À jour';
+      let metaParts = [];
+      if(s.last){
+        metaParts.push(`Dernier: ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
       } else {
-        metaParts.push(`Intervalle ${type.intervalKm.toLocaleString('fr-FR')} km`);
+        metaParts.push('Aucune donnée — à vérifier au prochain entretien');
       }
-    }
-    if(type.intervalMonths && s.monthsInfo){
-      metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
-    } else if(type.intervalMonths && !s.last){
-      metaParts.push(`Intervalle ${type.intervalMonths} mois`);
-    }
+      if(type.intervalKm){
+        metaParts.push(`Intervalle: ${type.intervalKm.toLocaleString('fr-FR')} km`);
+        if(s.kmRemaining!=null){
+          metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
+        }
+      }
+      if(type.intervalMonths){
+        metaParts.push(`Intervalle: ${type.intervalMonths} mois`);
+        if(s.monthsInfo){
+          metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
+        }
+      }
 
-    html += `
-    <div class="card">
-      <div class="card-top">
-        <div class="card-name">${type.name}</div>
-        <div class="pill ${s.level}">${statusLabel}</div>
-      </div>
-      <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
-      <div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>
-      <div class="card-actions">
-        <button class="btn-ghost" onclick="openLogModal('${type.id}')">✓ Marquer comme fait</button>
-      </div>
-    </div>`;
+      html += `
+      <div class="card ${s.level}">
+        <div class="card-top">
+          <div class="card-name">${type.name}</div>
+          <div class="card-status">${statusLabel}</div>
+        </div>
+        <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
+        ${s.level!=='unknown' ? `<div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>` : ''}
+        <div class="card-actions">
+          <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
   });
-  html += `</div>`;
 
-  html += `<div class="section-title" style="margin-top:28px;">📖 Journal d'entretien</div>`;
+  // Journal
+  html += `<div class="section-title" style="margin-top:26px;">✅ Journal d'entretien <small>historique — déjà fait</small></div>`;
   const sortedEntries = [...state.entries].sort((a,b)=> new Date(b.date)-new Date(a.date));
   if(sortedEntries.length===0){
     html += `<div class="empty">Aucune intervention enregistrée pour l'instant.</div>`;
   } else {
-    html += `<div class="cards"><div class="card" style="padding:4px 16px;">`;
+    html += `<div class="cards">`;
     sortedEntries.forEach(e=>{
       html += `
       <div class="log-entry">
-        <div>
+        <div class="log-left">
           <div class="log-type">${e.typeName}</div>
           <div class="log-sub">${fmtDate(e.date)}${e.mileage!=null? ' · '+fmtKm(e.mileage):''}</div>
           ${e.notes? `<div class="log-notes">${escapeHtml(e.notes)}</div>` : ''}
-          ${e.attachment? `<img src="${e.attachment}" onclick="viewAttachment('${e.id}')" style="width:52px; height:52px; object-fit:cover; border-radius:8px; margin-top:8px; border:1px solid var(--line); cursor:pointer;">` : ''}
         </div>
-        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+        <div style="display:flex; align-items:center; gap:8px;">
           <div class="log-cost">${e.cost? e.cost+' €':''}</div>
-          <button class="btn-text" onclick="deleteEntry('${e.id}')">✕</button>
+          <button class="ghost small" onclick="deleteEntry('${e.id}')">✕</button>
         </div>
       </div>`;
     });
-    html += `</div></div>`;
+    html += `</div>`;
   }
 
-  html += `<button class="fab-add fab-primary" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
-  html += `<button class="fab-add fab-outline" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
+  html += `<button class="fab-add" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
+  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
 
   app.innerHTML = html;
 }
@@ -533,8 +585,59 @@ function exportBackup(){
   URL.revokeObjectURL(url);
 }
 
+function openReminderModal(){
+  const root = document.getElementById('modalRoot');
+  const today = new Date().toISOString().slice(0,10);
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Nouveau rappel de RDV</h3>
+      <div class="field">
+        <label>Intitulé</label>
+        <input id="r_label" type="text" placeholder="ex: RDV garage - contre-visite">
+      </div>
+      <div class="field">
+        <label>Date d'échéance</label>
+        <input id="r_date" type="date" value="${today}">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="r_notes" placeholder="Détails, contact, garage…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveReminder()">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveReminder(){
+  const label = document.getElementById('r_label').value.trim();
+  const date = document.getElementById('r_date').value;
+  const notes = document.getElementById('r_notes').value.trim();
+  if(!label || !date){ alert('Merci de renseigner un intitulé et une date.'); return; }
+  state.reminders = state.reminders || [];
+  state.reminders.push({ id:'r_'+Date.now(), label, date, notes });
+  await saveState();
+  closeModal();
+  render();
+}
+
+async function deleteReminder(id){
+  if(!confirm('Supprimer ce rappel ?')) return;
+  state.reminders = (state.reminders||[]).filter(r=>r.id!==id);
+  await saveState();
+  render();
+}
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.innerText = s;
+  return d.innerHTML;
+}
+
 function openLogModal(typeId){
-  pendingAttachment = null;
   const root = document.getElementById('modalRoot');
   const typeOptions = state.types.map(t=>`<option value="${t.id}" ${t.id===typeId?'selected':''}>${t.name}</option>`).join('');
   const today = new Date().toISOString().slice(0,10);
@@ -568,58 +671,15 @@ function openLogModal(typeId){
         <label>Notes</label>
         <textarea id="f_notes" placeholder="Détails, garage, référence pièce…"></textarea>
       </div>
-      <div class="field">
-        <label>Photo (facture, PV de CT…) — optionnel</label>
-        <input id="f_photo" type="file" accept="image/*">
-        <div id="f_photo_preview" style="margin-top:8px;"></div>
-      </div>
       <div class="modal-actions">
-        <button class="btn-text" style="background:#F1F3F5;" onclick="closeModal()">Annuler</button>
-        <button class="btn-primary" onclick="saveEntry()">Enregistrer</button>
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveEntry()">Enregistrer</button>
       </div>
     </div>
   </div>`;
   document.getElementById('f_type').addEventListener('change', (e)=>{
     document.getElementById('f_customwrap').style.display = e.target.value==='__custom__' ? 'block' : 'none';
   });
-  document.getElementById('f_photo').addEventListener('change', handlePhotoSelect);
-}
-
-let pendingAttachment = null;
-
-function handlePhotoSelect(e){
-  const file = e.target.files[0];
-  if(!file) return;
-  const img = new Image();
-  const reader = new FileReader();
-  reader.onload = (ev)=>{
-    img.onload = ()=>{
-      const maxW = 900;
-      const scale = Math.min(1, maxW / img.width);
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width * scale;
-      canvas.height = img.height * scale;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      pendingAttachment = canvas.toDataURL('image/jpeg', 0.65);
-      document.getElementById('f_photo_preview').innerHTML =
-        `<img src="${pendingAttachment}" style="max-width:120px; border-radius:10px; border:1px solid var(--line);">`;
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function viewAttachment(id){
-  const e = state.entries.find(x=>x.id===id);
-  if(!e || !e.attachment) return;
-  const root = document.getElementById('modalRoot');
-  root.innerHTML = `
-  <div class="modal-overlay" onclick="closeModal()">
-    <div style="max-width:520px; width:100%; padding:20px;">
-      <img src="${e.attachment}" style="width:100%; border-radius:16px;">
-    </div>
-  </div>`;
 }
 
 function closeModal(){ document.getElementById('modalRoot').innerHTML = ''; }
@@ -652,8 +712,7 @@ async function saveEntry(){
     date,
     mileage: mileageVal ? parseInt(mileageVal,10) : null,
     cost: costVal ? parseFloat(costVal) : null,
-    notes,
-    attachment: pendingAttachment || null
+    notes
   };
   state.entries.push(entry);
   if(entry.mileage!=null && (state.currentMileage==null || entry.mileage > state.currentMileage)){
@@ -662,67 +721,13 @@ async function saveEntry(){
   await saveState();
   closeModal();
   render();
-  showToast('Intervention enregistrée ✓');
 }
 
 async function deleteEntry(id){
-  const entry = state.entries.find(e=>e.id===id);
-  const label = entry ? `« ${entry.typeName} » du ${fmtDate(entry.date)}` : 'cette intervention';
-  if(!confirm(`Supprimer définitivement ${label} du journal d'entretien ?\n\nCette action est irréversible.`)) return;
+  if(!confirm('Supprimer cette intervention du journal ?')) return;
   state.entries = state.entries.filter(e=>e.id!==id);
   await saveState();
   render();
-  showToast('Intervention supprimée ✓');
-}
-
-function openReminderModal(){
-  const root = document.getElementById('modalRoot');
-  const today = new Date().toISOString().slice(0,10);
-  root.innerHTML = `
-  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
-    <div class="modal">
-      <h3>Nouveau rappel de RDV</h3>
-      <div class="field">
-        <label>Intitulé</label>
-        <input id="r_label" type="text" placeholder="ex: RDV garage - contre-visite">
-      </div>
-      <div class="field">
-        <label>Date d'échéance</label>
-        <input id="r_date" type="date" value="${today}">
-      </div>
-      <div class="field">
-        <label>Notes</label>
-        <textarea id="r_notes" placeholder="Détails, contact, garage…"></textarea>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-text" style="background:#F1F3F5;" onclick="closeModal()">Annuler</button>
-        <button class="btn-primary" onclick="saveReminder()">Enregistrer</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-async function saveReminder(){
-  const label = document.getElementById('r_label').value.trim();
-  const date = document.getElementById('r_date').value;
-  const notes = document.getElementById('r_notes').value.trim();
-  if(!label || !date){ alert('Merci de renseigner un intitulé et une date.'); return; }
-  state.reminders = state.reminders || [];
-  state.reminders.push({ id:'r_'+Date.now(), label, date, notes });
-  await saveState();
-  closeModal();
-  render();
-  showToast('Rappel ajouté ✓');
-}
-
-async function deleteReminder(id){
-  const reminder = (state.reminders||[]).find(r=>r.id===id);
-  const label = reminder ? `« ${reminder.label} »` : 'ce rappel';
-  if(!confirm(`Supprimer définitivement ${label} ?\n\nCette action est irréversible.`)) return;
-  state.reminders = (state.reminders||[]).filter(r=>r.id!==id);
-  await saveState();
-  render();
-  showToast('Rappel supprimé ✓');
 }
 
 document.getElementById('saveOdoBtn').addEventListener('click', async ()=>{
@@ -730,7 +735,6 @@ document.getElementById('saveOdoBtn').addEventListener('click', async ()=>{
   state.currentMileage = val ? parseInt(val,10) : null;
   await saveState();
   render();
-  showToast('Kilométrage mis à jour ✓');
 });
 
 loadState();
