@@ -732,6 +732,8 @@ function render(){
         ${s.level!=='unknown' ? `<div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>` : ''}
         <div class="card-actions">
           <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
+          <button class="small" onclick="openTypeModal('${type.id}')">Modifier</button>
+          <button class="ghost small" onclick="sendEcheanceToPlannedWorks('${type.id}')">→ Travaux à prévoir</button>
         </div>
       </div>`;
     });
@@ -825,6 +827,103 @@ async function deleteReminder(id){
   state.reminders = (state.reminders||[]).filter(r=>r.id!==id);
   await saveState();
   render();
+}
+
+function openTypeModal(typeId){
+  const type = state.types.find(t=>t.id===typeId);
+  if(!type) return;
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Modifier l'échéance</h3>
+      <div class="field">
+        <label>Nom</label>
+        <input id="ty_name" type="text" value="${escapeHtml(type.name)}">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Intervalle (km)</label>
+          <input id="ty_intervalkm" type="number" placeholder="aucun" value="${type.intervalKm!=null? type.intervalKm:''}">
+        </div>
+        <div class="field">
+          <label>Intervalle (mois)</label>
+          <input id="ty_intervalmonths" type="number" placeholder="aucun" value="${type.intervalMonths!=null? type.intervalMonths:''}">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveTypeEdit('${typeId}')">Mettre à jour</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveTypeEdit(typeId){
+  const type = state.types.find(t=>t.id===typeId);
+  if(!type) return;
+  const name = document.getElementById('ty_name').value.trim();
+  const kmVal = document.getElementById('ty_intervalkm').value;
+  const monthsVal = document.getElementById('ty_intervalmonths').value;
+  if(!name){ alert('Merci de renseigner un nom.'); return; }
+  type.name = name;
+  type.intervalKm = kmVal ? parseInt(kmVal,10) : null;
+  type.intervalMonths = monthsVal ? parseInt(monthsVal,10) : null;
+  // Garde les intitulés d'entrées déjà journalisées cohérents avec l'ancien nom (non renommés rétroactivement)
+  await saveState();
+  closeModal();
+  render();
+}
+
+function sendEcheanceToPlannedWorks(typeId){
+  const type = state.types.find(t=>t.id===typeId);
+  if(!type) return;
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Envoyer vers Travaux à prévoir</h3>
+      <div class="field">
+        <label>Intitulé</label>
+        <input id="pw_label" type="text" value="${escapeHtml(type.name)}">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Priorité</label>
+          <select id="pw_priority">
+            <option value="haute">Haute</option>
+            <option value="moyenne" selected>Moyenne</option>
+            <option value="basse">Basse</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Qui</label>
+          <select id="pw_assignee">
+            <option value="garagiste" selected>Garagiste</option>
+            <option value="moi">Moi</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Coût min (€)</label>
+          <input id="pw_costmin" type="number" placeholder="0">
+        </div>
+        <div class="field">
+          <label>Coût max (€)</label>
+          <input id="pw_costmax" type="number" placeholder="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="pw_notes" placeholder="Détails, référence pièce, contexte…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="savePlannedWork('')">Envoyer</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 function openPlannedWorkModal(editId){
