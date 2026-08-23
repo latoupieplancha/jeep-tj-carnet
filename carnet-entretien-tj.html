@@ -412,9 +412,7 @@ let state = {
     { id:'e_echap_20250318', typeId:'echappement', typeName:'Échappement (ligne complète)', date:'2025-03-18', mileage:92657, cost:768.11, notes:"Remplacement ligne complète (2 silencieux + colliers AV/AR + silentbloc AR) — facture Alex Garage-Méca n°3880." },
     { id:'e_ct_20260813', typeId:'ct', typeName:'Contrôle technique', date:'2026-08-13', mileage:97502, cost:null, notes:"Nouveau CT (obtenu pour la vente) DÉFAVORABLE (majeures) — SARL Sodex Autocentre Contrôle, Lacanau, PV n°26059337. Majeures : efficacité du frein de service insuffisante (taux global 47%, seuil ≥50%) ; efficacité du frein de stationnement insuffisante (14%, seuil ≥18%) ; orientation du feu de croisement AVD hors tolérance. Mineures : mauvaise fixation feu de détresse AVG, pneus usure anormale (AVG/ARD/AVD/ARG), sièges AR absents lors du contrôle. Ripage +3,1 m/km. Limite de validité contre-visite : 12/10/2026." },
     { id:'e_ct_20260820', typeId:'ct', typeName:'Contrôle technique', date:'2026-08-20', mileage:97719, cost:null, notes:"Contre-visite FAVORABLE — Securitest Blanquefort, PV n°26030003. Valable jusqu'au 19/08/2028 (prochain contrôle : périodique normal). Freins corrigés : efficacité globale 51% (≥50% requis), frein de stationnement 20% (≥18% requis). Défaillances mineures résiduelles : jeu direction AVG, balai essuie-glace AVG, fixation feu détresse AVG, éclairage plaque AR, pneus AVD/ARD/ARG, corrosion châssis AVG/ARG, sièges AR absents lors du contrôle. Ripage +2,4 m/km." },
-    { id:'e_cession_20260820', typeId:'cession', typeName:'Cession / Immatriculation', date:'2026-08-20', mileage:97785, cost:null, notes:"Certificat de cession signé à Lacanau, 15h15 — cédante Agnès Brande (12 lot Green Parc, 33680 Lacanau Océan), acquéreur Jean-François Morette (8 allée Beau Pré, 33650 Saucats). Certificat de situation administrative (non-gage) du 20/08/2026 : RAS — aucune opposition, aucun gage, véhicule non volé, immatriculation non volée/perdue/annulée." },
-    { id:'custom_laveglace_ar_20260823', typeId:'custom_lave_glaces_arriere', typeName:'Branchement lave-glace arrière + plein', date:'2026-08-23', mileage:97785, cost:null, notes:"Réalisé par Jean-François (DIY)." },
-    { id:'custom_reglage_retro_20260823', typeId:'custom_reglage_retro', typeName:'Réglage rétroviseurs', date:'2026-08-23', mileage:97785, cost:null, notes:"Réalisé par Jean-François (DIY)." }
+    { id:'e_cession_20260820', typeId:'cession', typeName:'Cession / Immatriculation', date:'2026-08-20', mileage:97785, cost:null, notes:"Certificat de cession signé à Lacanau, 15h15 — cédante Agnès Brande (12 lot Green Parc, 33680 Lacanau Océan), acquéreur Jean-François Morette (8 allée Beau Pré, 33650 Saucats). Certificat de situation administrative (non-gage) du 20/08/2026 : RAS — aucune opposition, aucun gage, véhicule non volé, immatriculation non volée/perdue/annulée." }
   ],
   reminders: [],
   mileageHistory: [
@@ -422,26 +420,22 @@ let state = {
     { date:'2026-08-20', mileage:97785 }
   ],
   plannedWorks: [
-    { id:'pw_pneus', label:'Remplacement 4 pneus BFGoodrich KO2 30x9.50R15', priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:"Usure anormale documentée sur les 2 derniers CT (4 roues).", createdAt:'2026-08-20' },
-    { id:'pw_amortav', label:'Vérification/remplacement amortisseurs avant', priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:"CT initial : asymétrie 32% — aucune facture de réparation retrouvée à ce jour.", createdAt:'2026-08-20' },
-    { id:'pw_freinsar', label:'Suivi facture réparation freinage arrière', priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:"CT du 13/08/2026 : efficacité insuffisante (service 47%, stationnement 14%). Contre-visite du 20/08/2026 favorable (51% / 20%) mais aucune facture d'intervention obtenue — écart signalé (majeure→conforme en 7j, centre différent).", createdAt:'2026-08-20' },
-    { id:'pw_vitre', label:"Réparation lève-vitre conducteur (ne descend pas entièrement)", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"Probable câble de régulateur ou glissière. Pas urgent en été, à traiter avant l'automne pour éviter les infiltrations. À grouper avec la visite spécialiste.", createdAt:'2026-08-20' },
-    { id:'pw_parechocav', label:'Réparation pare-chocs avant (angle droit)', priority:'moyenne', assignee:'garagiste', costMin:350, costMax:900, notes:"Rayures profondes jusqu'au métal, léger enfoncement, micro-écailles de peinture près du loquet de capot. Fourchette selon réparation ou remplacement.", createdAt:'2026-08-20' },
-    { id:'pw_np231', label:"Test engagement boîte de transfert NP231 (4H/4L) + vidange", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"L'ancienne propriétaire n'aurait jamais engagé le 4x4. Risque de grippage fourchette/chaîne, oxydation des moyeux. Tester sur sol meuble/parking plutôt que bitume sec, avec retour en 2H.", createdAt:'2026-08-20' },
-    { id:'pw_geometrie', label:'Contrôle géométrie/parallélisme', priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"À faire chez un spécialiste 4x4.", createdAt:'2026-08-20' },
-    { id:'pw_dreal', label:'Vérifier attestation DREAL en main (re-frappe VIN)', priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"Re-frappe effectuée par Alex Garage-Méca le 17/12/2025, régularisation confirmée réglée avant achat — à vérifier que l'attestation finale est bien en possession.", createdAt:'2026-08-20' },
-    { id:'pw_assurance', label:"Vérifier auprès de l'assureur la couverture des pièces après-marché", priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"Allianz est pour l'instant le seul assureur identifié avec une option explicite équipements/accessoires. AMV interrogé, sans réponse sur ce point.", createdAt:'2026-08-20' },
-    { id:'pw_attelage', label:"Poser un attelage homologué (boule 50mm)", priority:'basse', assignee:'garagiste', costMin:500, costMax:800, notes:"Attelage européen norme R55/ECE + directive 94/20/CE obligatoire pour le CT (attelage US carré non homologué en France). Modèle GDW/Boisnier spécifique TJ 10/1996-03/2007, rotule fixe, entraxe universel 90mm. Pour un TJ 1998 (avant nov. 1999) : PTAC remorquable limité à 2000 kg (2500 kg sur TJ à partir de déc. 1999). Faisceau 7 broches MULTIPLEXÉ obligatoire (Jeep/Chrysler/Dodge post-1997) pour ne pas risquer d'endommager l'électronique — pas de faisceau universel classique. Retours forum JeepMania : pose faisable en ~2h avec dépose (ou décalage) du pare-chocs pour passer les vis à travers le châssis ; éviter les connecteurs rapides fournis dans les kits bas de gamme (contacts fragiles/oxydation), préférer un raccordement soudé/serti propre. Point de vigilance si lift kit futur : sur TJ rehaussé, la boule peut se retrouver haute par rapport à la remorque (un cas forum à 46cm, proche de la limite réglementaire) — non concerné en l'état actuel (pas de rehausse). Sourcing France : Jeep-Stock.com, Carpratik.com, ou réseau Patrick Remorques/France-Attelage pour pose par centre agréé. À grouper avec le RDV spécialiste (Aquitaine 4X4 ou Jungle's 4x4).", createdAt:'2026-08-23' },
-    { id:'pw_laveglace_plein', label:'Plein liquide lave-glace', priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"", createdAt:'2026-08-23' },
-    { id:'pw_sieges_graissage', label:'Graissage sièges', priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"", createdAt:'2026-08-23' },
-    { id:'pw_hautparleur', label:'Haut-parleur', priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"À préciser : remplacement d'un HP défaillant ou pose du kit soundbar overhead (voir piste DS18 identifiée par ailleurs).", createdAt:'2026-08-23' },
-    { id:'pw_joint_portiere_pass', label:'Portière passager : joint de fenêtre', priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"", createdAt:'2026-08-23' },
-    { id:'pw_grille_aeration', label:"Remplacement grille d'aération x2", priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"", createdAt:'2026-08-23' },
-    { id:'pw_train_avant', label:'Contrôle train avant / pneus avant', priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:"À rapprocher du contrôle géométrie/parallélisme déjà prévu et du défaut résiduel CT « jeu direction AVG ».", createdAt:'2026-08-23' },
-    { id:'pw_plaque_remorque_velo', label:'Plaque immatriculation remorque et porte-vélo', priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"", createdAt:'2026-08-23' },
-    { id:'pw_ampoule_plaque', label:"Ampoule éclairage plaque d'immatriculation AR", priority:'basse', assignee:'moi', costMin:null, costMax:null, notes:"Correspond au défaut résiduel « éclairage plaque AR » relevé au CT du 20/08/2026.", createdAt:'2026-08-23' }
+    { id:'pw_attelage', label:"Attelage — boule fixe homologuée Europe (GDW/Boisnier, norme R55/ECE + directive 94/20/CE, TJ 10/1996–03/2007), faisceau multiplexé 7 broches requis", priority:'basse', assignee:'garagiste', costMin:null, costMax:null, notes:'Vérifier hauteur de boule si un kit de rehausse est ajouté un jour.', createdAt:'2026-08-21' },
+    { id:'pw_pneus', label:"Pneus — Hankook Dynapro AT2 Xtreme RF12 (31x10.50R15) recommandés vs BFGoodrich KO2 pour profil 90% route/mouillé — label UE grip humide A, 3PMSF, ~135€/pneu vs KO2 ~249€", priority:'moyenne', assignee:'garagiste', costMin:500, costMax:600, notes:'', createdAt:'2026-08-21' },
+    { id:'pw_amort_av', label:"Amortisseurs avant à remplacer", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:'', createdAt:'2026-08-21' },
+    { id:'pw_frein_ar', label:"Déséquilibre freinage arrière", priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:'Point ayant motivé la contre-visite CT — à recontrôler.', createdAt:'2026-08-21' },
+    { id:'pw_geometrie', label:"Contrôle géométrie / parallélisme train avant", priority:'haute', assignee:'garagiste', costMin:null, costMax:null, notes:'', createdAt:'2026-08-21' },
+    { id:'pw_np231', label:"Vidange boîte de transfert NP231 — ATF+4 (MS-9602)", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"La venderesse (Agnès Brande) semble n'avoir jamais engagé le 4x4 — risque fourchette/chaîne grippées, moyeux avant oxydés, joints dégradés. Tester le passage 4H/4L avec attention (terrain meuble ou parking, pas route sèche).", createdAt:'2026-08-21' },
+    { id:'pw_parechocs', label:"Réparation pare-chocs avant — coin droit rayé/enfoncé", priority:'basse', assignee:'garagiste', costMin:350, costMax:900, notes:"350-650€ si réparable (débosselage + retouche peinture), 500-900€ si remplacement du pare-chocs.", createdAt:'2026-08-21' },
+    { id:'pw_vitre', label:"Vitre conducteur ne descend pas complètement — câble/rail lève-vitre probable", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"Pas urgent l'été mais à résoudre avant l'automne/hiver pour éviter les infiltrations d'eau.", createdAt:'2026-08-21' },
+    { id:'pw_refroidissement', label:"Vidange liquide de refroidissement", priority:'moyenne', assignee:'garagiste', costMin:null, costMax:null, notes:"Capacité FSM : 9,9 L. Circuit d'origine probablement IAT (vert/jaune classique, véhicule 1998, antérieur à l'ère OAT chez Jeep). AVANT intervention : faire vérifier la couleur/état du liquide actuel dans le vase — clair (vert/jaune) → simple vidange-remplacement même famille IAT ; trouble/marron (mélange IAT/HOAT) → vidange complète + rinçage circuit obligatoire avant remplissage. Ne jamais mélanger IAT/HOAT/OAT entre eux (non miscibles, risque de corrosion).", createdAt:'2026-08-23' },
+    { id:'pw_dreal', label:"Attestation DREAL — confirmer statut (si pas déjà obtenue)", priority:'haute', assignee:'moi', costMin:null, costMax:null, notes:'', createdAt:'2026-08-21' },
+    { id:'pw_carte_grise', label:"Transfert carte grise", priority:'haute', assignee:'moi', costMin:null, costMax:null, notes:'', createdAt:'2026-08-21' },
+    { id:'pw_assurance', label:"Contacter l'assurance — déclaration des pièces aftermarket", priority:'moyenne', assignee:'moi', costMin:null, costMax:null, notes:'', createdAt:'2026-08-21' }
   ]
 };
+
+let pendingPlannedWorkId = null;
 
 // Calcule le rythme de conduite moyen (km/mois) à partir de l'historique de relevés
 function computeMonthlyRate(){
@@ -645,43 +639,38 @@ function render(){
   html += `<button class="fab-add" style="margin-top:10px;" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
 
   // Travaux à prévoir
-  html += `<div class="section-title" style="margin-top:26px;">🛠️ Travaux à prévoir <small>${(state.plannedWorks||[]).length}</small></div>`;
-  const prioOrder = { haute:0, moyenne:1, basse:2 };
-  const sortedPlanned = [...(state.plannedWorks||[])].sort((a,b)=> (prioOrder[a.priority]??3) - (prioOrder[b.priority]??3));
-  html += `<div class="cards">`;
-  if(sortedPlanned.length===0){
-    html += `<div class="empty">Aucun travail à prévoir pour l'instant.</div>`;
+  const priorityOrder = { haute:0, moyenne:1, basse:2 };
+  const sortedWorks = [...(state.plannedWorks||[])].sort((a,b)=> (priorityOrder[a.priority]??1) - (priorityOrder[b.priority]??1));
+  html += `<div class="section-title" style="margin-top:26px;">🔧 Travaux à prévoir <small>${sortedWorks.length}</small></div>`;
+  if(sortedWorks.length===0){
+    html += `<div class="empty">Aucun travail en attente.</div>`;
   } else {
-    sortedPlanned.forEach(w=>{
-      const prioLevel = w.priority==='haute' ? 'danger' : w.priority==='moyenne' ? 'warn' : 'ok';
-      const prioLabel = w.priority==='haute' ? 'Priorité haute' : w.priority==='moyenne' ? 'Priorité moyenne' : 'Priorité basse';
-      let costStr = '';
-      if(w.costMin!=null || w.costMax!=null){
-        if(w.costMin!=null && w.costMax!=null && w.costMin!==w.costMax) costStr = `${w.costMin}–${w.costMax} €`;
-        else costStr = `${w.costMin ?? w.costMax} €`;
-      }
+    html += `<div class="cards">`;
+    sortedWorks.forEach(pw=>{
+      const level = pw.priority==='haute' ? 'danger' : pw.priority==='basse' ? 'ok' : 'warn';
+      const priorityLabel = pw.priority==='haute' ? 'Priorité haute' : pw.priority==='basse' ? 'Priorité basse' : 'Priorité moyenne';
+      const assigneeLabel = pw.assignee==='moi' ? '🛠️ Moi' : '🔧 Garagiste';
+      let costLabel = '';
+      if(pw.costMin!=null && pw.costMax!=null) costLabel = `${pw.costMin}–${pw.costMax} €`;
+      else if(pw.costMin!=null) costLabel = `≈ ${pw.costMin} €`;
       html += `
-      <div class="card ${prioLevel}">
+      <div class="card ${level}">
         <div class="card-top">
-          <div class="card-name">${escapeHtml(w.label)}</div>
-          <div class="card-status">${prioLabel}</div>
+          <div class="card-name">${escapeHtml(pw.label)}</div>
+          <div class="card-status">${priorityLabel}</div>
         </div>
-        <div class="card-meta">
-          <span>${w.assignee==='moi' ? '🙋 Par moi-même' : '🔧 Par un garagiste'}</span>
-          ${costStr? `<span>Estimation: ${costStr}</span>` : ''}
-          <span>Ajouté le ${fmtDate(w.createdAt)}</span>
-        </div>
-        ${w.notes? `<div class="card-meta" style="margin-top:4px; max-width:100%;">${escapeHtml(w.notes)}</div>` : ''}
+        <div class="card-meta"><span>${assigneeLabel}</span>${costLabel? `<span>${costLabel}</span>`:''}</div>
+        ${pw.notes? `<div class="card-meta" style="margin-top:4px; display:block;">${escapeHtml(pw.notes)}</div>`: ''}
         <div class="card-actions">
-          <button class="small primary" onclick="markPlannedWorkDone('${w.id}')">Marquer comme fait</button>
-          <button class="ghost small" onclick="deletePlannedWork('${w.id}')">Supprimer</button>
+          <button class="small primary" onclick="markPlannedWorkDone('${pw.id}')">Marquer comme fait</button>
+          <button class="small" onclick="openPlannedWorkModal('${pw.id}')">Modifier</button>
+          <button class="ghost small" onclick="deletePlannedWork('${pw.id}')">✕</button>
         </div>
       </div>`;
     });
+    html += `</div>`;
   }
-  html += `</div>`;
   html += `<button class="fab-add" style="margin-top:10px;" onclick="openPlannedWorkModal()">+ Ajouter un travail à prévoir</button>`;
-
 
   // Échéances — regroupées par statut pour une lecture claire
   html += `<div class="section-title" style="margin-top:26px;">Échéances <small>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'kilométrage non renseigné'}</small></div>`;
@@ -838,57 +827,57 @@ async function deleteReminder(id){
   render();
 }
 
-function openPlannedWorkModal(){
+function openPlannedWorkModal(editId){
   const root = document.getElementById('modalRoot');
-  const today = new Date().toISOString().slice(0,10);
+  const existing = editId ? (state.plannedWorks||[]).find(pw=>pw.id===editId) : null;
   root.innerHTML = `
   <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
     <div class="modal">
-      <h3>Nouveau travail à prévoir</h3>
+      <h3>${existing? 'Modifier le travail à prévoir' : 'Nouveau travail à prévoir'}</h3>
       <div class="field">
         <label>Intitulé</label>
-        <input id="pw_label" type="text" placeholder="ex: Remplacement silent blocs avant">
+        <input id="pw_label" type="text" placeholder="ex: Remplacement silent blocs" value="${existing? escapeHtml(existing.label):''}">
       </div>
       <div class="field-row">
         <div class="field">
           <label>Priorité</label>
           <select id="pw_priority">
-            <option value="haute">Haute</option>
-            <option value="moyenne" selected>Moyenne</option>
-            <option value="basse">Basse</option>
+            <option value="haute" ${existing && existing.priority==='haute'?'selected':''}>Haute</option>
+            <option value="moyenne" ${!existing || existing.priority==='moyenne'?'selected':''}>Moyenne</option>
+            <option value="basse" ${existing && existing.priority==='basse'?'selected':''}>Basse</option>
           </select>
         </div>
         <div class="field">
-          <label>Qui s'en charge ?</label>
+          <label>Qui</label>
           <select id="pw_assignee">
-            <option value="garagiste" selected>Garagiste</option>
-            <option value="moi">Moi-même</option>
+            <option value="garagiste" ${!existing || existing.assignee==='garagiste'?'selected':''}>Garagiste</option>
+            <option value="moi" ${existing && existing.assignee==='moi'?'selected':''}>Moi</option>
           </select>
         </div>
       </div>
       <div class="field-row">
         <div class="field">
           <label>Coût min (€)</label>
-          <input id="pw_costmin" type="number" placeholder="0">
+          <input id="pw_costmin" type="number" placeholder="0" value="${existing && existing.costMin!=null? existing.costMin:''}">
         </div>
         <div class="field">
           <label>Coût max (€)</label>
-          <input id="pw_costmax" type="number" placeholder="0">
+          <input id="pw_costmax" type="number" placeholder="0" value="${existing && existing.costMax!=null? existing.costMax:''}">
         </div>
       </div>
       <div class="field">
         <label>Notes</label>
-        <textarea id="pw_notes" placeholder="Détails, contexte, garage envisagé…"></textarea>
+        <textarea id="pw_notes" placeholder="Détails, référence pièce, contexte…">${existing? escapeHtml(existing.notes||''):''}</textarea>
       </div>
       <div class="modal-actions">
         <button onclick="closeModal()">Annuler</button>
-        <button class="primary" onclick="savePlannedWork('${today}')">Enregistrer</button>
+        <button class="primary" onclick="savePlannedWork('${existing? existing.id : ''}')">${existing? 'Mettre à jour' : 'Enregistrer'}</button>
       </div>
     </div>
   </div>`;
 }
 
-async function savePlannedWork(today){
+async function savePlannedWork(editId){
   const label = document.getElementById('pw_label').value.trim();
   const priority = document.getElementById('pw_priority').value;
   const assignee = document.getElementById('pw_assignee').value;
@@ -897,14 +886,23 @@ async function savePlannedWork(today){
   const notes = document.getElementById('pw_notes').value.trim();
   if(!label){ alert('Merci de renseigner un intitulé.'); return; }
   state.plannedWorks = state.plannedWorks || [];
-  state.plannedWorks.push({
-    id: 'pw_' + Date.now(),
-    label, priority, assignee,
-    costMin: costMinVal? parseFloat(costMinVal) : null,
-    costMax: costMaxVal? parseFloat(costMaxVal) : null,
-    notes,
-    createdAt: today
-  });
+  const costMin = costMinVal ? parseFloat(costMinVal) : null;
+  const costMax = costMaxVal ? parseFloat(costMaxVal) : null;
+  if(editId){
+    const pw = state.plannedWorks.find(p=>p.id===editId);
+    if(pw){
+      pw.label = label; pw.priority = priority; pw.assignee = assignee;
+      pw.costMin = costMin; pw.costMax = costMax; pw.notes = notes;
+    }
+  } else {
+    state.plannedWorks.push({
+      id: 'pw_' + Date.now(),
+      label, priority, assignee,
+      costMin, costMax,
+      notes,
+      createdAt: new Date().toISOString().slice(0,10)
+    });
+  }
   await saveState();
   closeModal();
   render();
@@ -912,17 +910,16 @@ async function savePlannedWork(today){
 
 async function deletePlannedWork(id){
   if(!confirm('Supprimer ce travail à prévoir ?')) return;
-  state.plannedWorks = (state.plannedWorks||[]).filter(w=>w.id!==id);
+  state.plannedWorks = (state.plannedWorks||[]).filter(pw=>pw.id!==id);
   await saveState();
   render();
 }
 
-let pendingPlannedWorkId = null;
 function markPlannedWorkDone(id){
-  const w = (state.plannedWorks||[]).find(x=>x.id===id);
-  if(!w) return;
+  const pw = (state.plannedWorks||[]).find(p=>p.id===id);
+  if(!pw) return;
   pendingPlannedWorkId = id;
-  openLogModal(null, { name: w.label, notes: w.notes, cost: w.costMax ?? w.costMin ?? '' });
+  openLogModal(null, pw.label);
 }
 
 function escapeHtml(s){
@@ -931,11 +928,10 @@ function escapeHtml(s){
   return d.innerHTML;
 }
 
-function openLogModal(typeId, prefill){
+function openLogModal(typeId, prefillLabel){
   const root = document.getElementById('modalRoot');
-  const isCustomPrefill = !!prefill;
-  const selectedType = isCustomPrefill ? '__custom__' : typeId;
-  const typeOptions = state.types.map(t=>`<option value="${t.id}" ${t.id===selectedType?'selected':''}>${t.name}</option>`).join('');
+  const useCustom = !!prefillLabel;
+  const typeOptions = state.types.map(t=>`<option value="${t.id}" ${!useCustom && t.id===typeId?'selected':''}>${t.name}</option>`).join('');
   const today = new Date().toISOString().slice(0,10);
   root.innerHTML = `
   <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
@@ -943,11 +939,11 @@ function openLogModal(typeId, prefill){
       <h3>Nouvelle intervention</h3>
       <div class="field">
         <label>Type d'entretien</label>
-        <select id="f_type">${typeOptions}<option value="__custom__" ${isCustomPrefill?'selected':''}>+ Autre / personnalisé…</option></select>
+        <select id="f_type">${typeOptions}<option value="__custom__" ${useCustom?'selected':''}>+ Autre / personnalisé…</option></select>
       </div>
-      <div class="field" id="f_customwrap" style="display:${isCustomPrefill?'block':'none'};">
+      <div class="field" id="f_customwrap" style="display:${useCustom?'block':'none'};">
         <label>Nom de l'intervention</label>
-        <input id="f_customname" type="text" placeholder="ex: Remplacement silent blocs" value="${isCustomPrefill? escapeHtml(prefill.name||'') : ''}">
+        <input id="f_customname" type="text" placeholder="ex: Remplacement silent blocs" value="${useCustom? escapeHtml(prefillLabel):''}">
       </div>
       <div class="field-row">
         <div class="field">
@@ -961,11 +957,11 @@ function openLogModal(typeId, prefill){
       </div>
       <div class="field">
         <label>Coût (€)</label>
-        <input id="f_cost" type="number" placeholder="0" value="${isCustomPrefill && prefill.cost!==''? prefill.cost : ''}">
+        <input id="f_cost" type="number" placeholder="0">
       </div>
       <div class="field">
         <label>Notes</label>
-        <textarea id="f_notes" placeholder="Détails, garage, référence pièce…">${isCustomPrefill? escapeHtml(prefill.notes||'') : ''}</textarea>
+        <textarea id="f_notes" placeholder="Détails, garage, référence pièce…"></textarea>
       </div>
       <div class="modal-actions">
         <button onclick="closeModal()">Annuler</button>
@@ -1022,7 +1018,7 @@ async function saveEntry(){
     }
   }
   if(pendingPlannedWorkId){
-    state.plannedWorks = (state.plannedWorks||[]).filter(w=>w.id!==pendingPlannedWorkId);
+    state.plannedWorks = (state.plannedWorks||[]).filter(pw=>pw.id!==pendingPlannedWorkId);
     pendingPlannedWorkId = null;
   }
   await saveState();
