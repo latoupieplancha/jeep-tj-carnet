@@ -684,6 +684,7 @@ function render(){
           <div class="card-meta"><span>${r.date? fmtDate(r.date) : 'Pas de date fixée'}</span></div>
           ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
           <div class="card-actions">
+            <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
             <button class="ghost small" onclick="openReminderModal('${r.id}')">Modifier</button>
             <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
           </div>
@@ -885,6 +886,79 @@ async function deleteReminder(id){
   if(!confirm('Supprimer ce rappel ?')) return;
   state.reminders = (state.reminders||[]).filter(r=>r.id!==id);
   await saveState();
+  render();
+}
+
+function openValidateReminderModal(id){
+  const r = (state.reminders||[]).find(x=>x.id===id);
+  if(!r) return;
+  const root = document.getElementById('modalRoot');
+  const today = new Date().toISOString().slice(0,10);
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Valider : ${escapeHtml(r.label)}</h3>
+      <div class="field-row">
+        <div class="field">
+          <label>Date de réalisation</label>
+          <input id="v_date" type="date" value="${today}">
+        </div>
+        <div class="field">
+          <label>Kilométrage</label>
+          <input id="v_mileage" type="number" placeholder="${state.currentMileage ?? ''}" value="${state.currentMileage ?? ''}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Coût (€)</label>
+        <input id="v_cost" type="number" placeholder="0">
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="v_notes" placeholder="Détails, garage, référence pièce…">${r.notes? escapeHtml(r.notes) : ''}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveValidateReminder('${r.id}')">Valider et archiver</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveValidateReminder(id){
+  const r = (state.reminders||[]).find(x=>x.id===id);
+  if(!r) return;
+  const date = document.getElementById('v_date').value;
+  const mileageVal = document.getElementById('v_mileage').value;
+  const costVal = document.getElementById('v_cost').value;
+  const notes = document.getElementById('v_notes').value.trim();
+  if(!date){ alert('Merci de renseigner une date.'); return; }
+
+  const typeId = 'custom_' + r.label.toLowerCase().replace(/[^a-z0-9]+/g,'_');
+  if(!state.types.find(t=>t.id===typeId)){
+    state.types.push({ id: typeId, name: r.label, intervalKm:null, intervalMonths:null });
+  }
+  const entry = {
+    id: 'e_' + Date.now(),
+    typeId, typeName: r.label,
+    date,
+    mileage: mileageVal ? parseInt(mileageVal,10) : null,
+    cost: costVal ? parseFloat(costVal) : null,
+    notes
+  };
+  state.entries.push(entry);
+  if(entry.mileage!=null && (state.currentMileage==null || entry.mileage > state.currentMileage)){
+    state.currentMileage = entry.mileage;
+    state.mileageHistory = state.mileageHistory || [];
+    const existingSame = state.mileageHistory.find(h=>h.date===entry.date);
+    if(existingSame){
+      existingSame.mileage = Math.max(existingSame.mileage, entry.mileage);
+    } else {
+      state.mileageHistory.push({ date: entry.date, mileage: entry.mileage });
+    }
+  }
+  state.reminders = (state.reminders||[]).filter(x=>x.id!==id);
+  await saveState();
+  closeModal();
   render();
 }
 
