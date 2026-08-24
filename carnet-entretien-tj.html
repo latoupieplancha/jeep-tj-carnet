@@ -429,7 +429,27 @@ let state = {
     { id:'e_ct_20260820', typeId:'ct', typeName:'Contrôle technique', date:'2026-08-20', mileage:97719, cost:null, notes:"Contre-visite FAVORABLE — Securitest Blanquefort, PV n°26030003. Valable jusqu'au 19/08/2028 (prochain contrôle : périodique normal). Freins corrigés : efficacité globale 51% (≥50% requis), frein de stationnement 20% (≥18% requis). Défaillances mineures résiduelles : jeu direction AVG, balai essuie-glace AVG, fixation feu détresse AVG, éclairage plaque AR, pneus AVD/ARD/ARG, corrosion châssis AVG/ARG, sièges AR absents lors du contrôle. Ripage +2,4 m/km." },
     { id:'e_cession_20260820', typeId:'cession', typeName:'Cession / Immatriculation', date:'2026-08-20', mileage:97785, cost:null, notes:"Certificat de cession signé à Lacanau, 15h15 — cédante Agnès Brande (12 lot Green Parc, 33680 Lacanau Océan), acquéreur Jean-François Morette (8 allée Beau Pré, 33650 Saucats). Certificat de situation administrative (non-gage) du 20/08/2026 : RAS — aucune opposition, aucun gage, véhicule non volé, immatriculation non volée/perdue/annulée." }
   ],
-  reminders: [],
+  reminders: [
+    { id:'r_pneus', label:'Remplacement pneus 31x10.50R15', status:'priorite_haute', date:null, notes:"Recommandation actuelle : Hankook Dynapro AT2 Xtreme RF12 (~135€/unité, indice adhérence pluie UE A, certifié hiver 3PMSF) — préféré au BFGoodrich KO2 (adhérence pluie B, ~249€/unité) vu le profil d'usage 90% route/pluie. Le KO3 n'est pas disponible dans cette taille en France. À prévoir avec le contrôle géométrie/parallélisme." },
+    { id:'r_amortisseurs_av', label:'Amortisseurs avant', status:'priorite_haute', date:null, notes:"Asymétrie de 32% relevée au CT, possiblement liée à un choc avant antérieur. À faire diagnostiquer et remplacer par Aquitaine 4X4 ou Jungle's 4x4." },
+    { id:'r_freins_ar', label:'Freinage arrière', status:'priorite_haute', date:null, notes:"Déséquilibre de 22% relevé au CT. À faire vérifier/corriger." },
+    { id:'r_carte_grise', label:'Transfert carte grise', status:'priorite_haute', date:null, notes:"À vérifier si la démarche a déjà été effectuée suite à l'achat du 20/08/2026." },
+    { id:'r_dreal', label:'Attestation DREAL (frappe VIN)', status:'priorite_haute', date:null, notes:"À vérifier si l'autorisation DREAL préalable à la frappe du numéro de série a bien été obtenue formellement (frappe déjà réalisée lors de la contre-visite du 17/12/2025)." },
+    { id:'r_vitre_conducteur', label:"Vitre conducteur (ne descend pas complètement)", status:'priorite_moyenne', date:null, notes:"Câble de lève-vitre, glissière ou moteur en cause probable. Non urgent en été mais à résoudre avant l'automne/hiver." },
+    { id:'r_eclairage_plaque', label:"Éclairage plaque d'immatriculation AR", status:'priorite_moyenne', date:null, notes:"Ampoule W5W/T10 12V 5W — douille cassée, capuchon métallique bloqué. Défaillance mineure relevée au CT." },
+    { id:'r_liquide_refroid', label:'Vidange liquide de refroidissement', status:'priorite_moyenne', date:null, notes:"Capacité 9,9 L (FSM). Circuit probablement IAT (vert/jaune, pré-OAT). Avant intervention : vérifier la couleur dans le vase d'expansion — clair (vert/jaune) → remplacer même famille IAT ; trouble/marron → rinçage complet du circuit nécessaire. Ne jamais mélanger IAT/HOAT/OAT. Acheter prêt à l'emploi chez Feu Vert (deux bidons de 5L). À déléguer au garagiste." },
+    { id:'r_geometrie', label:'Contrôle géométrie / parallélisme', status:'priorite_moyenne', date:null, notes:"À faire après le remplacement des pneus." },
+    { id:'r_boite_transfert', label:'Vidange boîte de transfert NP231', status:'priorite_basse', date:null, notes:"Huile ATF+4, coût faible (~50–90€). Peut être groupée avec un autre rendez-vous." },
+    { id:'r_pare_choc_av', label:'Pare-choc avant (angle droit endommagé)', status:'priorite_basse', date:null, notes:"Rayures profondes jusqu'au matériau brut, léger enfoncement près du clignotant + éclats de peinture près du loquet de capot. Estimation : 350–650€ si réparable, 500–900€ si remplacement nécessaire." },
+    { id:'r_attelage', label:"Attelage", status:'priorite_basse', date:null, notes:"Attelage boule fixe homologué européen (R55/ECE + directive 94/20/CE), GDW/Boisnier pour TJ 10/1996–03/2007. Faisceau multiplexé 7 broches nécessaire." },
+    { id:'r_cache_roue_secours', label:'Housse de roue de secours', status:'priorite_basse', date:null, notes:"Référence Mopar OEM 82204567AB (édition Sahara, coloris tan/denim), compatible 30x9.50R15LT et 235/75R15LT, TJ 1997–2006. Sourcing français à privilégier." },
+    { id:'r_restauration_hardtop', label:'Restauration du hardtop', status:'priorite_basse', date:null, notes:"Polytrol (Owatrol/Rustoleum), confirmé par la communauté JeepMania pour hardtops polyester/composite TJ. Appliquer au chiffon microfibre, essuyer l'excédent avant séchage." },
+    { id:'r_fusibles_maxi', label:'Fusibles Maxi (boîtier moteur)', status:'priorite_basse', date:null, notes:"Mini-fusibles (ATC/ATO) déjà commandés sur Amazon. Le boîtier compartiment moteur (PDC) utilise des fusibles lame Maxi : jaune (20A), vert (30A), orange (40A) + relais Siemens 7472M. Source : kit Bussmann ou Littelfuse Maxi Blade." },
+    { id:'r_autoradio', label:'Autoradio (tête + haut-parleurs)', status:'estime', date:null, notes:"Haut-parleurs résistants à l'humidité — vérifier câblage 2Ω vs 4Ω avant achat ; Kicker/Alpine pour la durabilité, Focal pour la qualité, gamme marine si usage sans hardtop. Autoradio Pioneer recommandé par la communauté TJ française via Sebasto Autoradio ; adaptateur Metra 70-1858 (1-DIN) ou kit Metra 95-6522 (passage 2-DIN) ; Axxess ASWC-1 pour les commandes au volant." },
+    { id:'r_soundbar', label:'Barre de son overhead', status:'estime', date:null, notes:"DS18 identifiée comme marque de référence pour les barres overhead spécifiques TJ. Sourcing français à confirmer." },
+    { id:'r_softtop', label:'Softtop', status:'estime', date:null, notes:"Choix en attente entre ComptoirDuCabriolet et Bestop Trektop NX, prix quasi identique (~1 395–1 451€). Trektop NX pour la fonction Sunrider ; ComptoirDuCabriolet pour les demi-portes incluses." },
+    { id:'r_feux_additionnels', label:'Feux additionnels (antibrouillards/longue portée)', status:'estime', date:null, notes:"Câblage par relais suivant la logique du circuit antibrouillard FSM section 8W-50. Relais de coupure automatique en position feux de route recommandé." },
+  ],
   mileageHistory: [
     { date:'2026-08-13', mileage:97502 },
     { date:'2026-08-20', mileage:97785 }
@@ -468,12 +488,15 @@ function kmSincePurchase(){
 
 async function loadState(){
   try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value){
-      const parsed = JSON.parse(res.value);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
       state = { ...state, ...parsed, types: parsed.types || DEFAULT_TYPES };
     }
-  }catch(e){ /* first run, no data yet */ }
+  }catch(e){
+    console.error('Erreur de chargement', e);
+    showStorageWarning();
+  }
   // Migration : tout rappel existant sans statut est considéré "estimé"
   state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
   render();
@@ -481,8 +504,20 @@ async function loadState(){
 
 async function saveState(){
   try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
-  }catch(e){ console.error('Erreur de sauvegarde', e); }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){
+    console.error('Erreur de sauvegarde', e);
+    showStorageWarning();
+  }
+}
+
+function showStorageWarning(){
+  if(document.getElementById('storageWarning')) return;
+  const div = document.createElement('div');
+  div.id = 'storageWarning';
+  div.style.cssText = 'position:fixed; bottom:0; left:0; right:0; background:#B14A2B; color:#fff; padding:10px 14px; font-family:sans-serif; font-size:12.5px; z-index:999; text-align:center;';
+  div.innerHTML = "⚠️ Impossible d'enregistrer localement (navigation privée, cookies bloqués ou stockage plein). Pense à exporter ta sauvegarde régulièrement.";
+  document.body.appendChild(div);
 }
 
 function daysBetween(a,b){ return Math.round((b-a)/86400000); }
@@ -752,8 +787,32 @@ function render(){
 
   html += `<button class="fab-add" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
   html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
+  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="document.getElementById('importFileInput').click()">⭱ Importer une sauvegarde (.json)</button>`;
+  html += `<input type="file" id="importFileInput" accept="application/json" style="display:none;" onchange="importBackup(event)">`;
 
   app.innerHTML = html;
+}
+
+function importBackup(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    try{
+      const parsed = JSON.parse(e.target.result);
+      if(!confirm('Importer cette sauvegarde va remplacer toutes les données actuellement affichées. Continuer ?')) return;
+      state = { ...state, ...parsed, types: parsed.types || DEFAULT_TYPES };
+      state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
+      await saveState();
+      render();
+      alert('Sauvegarde importée avec succès.');
+    }catch(err){
+      alert("Fichier invalide : impossible de lire cette sauvegarde.");
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
 }
 
 function exportBackup(){
