@@ -688,6 +688,41 @@ function render(){
 
   let html = '';
 
+  // 🗓️ RDV à venir — regroupe tous les rappels ET échéances pour lesquels un RDV est pris
+  const rdvItems = [];
+  (state.reminders||[]).forEach(r=>{
+    if(r.rdvDate) rdvItems.push({ kind:'reminder', id:r.id, label:r.label, rdvDate:r.rdvDate, notes:r.notes });
+  });
+  state.types.forEach(t=>{
+    if(t.rdvDate) rdvItems.push({ kind:'type', id:t.id, label:t.name, rdvDate:t.rdvDate, notes:null });
+  });
+  rdvItems.sort((a,b)=> new Date(a.rdvDate)-new Date(b.rdvDate));
+  if(rdvItems.length>0){
+    html += `<div class="section-title">🗓️ RDV à venir <small>${rdvItems.length}</small></div>`;
+    html += `<div class="cards" style="margin-bottom:20px;">`;
+    const todayForRdv = new Date();
+    rdvItems.forEach(item=>{
+      const daysLeft = daysBetween(todayForRdv, new Date(item.rdvDate));
+      const overdue = daysLeft < 0;
+      const level = overdue ? 'danger' : daysLeft<=7 ? 'warn' : 'ok';
+      const statusLabel = overdue ? `Passé (${Math.abs(daysLeft)} j)` : daysLeft===0 ? "Aujourd'hui" : daysLeft===1 ? 'Demain' : `Dans ${daysLeft} j`;
+      const editAction = item.kind==='reminder'
+        ? `<button class="ghost small" onclick="openReminderModal('${item.id}')">Modifier</button>`
+        : `<button class="ghost small" onclick="openTypeModal('${item.id}')">Modifier</button>`;
+      html += `
+      <div class="card ${level}">
+        <div class="card-top">
+          <div class="card-name">${escapeHtml(item.label)}</div>
+          <div class="card-status">${statusLabel}</div>
+        </div>
+        <div class="card-meta"><span>📅 ${fmtDate(item.rdvDate)}</span></div>
+        ${item.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(item.notes)}</div>`: ''}
+        <div class="card-actions">${editAction}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
   // Bannière rappel mensuel de relevé kilométrique
   const lastReport = lastMileageReportDate();
   const daysSinceReport = lastReport ? daysBetween(lastReport, new Date()) : null;
@@ -778,6 +813,7 @@ function render(){
           <div class="card-status">${statusLabel}</div>
         </div>
         <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
+        ${type.rdvDate? `<div class="card-meta" style="margin-top:4px; font-weight:600; color:var(--brass);"><span>📅 RDV le ${fmtDate(type.rdvDate)}</span></div>` : ''}
         ${s.level!=='unknown' ? `<div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>` : ''}
         <div class="card-actions">
           <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
@@ -824,6 +860,7 @@ function render(){
             <div class="card-status">${statusLabel}</div>
           </div>
           <div class="card-meta"><span>${r.date? fmtDate(r.date) : 'Pas de date fixée'}</span></div>
+          ${r.rdvDate? `<div class="card-meta" style="margin-top:4px; font-weight:600; color:var(--brass);"><span>📅 RDV le ${fmtDate(r.rdvDate)}</span></div>` : ''}
           ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
           <div class="card-actions">
             <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
@@ -1084,6 +1121,10 @@ function openTypeModal(id){
         <label>Priorité manuelle <span style="opacity:.6;">(utile surtout pour les travaux "estimé"/"jamais vérifié" sans historique)</span></label>
         <select id="t_priority">${statusOptions}</select>
       </div>
+      <div class="field">
+        <label>📅 Date de RDV <span style="opacity:.6;">(si un rendez-vous est déjà pris)</span></label>
+        <input id="t_rdvdate" type="date" value="${t.rdvDate || ''}">
+      </div>
       <div class="modal-actions">
         <button onclick="closeModal()">Annuler</button>
         <button class="primary" onclick="saveTypeModal('${t.id}')">Enregistrer</button>
@@ -1099,13 +1140,15 @@ async function saveTypeModal(id){
   const kmVal = document.getElementById('t_km').value;
   const monthsVal = document.getElementById('t_months').value;
   const priorityVal = document.getElementById('t_priority').value;
+  const rdvDateVal = document.getElementById('t_rdvdate').value || null;
   if(!name){ alert('Merci de renseigner un intitulé.'); return; }
   state.types[idx] = {
     ...state.types[idx],
     name,
     intervalKm: kmVal ? parseInt(kmVal,10) : null,
     intervalMonths: monthsVal ? parseInt(monthsVal,10) : null,
-    priority: priorityVal || null
+    priority: priorityVal || null,
+    rdvDate: rdvDateVal
   };
   // Garder la cohérence du typeName dans le journal si l'intitulé a changé
   state.entries = state.entries.map(e=> e.typeId===id ? { ...e, typeName: name } : e);
@@ -1138,6 +1181,10 @@ function openReminderModal(id){
         <input id="r_date" type="date" value="${r? (r.date||'') : ''}">
       </div>
       <div class="field">
+        <label>📅 Date de RDV <span style="opacity:.6;">(si un rendez-vous est déjà pris)</span></label>
+        <input id="r_rdvdate" type="date" value="${r? (r.rdvDate||'') : ''}">
+      </div>
+      <div class="field">
         <label>Notes</label>
         <textarea id="r_notes" placeholder="Détails, contact, garage…">${r? escapeHtml(r.notes||'') : ''}</textarea>
       </div>
@@ -1153,14 +1200,15 @@ async function saveReminder(id){
   const label = document.getElementById('r_label').value.trim();
   const status = document.getElementById('r_status').value;
   const date = document.getElementById('r_date').value || null;
+  const rdvDate = document.getElementById('r_rdvdate').value || null;
   const notes = document.getElementById('r_notes').value.trim();
   if(!label){ alert('Merci de renseigner un intitulé.'); return; }
   state.reminders = state.reminders || [];
   if(id){
     const idx = state.reminders.findIndex(r=>r.id===id);
-    if(idx>-1) state.reminders[idx] = { ...state.reminders[idx], label, status, date, notes };
+    if(idx>-1) state.reminders[idx] = { ...state.reminders[idx], label, status, date, rdvDate, notes };
   } else {
-    state.reminders.push({ id:'r_'+Date.now(), label, status, date, notes });
+    state.reminders.push({ id:'r_'+Date.now(), label, status, date, rdvDate, notes });
   }
   await saveState();
   closeModal();
