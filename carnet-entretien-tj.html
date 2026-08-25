@@ -722,61 +722,11 @@ function render(){
     </div>`;
   }
 
-  // Rappels & RDV — regroupés par statut (priorités en haut, estimés en bas)
-  html += `<div class="section-title">Rappels &amp; RDV</div>`;
-  if(allReminders.length===0){
-    html += `<div class="cards"><div class="empty">Aucun rappel programmé.</div></div>`;
-  } else {
-    REMINDER_STATUSES.forEach(statusDef=>{
-      const items = allReminders
-        .filter(r=> (r.status||'estime')===statusDef.key)
-        .sort((a,b)=>{
-          if(a.date && b.date) return new Date(a.date)-new Date(b.date);
-          if(a.date) return -1; // items datés d'abord dans chaque groupe
-          if(b.date) return 1;
-          return 0;
-        });
-      if(items.length===0) return;
-      html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${statusDef.icon} ${statusDef.label} <small>${items.length}</small></div>`;
-      html += `<div class="cards" style="margin-bottom:6px;">`;
-      items.forEach(r=>{
-        let statusLabel, cardLevel;
-        if(r.date){
-          const daysLeft = daysBetween(today, new Date(r.date));
-          cardLevel = daysLeft<0 ? 'danger' : daysLeft<=30 ? 'warn' : statusDef.key;
-          statusLabel = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)} j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft} j restants`;
-        } else {
-          cardLevel = statusDef.key;
-          statusLabel = statusDef.label;
-        }
-        html += `
-        <div class="card ${cardLevel}">
-          <div class="card-top">
-            <div class="card-name">${escapeHtml(r.label)}</div>
-            <div class="card-status">${statusLabel}</div>
-          </div>
-          <div class="card-meta"><span>${r.date? fmtDate(r.date) : 'Pas de date fixée'}</span></div>
-          ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
-          <div class="card-actions">
-            <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
-            <button class="ghost small" onclick="openReminderModal('${r.id}')">Modifier</button>
-            <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
-          </div>
-        </div>`;
-      });
-      html += `</div>`;
-    });
-  }
-  html += `<button class="fab-add" style="margin-top:10px;" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
-
-
-  // Échéances — regroupées par statut pour une lecture claire
-  html += `<div class="section-title" style="margin-top:26px;">Échéances <small>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'kilométrage non renseigné'}</small></div>`;
-
+  // Échéances (calculées ici pour pouvoir intégrer les priorités manuelles dans Rappels & RDV ci-dessous)
   const periodicTypes = state.types.filter(t=> t.intervalKm || t.intervalMonths);
   const statused = periodicTypes.map(type=> ({ type, s: computeStatus(type) }));
 
-  // Une priorité manuelle explicitement définie fait toujours remonter l'item en tête de tableau,
+  // Une priorité manuelle explicitement définie fait remonter l'échéance dans Rappels & RDV,
   // peu importe son statut automatique (en retard / estimé / à jour…)
   const manualPriorityItems = statused.filter(x=> !!x.type.priority);
   const autoItems = statused.filter(x=> !x.type.priority);
@@ -836,18 +786,60 @@ function render(){
       </div>`;
   }
 
-  // Section des priorités manuelles — toujours en tête du tableau
-  if(manualPriorityItems.length>0){
-    html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">📌 Priorités définies manuellement <small>${manualPriorityItems.length}</small></div>`;
+  // Rappels & RDV — regroupés par statut (priorités en haut, estimés en bas)
+  // Inclut à la fois les rappels manuels ET les échéances auxquelles une priorité a été assignée
+  html += `<div class="section-title">Rappels &amp; RDV</div>`;
+  const totalRappelItems = allReminders.length + manualPriorityItems.length;
+  if(totalRappelItems===0){
+    html += `<div class="cards"><div class="empty">Aucun rappel programmé.</div></div>`;
+  } else {
     REMINDER_STATUSES.forEach(statusDef=>{
-      const subItems = manualPriorityItems.filter(x=> x.type.priority===statusDef.key);
-      if(subItems.length===0) return;
-      html += `<div class="section-title" style="margin-top:10px; font-size:11.5px; border-bottom:none; padding-bottom:0; color:var(--text-dim);">${statusDef.icon} ${statusDef.label} <small>${subItems.length}</small></div>`;
+      const items = allReminders
+        .filter(r=> (r.status||'estime')===statusDef.key)
+        .sort((a,b)=>{
+          if(a.date && b.date) return new Date(a.date)-new Date(b.date);
+          if(a.date) return -1; // items datés d'abord dans chaque groupe
+          if(b.date) return 1;
+          return 0;
+        });
+      const typeItems = manualPriorityItems.filter(x=> x.type.priority===statusDef.key);
+      if(items.length===0 && typeItems.length===0) return;
+      html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${statusDef.icon} ${statusDef.label} <small>${items.length + typeItems.length}</small></div>`;
       html += `<div class="cards" style="margin-bottom:6px;">`;
-      subItems.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
+      typeItems.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
+      items.forEach(r=>{
+        let statusLabel, cardLevel;
+        if(r.date){
+          const daysLeft = daysBetween(today, new Date(r.date));
+          cardLevel = daysLeft<0 ? 'danger' : daysLeft<=30 ? 'warn' : statusDef.key;
+          statusLabel = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)} j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft} j restants`;
+        } else {
+          cardLevel = statusDef.key;
+          statusLabel = statusDef.label;
+        }
+        html += `
+        <div class="card ${cardLevel}">
+          <div class="card-top">
+            <div class="card-name">${escapeHtml(r.label)}</div>
+            <div class="card-status">${statusLabel}</div>
+          </div>
+          <div class="card-meta"><span>${r.date? fmtDate(r.date) : 'Pas de date fixée'}</span></div>
+          ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
+          <div class="card-actions">
+            <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
+            <button class="ghost small" onclick="openReminderModal('${r.id}')">Modifier</button>
+            <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
+          </div>
+        </div>`;
+      });
       html += `</div>`;
     });
   }
+  html += `<button class="fab-add" style="margin-top:10px;" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
+
+
+  // Échéances — regroupées par statut pour une lecture claire (uniquement celles sans priorité manuelle)
+  html += `<div class="section-title" style="margin-top:26px;">Échéances <small>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'kilométrage non renseigné'}</small></div>`;
 
   buckets.forEach(bucket=>{
     if(bucket.items.length===0) return;
