@@ -783,57 +783,73 @@ function render(){
     { key:'ok',        icon:'🟢', title:'À jour',                        items: statused.filter(x=>x.s.level==='ok') },
   ];
 
-  buckets.forEach(bucket=>{
-    if(bucket.items.length===0) return;
-    html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${bucket.icon} ${bucket.title} <small>${bucket.items.length}</small></div>`;
-    html += `<div class="cards" style="margin-bottom:6px;">`;
-    bucket.items.forEach(({type, s})=>{
-      const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : s.level==='estimated' ? 'Estimé' : s.level==='unknown' ? 'Jamais renseigné' : 'À jour';
-      let metaParts = [];
-      if(s.last){
-        metaParts.push(`Dernier: ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
-      } else if(s.estimated){
-        metaParts.push('Pas d\'historique — estimation depuis achat/kilométrage actuel');
-      } else {
-        metaParts.push('Aucune donnée — à vérifier au prochain entretien');
+  function renderTypeCardHtml(type, s){
+    const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : s.level==='estimated' ? 'Estimé' : s.level==='unknown' ? 'Jamais renseigné' : 'À jour';
+    let metaParts = [];
+    if(s.last){
+      metaParts.push(`Dernier: ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
+    } else if(s.estimated){
+      metaParts.push('Pas d\'historique — estimation depuis achat/kilométrage actuel');
+    } else {
+      metaParts.push('Aucune donnée — à vérifier au prochain entretien');
+    }
+    if(type.intervalKm){
+      metaParts.push(`Intervalle: ${type.intervalKm.toLocaleString('fr-FR')} km`);
+      if(s.nextDueKm!=null){
+        metaParts.push(`Prochaine échéance: ${fmtKm(s.nextDueKm)}`);
       }
-      if(type.intervalKm){
-        metaParts.push(`Intervalle: ${type.intervalKm.toLocaleString('fr-FR')} km`);
-        if(s.nextDueKm!=null){
-          metaParts.push(`Prochaine échéance: ${fmtKm(s.nextDueKm)}`);
-        }
-        if(s.kmRemaining!=null && s.last){
-          metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
-        }
-        if(s.projectedDate){
-          metaParts.push(`≈ ${fmtDate(s.projectedDate)} à votre rythme actuel`);
-        }
+      if(s.kmRemaining!=null && s.last){
+        metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
       }
-      if(type.intervalMonths){
-        metaParts.push(`Intervalle: ${type.intervalMonths} mois`);
-        if(s.monthsInfo){
-          if(s.estimated){
-            metaParts.push(`Échéance estimée: ${fmtDate(s.monthsInfo.dueDate)}`);
-          } else {
-            metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
-          }
+      if(s.projectedDate){
+        metaParts.push(`≈ ${fmtDate(s.projectedDate)} à votre rythme actuel`);
+      }
+    }
+    if(type.intervalMonths){
+      metaParts.push(`Intervalle: ${type.intervalMonths} mois`);
+      if(s.monthsInfo){
+        if(s.estimated){
+          metaParts.push(`Échéance estimée: ${fmtDate(s.monthsInfo.dueDate)}`);
+        } else {
+          metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
         }
       }
-
-      html += `
+    }
+    return `
       <div class="card ${s.level}">
         <div class="card-top">
           <div class="card-name">${type.name}</div>
           <div class="card-status">${statusLabel}</div>
         </div>
         <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
+        ${type.priority && type.priority!=='estime' ? `<div class="card-meta" style="margin-top:4px;"><span>${reminderStatusInfo(type.priority).icon} ${reminderStatusInfo(type.priority).label}</span></div>` : ''}
         ${s.level!=='unknown' ? `<div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>` : ''}
         <div class="card-actions">
           <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
+          <button class="ghost small" onclick="openTypeModal('${type.id}')">Modifier</button>
         </div>
       </div>`;
-    });
-    html += `</div>`;
+  }
+
+  buckets.forEach(bucket=>{
+    if(bucket.items.length===0) return;
+    html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${bucket.icon} ${bucket.title} <small>${bucket.items.length}</small></div>`;
+
+    if(bucket.key==='estimated' || bucket.key==='unknown'){
+      // Pas de signal fiable de date/km : on regroupe par priorité manuelle définie par l'utilisateur
+      REMINDER_STATUSES.forEach(statusDef=>{
+        const subItems = bucket.items.filter(x=> (x.type.priority||'estime')===statusDef.key);
+        if(subItems.length===0) return;
+        html += `<div class="section-title" style="margin-top:10px; font-size:11.5px; border-bottom:none; padding-bottom:0; color:var(--text-dim);">${statusDef.icon} ${statusDef.label} <small>${subItems.length}</small></div>`;
+        html += `<div class="cards" style="margin-bottom:6px;">`;
+        subItems.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
+        html += `</div>`;
+      });
+    } else {
+      html += `<div class="cards" style="margin-bottom:6px;">`;
+      bucket.items.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
+      html += `</div>`;
+    }
   });
 
   // Journal
@@ -1041,6 +1057,64 @@ function exportBackup(){
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+function openTypeModal(id){
+  const t = state.types.find(x=>x.id===id);
+  if(!t) return;
+  const root = document.getElementById('modalRoot');
+  const statusOptions = `<option value="" ${!t.priority?'selected':''}>— Aucune (auto) —</option>` +
+    REMINDER_STATUSES.map(s=> `<option value="${s.key}" ${t.priority===s.key?'selected':''}>${s.icon} ${s.label}</option>`).join('');
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>Modifier : ${escapeHtml(t.name)}</h3>
+      <div class="field">
+        <label>Intitulé</label>
+        <input id="t_name" type="text" value="${escapeHtml(t.name)}">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Intervalle (km) <span style="opacity:.6;">(optionnel)</span></label>
+          <input id="t_km" type="number" value="${t.intervalKm ?? ''}">
+        </div>
+        <div class="field">
+          <label>Intervalle (mois) <span style="opacity:.6;">(optionnel)</span></label>
+          <input id="t_months" type="number" value="${t.intervalMonths ?? ''}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Priorité manuelle <span style="opacity:.6;">(utile surtout pour les travaux "estimé"/"jamais vérifié" sans historique)</span></label>
+        <select id="t_priority">${statusOptions}</select>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveTypeModal('${t.id}')">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveTypeModal(id){
+  const idx = state.types.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const name = document.getElementById('t_name').value.trim();
+  const kmVal = document.getElementById('t_km').value;
+  const monthsVal = document.getElementById('t_months').value;
+  const priorityVal = document.getElementById('t_priority').value;
+  if(!name){ alert('Merci de renseigner un intitulé.'); return; }
+  state.types[idx] = {
+    ...state.types[idx],
+    name,
+    intervalKm: kmVal ? parseInt(kmVal,10) : null,
+    intervalMonths: monthsVal ? parseInt(monthsVal,10) : null,
+    priority: priorityVal || null
+  };
+  // Garder la cohérence du typeName dans le journal si l'intitulé a changé
+  state.entries = state.entries.map(e=> e.typeId===id ? { ...e, typeName: name } : e);
+  await saveState();
+  closeModal();
+  render();
 }
 
 function openReminderModal(id){
