@@ -144,6 +144,32 @@ body{
   margin-top:2px;
 }
 
+.tab-bar{
+  display:flex;
+  gap:8px;
+  max-width:720px;
+  margin:0 auto;
+  padding:14px 18px 0;
+}
+.tab-btn{
+  flex:1;
+  font-family:var(--disp);
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:10px 8px;
+  color:var(--text-dim);
+  cursor:pointer;
+}
+.tab-btn.active{
+  background:var(--brass);
+  border-color:var(--brass);
+  color:#FFFFFF;
+}
+
 .section{
   padding:24px 18px 4px;
   max-width:720px;
@@ -379,6 +405,11 @@ button.small{padding:5px 9px; font-size:11.5px;}
   <div id="plateStats" class="plate-stats"></div>
 </div>
 
+<div class="tab-bar">
+  <button class="tab-btn" id="tabCarnetBtn" onclick="switchTab('carnet')">📋 Carnet</button>
+  <button class="tab-btn" id="tabFuelBtn" onclick="switchTab('carburant')">⛽ Carburant</button>
+</div>
+
 <div id="app" class="section">
   <div class="loading">Chargement du carnet…</div>
 </div>
@@ -398,6 +429,7 @@ const REMINDER_STATUSES = [
   { key:'estime',           icon:'🔵', label:'Estimé (pas de date/priorité fixée)' },
 ];
 function reminderStatusInfo(key){ return REMINDER_STATUSES.find(s=>s.key===key) || REMINDER_STATUSES[3]; }
+let currentTab = 'carnet';
 
 const DEFAULT_TYPES = [
   { id:'vidange',    name:'Vidange moteur — huile 10W30 (MS-6395) + filtre', intervalKm:5000,  intervalMonths:12  },
@@ -453,7 +485,8 @@ let state = {
   mileageHistory: [
     { date:'2026-08-13', mileage:97502 },
     { date:'2026-08-20', mileage:97785 }
-  ]
+  ],
+  fuelEntries: []
 };
 
 // Calcule le rythme de conduite moyen (km/mois) à partir de l'historique de relevés
@@ -499,6 +532,7 @@ async function loadState(){
   }
   // Migration : tout rappel existant sans statut est considéré "estimé"
   state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
+  state.fuelEntries = state.fuelEntries || [];
   render();
 }
 
@@ -588,13 +622,43 @@ function fmtDate(d){
 }
 function fmtKm(n){ return n==null? '—' : n.toLocaleString('fr-FR')+' km'; }
 
+function fuelStats(){
+  const entries = [...(state.fuelEntries||[])]
+    .filter(e=> e.mileage!=null && e.liters!=null)
+    .sort((a,b)=> a.mileage-b.mileage);
+  if(entries.length<2) return null;
+  const totalLiters = entries.slice(1).reduce((sum,e)=> sum + e.liters, 0);
+  const totalKm = entries[entries.length-1].mileage - entries[0].mileage;
+  if(totalKm<=0) return null;
+  const avgConso = totalLiters / totalKm * 100;
+  const prev = entries[entries.length-2];
+  const last = entries[entries.length-1];
+  const lastKm = last.mileage - prev.mileage;
+  const lastConso = lastKm>0 ? (last.liters/lastKm*100) : null;
+  return { avgConso, lastConso, totalLiters, totalKm, count: entries.length };
+}
+
+function fuelConsoForEntry(entry, sortedByMileage){
+  const idx = sortedByMileage.findIndex(e=>e.id===entry.id);
+  if(idx<=0) return null;
+  const prev = sortedByMileage[idx-1];
+  if(entry.mileage==null || prev.mileage==null || entry.liters==null) return null;
+  const km = entry.mileage - prev.mileage;
+  if(km<=0) return null;
+  return entry.liters / km * 100;
+}
+
 function render(){
   const app = document.getElementById('app');
   document.getElementById('odoInput').value = state.currentMileage ?? '';
 
-  // Stats du bandeau : km depuis le dernier relevé (≈ mois précédent) & km depuis l'achat
+  document.getElementById('tabCarnetBtn').classList.toggle('active', currentTab==='carnet');
+  document.getElementById('tabFuelBtn').classList.toggle('active', currentTab==='carburant');
+
+  // Stats du bandeau : km depuis le dernier relevé, km depuis l'achat, consommation moyenne
   const lastPeriod = kmSinceLastPeriod();
   const sincePurchase = kmSincePurchase();
+  const fStats = fuelStats();
   const plateStatsEl = document.getElementById('plateStats');
   if(plateStatsEl){
     let statsHtml = '';
@@ -608,8 +672,18 @@ function render(){
       <div class="plate-stat-label">Km depuis l'achat</div>
       <div class="plate-stat-value">${sincePurchase!=null ? sincePurchase.toLocaleString('fr-FR')+' km' : '—'}</div>
       <div class="plate-stat-sub">depuis le ${fmtDate(PURCHASE_DATE)} (${PURCHASE_MILEAGE.toLocaleString('fr-FR')} km)</div>
+    </div>
+    <div class="plate-stat">
+      <div class="plate-stat-label">Consommation moy.</div>
+      <div class="plate-stat-value">${fStats ? fStats.avgConso.toFixed(1)+' L/100' : '—'}</div>
+      <div class="plate-stat-sub">${fStats ? `sur ${fStats.count} pleins · ${fStats.totalKm.toLocaleString('fr-FR')} km` : 'ajoute au moins 2 pleins'}</div>
     </div>`;
     plateStatsEl.innerHTML = statsHtml;
+  }
+
+  if(currentTab==='carburant'){
+    app.innerHTML = renderFuelTabHtml(fStats);
+    return;
   }
 
   let html = '';
@@ -794,6 +868,145 @@ function render(){
   app.innerHTML = html;
 }
 
+function switchTab(tab){
+  currentTab = tab;
+  render();
+}
+
+function renderFuelTabHtml(fStats){
+  const entries = state.fuelEntries||[];
+  const sortedByMileage = [...entries].filter(e=>e.mileage!=null).sort((a,b)=>a.mileage-b.mileage);
+  const sortedByDateDesc = [...entries].sort((a,b)=> new Date(b.date)-new Date(a.date));
+
+  let html = '';
+  html += `<div class="section-title">⛽ Consommation carburant</div>`;
+
+  if(fStats){
+    html += `<div class="cards" style="margin-bottom:16px;">
+      <div class="card ok">
+        <div class="card-top">
+          <div class="card-name">Moyenne générale</div>
+          <div class="card-status">${fStats.avgConso.toFixed(1)} L/100km</div>
+        </div>
+        <div class="card-meta"><span>${fStats.count} pleins · ${fStats.totalKm.toLocaleString('fr-FR')} km · ${fStats.totalLiters.toFixed(1)} L cumulés</span></div>
+      </div>
+      ${fStats.lastConso!=null ? `
+      <div class="card">
+        <div class="card-top">
+          <div class="card-name">Dernier plein</div>
+          <div class="card-status">${fStats.lastConso.toFixed(1)} L/100km</div>
+        </div>
+      </div>`: ''}
+    </div>`;
+  } else {
+    html += `<div class="empty" style="margin-bottom:16px;">Ajoute au moins deux pleins (avec kilométrage) pour voir apparaître la consommation.</div>`;
+  }
+
+  html += `<div class="section-title" style="font-size:12.5px; border-bottom:none; padding-bottom:0;">Historique des pleins</div>`;
+  if(sortedByDateDesc.length===0){
+    html += `<div class="cards"><div class="empty">Aucun plein enregistré.</div></div>`;
+  } else {
+    html += `<div class="cards">`;
+    sortedByDateDesc.forEach(e=>{
+      const conso = fuelConsoForEntry(e, sortedByMileage);
+      const pricePerL = (e.cost!=null && e.liters) ? (e.cost/e.liters) : null;
+      html += `
+      <div class="card">
+        <div class="card-top">
+          <div class="card-name">${fmtDate(e.date)}</div>
+          <div class="card-status">${conso!=null ? conso.toFixed(1)+' L/100km' : '—'}</div>
+        </div>
+        <div class="card-meta">
+          <span>${fmtKm(e.mileage)}</span>
+          <span>${e.liters!=null ? e.liters.toFixed(2)+' L' : '—'}</span>
+          ${e.cost!=null ? `<span>${e.cost.toFixed(2)} €${pricePerL? ' ('+pricePerL.toFixed(3)+' €/L)':''}</span>` : ''}
+        </div>
+        ${e.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(e.notes)}</div>`: ''}
+        <div class="card-actions">
+          <button class="ghost small" onclick="openFuelModal('${e.id}')">Modifier</button>
+          <button class="ghost small" onclick="deleteFuelEntry('${e.id}')">Supprimer</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `<button class="fab-add" style="margin-top:10px;" onclick="openFuelModal()">+ Ajouter un plein</button>`;
+  return html;
+}
+
+function openFuelModal(id){
+  const e = id ? (state.fuelEntries||[]).find(x=>x.id===id) : null;
+  const root = document.getElementById('modalRoot');
+  const today = new Date().toISOString().slice(0,10);
+  root.innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e? 'Modifier le plein' : 'Nouveau plein'}</h3>
+      <div class="field-row">
+        <div class="field">
+          <label>Date</label>
+          <input id="f_date" type="date" value="${e? e.date : today}">
+        </div>
+        <div class="field">
+          <label>Kilométrage</label>
+          <input id="f_mileage" type="number" placeholder="${state.currentMileage ?? ''}" value="${e && e.mileage!=null? e.mileage : (state.currentMileage ?? '')}">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Litres</label>
+          <input id="f_liters" type="number" step="0.01" placeholder="ex: 62.5" value="${e && e.liters!=null? e.liters : ''}">
+        </div>
+        <div class="field">
+          <label>Coût total (€) <span style="opacity:.6;">(optionnel)</span></label>
+          <input id="f_cost" type="number" step="0.01" placeholder="ex: 98.40" value="${e && e.cost!=null? e.cost : ''}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="f_notes" placeholder="Station, type de carburant…">${e? escapeHtml(e.notes||'') : ''}</textarea>
+      </div>
+      <div class="modal-actions">
+        <button onclick="closeModal()">Annuler</button>
+        <button class="primary" onclick="saveFuelEntry(${e? `'${e.id}'` : 'null'})">Enregistrer</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveFuelEntry(id){
+  const date = document.getElementById('f_date').value;
+  const mileageVal = document.getElementById('f_mileage').value;
+  const litersVal = document.getElementById('f_liters').value;
+  const costVal = document.getElementById('f_cost').value;
+  const notes = document.getElementById('f_notes').value.trim();
+  if(!date || !mileageVal || !litersVal){ alert('Merci de renseigner au minimum la date, le kilométrage et les litres.'); return; }
+  const mileage = parseInt(mileageVal,10);
+  const liters = parseFloat(litersVal);
+  const cost = costVal ? parseFloat(costVal) : null;
+
+  state.fuelEntries = state.fuelEntries || [];
+  if(id){
+    const idx = state.fuelEntries.findIndex(x=>x.id===id);
+    if(idx>-1) state.fuelEntries[idx] = { ...state.fuelEntries[idx], date, mileage, liters, cost, notes };
+  } else {
+    state.fuelEntries.push({ id:'f_'+Date.now(), date, mileage, liters, cost, notes });
+  }
+  if(state.currentMileage==null || mileage > state.currentMileage){
+    state.currentMileage = mileage;
+  }
+  await saveState();
+  closeModal();
+  render();
+}
+
+async function deleteFuelEntry(id){
+  if(!confirm('Supprimer ce plein ?')) return;
+  state.fuelEntries = (state.fuelEntries||[]).filter(e=>e.id!==id);
+  await saveState();
+  render();
+}
+
 function importBackup(event){
   const file = event.target.files[0];
   if(!file) return;
@@ -804,6 +1017,7 @@ function importBackup(event){
       if(!confirm('Importer cette sauvegarde va remplacer toutes les données actuellement affichées. Continuer ?')) return;
       state = { ...state, ...parsed, types: parsed.types || DEFAULT_TYPES };
       state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
+      state.fuelEntries = state.fuelEntries || [];
       await saveState();
       render();
       alert('Sauvegarde importée avec succès.');
