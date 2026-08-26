@@ -392,7 +392,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
     <span>4.0L I6</span>
     <span>1998 · Automatique (32RH)</span>
     <span>VIN 1J4FYA9S0VP531754</span>
-    <span>Immat. EJ-475-JK</span>
+    <span>Immat. EJ-475-JK <span id="versionTag" style="opacity:0.55; font-size:10px;"></span></span>
   </div>
   <div class="odo-row">
     <span class="odo-label">Kilométrage actuel</span>
@@ -418,6 +418,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 
 <script>
 const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
+const APP_VERSION = '1.3';
 const PURCHASE_DATE = '2026-08-20';
 const PURCHASE_MILEAGE = 97785;
 
@@ -536,6 +537,8 @@ async function loadState(){
   // Migration : tout rappel existant sans statut est considéré "estimé"
   state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
   state.fuelEntries = state.fuelEntries || [];
+  const vt = document.getElementById('versionTag');
+  if(vt) vt.textContent = 'v' + APP_VERSION;
   render();
 }
 
