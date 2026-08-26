@@ -389,7 +389,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
   <div class="plate-eyebrow">Carnet d'entretien</div>
   <div class="plate-title">Jeep Wrangler TJ Sahara</div>
   <div class="plate-specs">
-    <span>4.0L I6</span>
+    <span>4.0L I6 · 181 ch</span>
     <span>1998 · Automatique (32RH)</span>
     <span>VIN 1J4FYA9S0VP531754</span>
     <span>Immat. EJ-475-JK <span id="versionTag" style="opacity:0.55; font-size:10px;"></span></span>
@@ -418,7 +418,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 
 <script>
 const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
-const APP_VERSION = '1.3';
+const APP_VERSION = '1.5';
 const PURCHASE_DATE = '2026-08-20';
 const PURCHASE_MILEAGE = 97785;
 
@@ -468,6 +468,7 @@ let state = {
     { id:'r_freins', label:'Freinage — à contrôler d\'urgence malgré CT favorable', status:'priorite_haute', date:null, notes:"CT du 13/08/2026 défavorable (frein de service 47%/seuil ≥50%, frein de stationnement 14%/seuil ≥18%), corrigé de justesse avant la contre-visite du 20/08/2026 (51% et 20%). Marge jugée insuffisante par le propriétaire : pédale dure, nécessite d'enfoncer fortement pour freiner — sensation anormale à ne pas négliger même si le banc est passé. À faire contrôler en urgence par un spécialiste (Aquitaine 4X4 / Jungle's 4x4) : purge/état du circuit hydraulique (air dans le circuit ?), état et fonctionnement de l'assistance (Booster/maître-cylindre), état réel des plaquettes/mâchoires/disques/tambours (nature de l'intervention réalisée avant-vente inconnue, aucune facture fournie). Ne pas attendre le rendez-vous groupé si la sensation persiste — c'est un point de sécurité." },
     { id:'r_corrosion_chassis', label:'Corrosion châssis (AVG/ARG)', status:'priorite_moyenne', date:null, notes:"Nouveau point relevé en défaillance mineure au CT final du 20/08/2026 (Securitest) : corrosion sur le châssis avant-gauche et arrière-gauche. Non bloquant à ce stade mais à faire inspecter par un spécialiste (Aquitaine 4X4 / Jungle's 4x4) lors du 1er rendez-vous groupé pour évaluer la profondeur (traitement antirouille/protection si superficiel, reprise structurelle si profond)." },
     { id:'r_jeu_direction', label:'Jeu dans la direction (avant-gauche)', status:'priorite_moyenne', date:null, notes:"Nouveau point relevé en défaillance mineure au CT final du 20/08/2026 : jeu anormal dans la direction côté avant-gauche. À faire contrôler (rotule de direction, barre d'accouplement, boîtier de direction) en même temps que le contrôle géométrie/parallélisme." },
+    { id:'r_chaleur_tunnel', label:'Chaleur ressentie aux pieds conducteur (tunnel transmission)', status:'priorite_moyenne', date:null, notes:"Signalé par le propriétaire : chaleur perceptible au niveau du plancher/tunnel central côté conducteur en roulant. Piste principale : vérifier la présence et la fixation des boucliers thermiques (heat shields) d'échappement suite au remplacement de la ligne complète en mars 2025 (facture Alex Garage-Méca n°3880) — à confirmer qu'ils ont bien été reposés au bon endroit. Pistes secondaires : catalytique qui chauffe anormalement (mélange riche, sonde O2), isolation/tapis de plancher tassé avec l'âge (28 ans), ou plus rarement surchauffe de la boîte auto 32RH (à croiser avec la couleur de l'ATF à la prochaine vidange). À faire contrôler par Aquitaine 4X4 ou Jungle's 4x4, notamment pour écarter tout risque d'infiltration de gaz d'échappement." },
     { id:'r_vidange_moteur', label:'Prochaine vidange moteur', status:'priorite_moyenne', date:null, notes:"Dernière vidange connue : 15/12/2025 à 94 987 km, huile 0W30 (facture Alex Garage-Méca n°4823) — écart avec la préconisation 10W30 MS-6395. Prochaine échéance selon fiche produit (5 000 km / 12 mois) : 99 987 km ou 15/12/2026, au premier des deux termes atteint. Pas urgent isolément, mais à regrouper avec le 1er rendez-vous garage si celui-ci se tient avant fin d'année." },
     { id:'r_carte_grise', label:'Transfert carte grise', status:'priorite_haute', date:null, notes:"À vérifier si la démarche a déjà été effectuée suite à l'achat du 20/08/2026." },
     { id:'r_dreal', label:'Attestation DREAL (frappe VIN)', status:'priorite_haute', date:null, notes:"À vérifier si l'autorisation DREAL préalable à la frappe du numéro de série a bien été obtenue formellement (frappe déjà réalisée lors de la contre-visite du 17/12/2025)." },
