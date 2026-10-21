@@ -418,7 +418,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 
 <script>
 const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
-const APP_VERSION = '1.5';
+const APP_VERSION = '1.6';
 const PURCHASE_DATE = '2026-08-20';
 const PURCHASE_MILEAGE = 97785;
 
@@ -524,6 +524,65 @@ function kmSincePurchase(){
   return state.currentMileage - PURCHASE_MILEAGE;
 }
 
+// Migration unique (idempotente) : facture ETB AUTO n°2026-00245 du 21/10/2026 à 99 360 km
+function applyMigrationFactureETB(){
+  state.migrations = state.migrations || {};
+  if(state.migrations.facture_etb_2026_00245) return false;
+  const D = '2026-10-21', KM = 99360;
+  const ref = "Facture ETB AUTO n°2026-00245 (devis n°2026-00075 du 23/09/2026)";
+  const inc = " — inclus dans " + ref + ".";
+  const newTypes = [
+    { id:'custom_amortisseurs', name:'Amortisseurs (AV + AR)', intervalKm:null, intervalMonths:null },
+    { id:'custom_pneus', name:'Pneus', intervalKm:null, intervalMonths:null },
+    { id:'custom_balais_essuie_glace', name:"Balais d'essuie-glace", intervalKm:null, intervalMonths:12 },
+  ];
+  newTypes.forEach(t=>{ if(!state.types.find(x=>x.id===t.id)) state.types.push(t); });
+  const e = (suffix, typeId, typeName, cost, notes) => ({ id:'e_etb_20261021_'+suffix, typeId, typeName, date:D, mileage:KM, cost, notes });
+  const list = [
+    e('vidange','vidange','Vidange moteur (huile + filtre)', 1291.61,
+      ref + " — TOTAL FACTURE 1 291,61 € TTC (1 076,34 € HT + TVA 215,27 €), garage ETB AUTO, Saucats. Huile 10W40 (5,7 L). Écart avec la préconisation FSM 10W30 MS-6395. Aucun filtre à huile listé sur la facture."),
+    e('bte_transf','bte_transf','Huile boîte de transfert NP231 — ATF+4 (MS-9602)', null,
+      "BT MATIC (2 L)" + inc + " Produit exact (ATF+4 ?) à confirmer avec le garage."),
+    e('pont_av','pont_av','Huile pont avant Dana 30 — 75W140 synthétique (MS-8985)', null,
+      "Huile 80W90 (1,2 L)" + inc + " Écart avec la préconisation 75W140 synthétique."),
+    e('pont_ar','pont_ar','Huile pont arrière Dana 35C — 75W140 synthétique + additif GL (MS-10111)', null,
+      "Huile LS90 (limited slip, 1,9 L) + joint spi de nez de pont arrière remplacé" + inc),
+    e('courroie','courroie','Courroie accessoires', null, "Courroie accessoires" + inc),
+    e('bougies','bougies',"Bougies d'allumage", null, "6 bougies" + inc),
+    e('refroid','refroid','Liquide de refroidissement', null,
+      "Remplacement complet du liquide de refroidissement confirmé par le propriétaire (6 L facturés)" + inc),
+    e('liq_frein','liq_frein','Liquide de frein', null,
+      "Remplacement complet du liquide de frein confirmé par le propriétaire" + inc),
+    e('amortisseurs','custom_amortisseurs','Amortisseurs (AV + AR)', null,
+      "2 amortisseurs avant + 2 amortisseurs arrière" + inc),
+    e('pneus','custom_pneus','Pneus', null,
+      "4 pneus Toyo Open Country A/T Plus 31/10.5R15" + inc + " Géométrie/parallélisme à faire maintenant."),
+    e('balais','custom_balais_essuie_glace',"Balais d'essuie-glace", null,
+      "Jeu de balais avant" + inc),
+  ];
+  list.forEach(x=>{ if(!state.entries.find(y=>y.id===x.id)) state.entries.push(x); });
+
+  // Rappels clos par cette facture
+  const done = ['r_pneus','r_amortisseurs_av','r_liquide_refroid','r_boite_transfert','r_vidange_moteur'];
+  state.reminders = (state.reminders||[]).filter(r=>!done.includes(r.id));
+  // Rappels maintenus, notes complétées
+  state.reminders.forEach(r=>{
+    if(r.id==='r_geometrie' && !r.notes.includes('21/10/2026'))
+      r.notes += " Pneus neufs (Toyo A/T Plus) et amortisseurs posés le 21/10/2026 à 99 360 km : à faire maintenant.";
+    if(r.id==='r_freins' && !r.notes.includes('21/10/2026'))
+      r.notes += " Mise à jour 21/10/2026 : liquide de frein remplacé par ETB AUTO (99 360 km) — à tester : la pédale est-elle toujours dure ? Si oui, le problème vient de l'assistance/maître-cylindre.";
+  });
+
+  // Kilométrage
+  if(state.currentMileage==null || KM > state.currentMileage) state.currentMileage = KM;
+  state.mileageHistory = state.mileageHistory || [];
+  const h = state.mileageHistory.find(x=>x.date===D);
+  if(h) h.mileage = Math.max(h.mileage, KM); else state.mileageHistory.push({ date:D, mileage:KM });
+
+  state.migrations.facture_etb_2026_00245 = true;
+  return true;
+}
+
 async function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -538,6 +597,7 @@ async function loadState(){
   // Migration : tout rappel existant sans statut est considéré "estimé"
   state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
   state.fuelEntries = state.fuelEntries || [];
+  if(applyMigrationFactureETB()){ try{ await saveState(); }catch(e){ console.error(e); } }
   const vt = document.getElementById('versionTag');
   if(vt) vt.textContent = 'v' + APP_VERSION;
   render();
