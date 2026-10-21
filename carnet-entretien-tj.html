@@ -8,18 +8,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
 
 :root{
-  --bg:#F4F1E9;
+  --bg:#E6EDF8;
   --panel:#FFFFFF;
-  --panel-raised:#EFEAE0;
-  --line:#DCD5C4;
-  --brass:#9C7A1E;
-  --brass-dim:#9C7A1E40;
-  --rust:#B14A2B;
-  --ok:#4C7A4C;
-  --warn:#A9800F;
-  --danger:#B14A2B;
-  --text:#2A2A28;
-  --text-dim:#6B675C;
+  --panel-raised:#F1F5F9;
+  --field-bg:#FFFFFF;
+  --line:#D3DCEB;
+  --track:#D3DCEB;
+  --hover:#0F172A0A;
+  --overlay:rgba(15,23,42,0.55);
+  --accent:#2563EB;
+  --accent-dim:#2563EB40;
+  --on-accent:#FFFFFF;
+  --ok:#16A34A;
+  --warn:#D97706;
+  --danger:#DC2626;
+  --info:#0284C7;
+  --text:#0F172A;
+  --text-dim:#64748B;
+  color-scheme:light;
   --mono:'JetBrains Mono',monospace;
   --disp:'Oswald',sans-serif;
   --body:'Inter',sans-serif;
@@ -27,30 +33,23 @@
 *{box-sizing:border-box;}
 body{
   margin:0;
-  background:
-    radial-gradient(circle at 15% -10%, #FFFDF7 0%, transparent 45%),
-    var(--bg);
+  background:var(--bg);
   color:var(--text);
   font-family:var(--body);
   padding-bottom:60px;
 }
 .plate{
-  background:linear-gradient(180deg,#FBF8F0,#F0EBDD);
-  border-bottom:3px solid var(--brass);
+  background:#4F7FD9;
+  color:#FFFFFF;
+  border-bottom:3px solid #2F5FBF;
   padding:22px 20px 18px;
   position:relative;
-}
-.plate::after{
-  content:'';
-  position:absolute; inset:0;
-  background:repeating-linear-gradient(45deg, rgba(0,0,0,0.012) 0 2px, transparent 2px 6px);
-  pointer-events:none;
 }
 .plate-eyebrow{
   font-family:var(--mono);
   font-size:11px;
   letter-spacing:3px;
-  color:var(--brass);
+  color:#DCE8FF;
   text-transform:uppercase;
 }
 .plate-title{
@@ -67,7 +66,7 @@ body{
   gap:6px 16px;
   font-family:var(--mono);
   font-size:11.5px;
-  color:var(--text-dim);
+  color:#E6EEFF;
 }
 .odo-row{
   margin-top:16px;
@@ -80,11 +79,11 @@ body{
   font-family:var(--mono);
   font-size:11px;
   letter-spacing:2px;
-  color:var(--text-dim);
+  color:#DCE8FF;
   text-transform:uppercase;
 }
 .odo-display{
-  background:#FFFFFF;
+  background:var(--panel);
   border:1px solid var(--line);
   border-radius:4px;
   padding:8px 14px;
@@ -92,7 +91,7 @@ body{
   font-size:22px;
   font-weight:700;
   letter-spacing:3px;
-  color:var(--brass);
+  color:var(--accent);
   display:flex;
   align-items:center;
   gap:6px;
@@ -100,7 +99,7 @@ body{
 .odo-display input{
   background:transparent;
   border:none;
-  color:var(--brass);
+  color:var(--accent);
   font-family:var(--mono);
   font-size:22px;
   font-weight:700;
@@ -117,7 +116,7 @@ body{
   gap:10px;
 }
 .plate-stat{
-  background:#FFFFFF;
+  background:var(--panel);
   border:1px solid var(--line);
   border-radius:6px;
   padding:8px 12px;
@@ -135,7 +134,7 @@ body{
   font-family:var(--disp);
   font-size:19px;
   font-weight:600;
-  color:var(--brass);
+  color:var(--accent);
 }
 .plate-stat-sub{
   font-family:var(--mono);
@@ -165,9 +164,9 @@ body{
   cursor:pointer;
 }
 .tab-btn.active{
-  background:var(--brass);
-  border-color:var(--brass);
-  color:#FFFFFF;
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--on-accent);
 }
 
 .section{
@@ -207,7 +206,7 @@ body{
 .card.warn{border-left-color:var(--warn);}
 .card.danger{border-left-color:var(--danger);}
 .card.unknown{border-left-color:var(--text-dim);}
-.card.estimated{border-left-color:#4A8FC2;}
+.card.estimated{border-left-color:var(--info);}
 .card-top{
   display:flex;
   justify-content:space-between;
@@ -224,11 +223,11 @@ body{
   border-radius:3px;
   white-space:nowrap;
 }
-.card.ok .card-status{background:#5C8A5C25; color:var(--ok);}
-.card.warn .card-status{background:#C9A22725; color:var(--warn);}
-.card.danger .card-status{background:#C1502E25; color:var(--danger);}
-.card.unknown .card-status{background:#9AA0AC25; color:var(--text-dim);}
-.card.estimated .card-status{background:#4A8FC225; color:#4A8FC2;}
+.card.ok .card-status{background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok);}
+.card.warn .card-status{background:color-mix(in srgb, var(--warn) 14%, transparent); color:var(--warn);}
+.card.danger .card-status{background:color-mix(in srgb, var(--danger) 14%, transparent); color:var(--danger);}
+.card.unknown .card-status{background:color-mix(in srgb, var(--text-dim) 14%, transparent); color:var(--text-dim);}
+.card.estimated .card-status{background:color-mix(in srgb, var(--info) 14%, transparent); color:var(--info);}
 .card-meta{
   font-family:var(--mono);
   font-size:11px;
@@ -240,7 +239,7 @@ body{
 }
 .bar{
   height:5px;
-  background:#E4DDCC;
+  background:var(--track);
   border-radius:3px;
   margin-top:9px;
   overflow:hidden;
@@ -250,13 +249,13 @@ body{
 .card.warn .bar-fill{background:var(--warn);}
 .card.danger .bar-fill{background:var(--danger);}
 .card.unknown .bar-fill{background:var(--text-dim);}
-.card.estimated .bar-fill{background:#4A8FC2;}
+.card.estimated .bar-fill{background:var(--info);}
 .card.priorite_haute{border-left-color:var(--danger);}
-.card.priorite_haute .card-status{background:#C1502E25; color:var(--danger);}
+.card.priorite_haute .card-status{background:color-mix(in srgb, var(--danger) 14%, transparent); color:var(--danger);}
 .card.priorite_moyenne{border-left-color:var(--warn);}
-.card.priorite_moyenne .card-status{background:#C9A22725; color:var(--warn);}
+.card.priorite_moyenne .card-status{background:color-mix(in srgb, var(--warn) 14%, transparent); color:var(--warn);}
 .card.priorite_basse{border-left-color:var(--ok);}
-.card.priorite_basse .card-status{background:#5C8A5C25; color:var(--ok);}
+.card.priorite_basse .card-status{background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok);}
 .card-actions{margin-top:9px; display:flex; gap:8px;}
 
 button{
@@ -270,11 +269,11 @@ button{
   padding:7px 12px;
   cursor:pointer;
 }
-button:hover{border-color:var(--brass-dim);}
+button:hover{border-color:var(--accent-dim);}
 button.primary{
-  background:var(--brass);
-  color:#FFFDF7;
-  border-color:var(--brass);
+  background:var(--accent);
+  color:var(--on-accent);
+  border-color:var(--accent);
 }
 button.primary:hover{filter:brightness(1.08);}
 button.ghost{background:transparent; color:var(--text-dim); border-color:transparent; padding:6px 4px;}
@@ -292,7 +291,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 .log-left{display:flex; flex-direction:column; gap:2px;}
 .log-type{font-family:var(--disp); font-size:14px;}
 .log-sub{font-family:var(--mono); font-size:11px; color:var(--text-dim);}
-.log-cost{font-family:var(--mono); font-size:13px; color:var(--brass); white-space:nowrap;}
+.log-cost{font-family:var(--mono); font-size:13px; color:var(--accent); white-space:nowrap;}
 .log-notes{font-size:11.5px; color:var(--text-dim); margin-top:2px; max-width:320px;}
 
 .empty{
@@ -313,14 +312,14 @@ button.small{padding:5px 9px; font-size:11.5px;}
 
 .modal-overlay{
   position:fixed; inset:0;
-  background:rgba(10,11,13,0.72);
+  background:var(--overlay);
   display:flex; align-items:flex-end; justify-content:center;
   z-index:50;
 }
 .modal{
   background:var(--panel);
   border:1px solid var(--line);
-  border-top:3px solid var(--brass);
+  border-top:3px solid var(--accent);
   border-radius:12px 12px 0 0;
   width:100%; max-width:520px;
   padding:20px 18px 24px;
@@ -346,7 +345,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 }
 .field input, .field select, .field textarea{
   width:100%;
-  background:#FFFFFF;
+  background:var(--field-bg);
   border:1px solid var(--line);
   border-radius:5px;
   color:var(--text);
@@ -355,7 +354,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
   font-size:14px;
   outline:none;
 }
-.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--brass);}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--accent);}
 .field textarea{resize:vertical; min-height:50px;}
 .field-row{display:flex; gap:10px;}
 .field-row .field{flex:1;}
@@ -381,6 +380,49 @@ button.small{padding:5px 9px; font-size:11.5px;}
 .interval-edit input{width:70px;}
 
 .loading{text-align:center; padding:40px; color:var(--text-dim); font-family:var(--mono); font-size:12px;}
+/* ===== v2.0 ===== */
+.kpis{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin-bottom:14px;}
+.kpi{background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer;}
+.kpi:hover{border-color:var(--accent-dim);}
+.kpi b{display:block; font-family:var(--disp); font-size:21px; font-weight:500; line-height:1.2;}
+.kpi small{font-family:var(--mono); font-size:10px; letter-spacing:.5px; text-transform:uppercase; color:var(--text-dim);}
+.tab-note{font-family:var(--mono); font-size:11px; color:var(--text-dim); margin:2px 2px 8px;}
+.grp{margin-top:12px;}
+.grp-head{display:flex; align-items:center; gap:8px; padding:6px 2px; cursor:pointer; user-select:none;}
+.grp-head.static{cursor:default;}
+.grp-title{font-family:var(--disp); font-size:13.5px; letter-spacing:.6px; text-transform:uppercase; flex:1;}
+.grp-count{font-family:var(--mono); font-size:11px; color:var(--text-dim);}
+.grp .chev{transition:transform .15s;}
+.grp:not(.open) .grp-head .chev{transform:rotate(-90deg);}
+.list{background:var(--panel); border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+.row{border-top:1px solid var(--line);}
+.row:first-child{border-top:none;}
+.row-head{display:flex; align-items:center; gap:10px; padding:9px 12px; cursor:pointer;}
+.row-head:hover{background:var(--hover);}
+.dot{width:9px; height:9px; border-radius:50%; flex:none;}
+.row-title{flex:1; min-width:0; font-size:14px;}
+.row-sub{font-family:var(--mono); font-size:11px; color:var(--text-dim); text-align:right;}
+.row-badge{font-family:var(--mono); font-size:10.5px; letter-spacing:.8px; text-transform:uppercase; padding:2px 7px; border-radius:3px; white-space:nowrap;}
+.mini-bar{width:70px; height:4px; background:var(--track); border-radius:2px; flex:none; overflow:hidden;}
+.mini-bar i{display:block; height:100%; border-radius:2px;}
+.chev{color:var(--text-dim); font-size:13px; transition:transform .15s; flex:none;}
+.row.open .row-head .chev{transform:rotate(180deg);}
+.row-detail{display:none; padding:2px 12px 11px 31px; font-size:13px; color:var(--text-dim); line-height:1.5;}
+.row.open .row-detail{display:block;}
+.det-meta{display:flex; gap:4px 14px; flex-wrap:wrap; font-family:var(--mono); font-size:11px;}
+.det-rdv{margin-top:4px; font-weight:600; color:var(--accent);}
+.det-notes{margin-top:5px;}
+.log-left{flex:1; min-width:0;}
+.log-notes.clamp{max-width:none; cursor:pointer; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.log-notes.clamp.open{display:block; -webkit-line-clamp:unset;}
+@media (max-width:520px){
+  .tab-btn{font-size:11px; letter-spacing:.3px; padding:9px 2px;}
+  .row-head{flex-wrap:wrap;}
+  .row-title{flex-basis:calc(100% - 60px);}
+  .mini-bar{display:none;}
+  .kpi b{font-size:18px;}
+}
+
 </style>
 </head>
 <body>
@@ -406,8 +448,10 @@ button.small{padding:5px 9px; font-size:11.5px;}
 </div>
 
 <div class="tab-bar">
-  <button class="tab-btn" id="tabCarnetBtn" onclick="switchTab('carnet')">📋 Carnet</button>
-  <button class="tab-btn" id="tabFuelBtn" onclick="switchTab('carburant')">⛽ Carburant</button>
+  <button class="tab-btn" id="tab_journal" onclick="switchTab('journal')">📋 Journal</button>
+  <button class="tab-btn" id="tab_afaire" onclick="switchTab('afaire')">🔔 À faire</button>
+  <button class="tab-btn" id="tab_echeances" onclick="switchTab('echeances')">🗓️ Échéances</button>
+  <button class="tab-btn" id="tab_carburant" onclick="switchTab('carburant')">⛽ Carburant</button>
 </div>
 
 <div id="app" class="section">
@@ -418,7 +462,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
 
 <script>
 const STORAGE_KEY = 'jeep-tj-lacanau-carnet-v1';
-const APP_VERSION = '1.6';
+const APP_VERSION = '2.0';
 const PURCHASE_DATE = '2026-08-20';
 const PURCHASE_MILEAGE = 97785;
 
@@ -430,7 +474,7 @@ const REMINDER_STATUSES = [
   { key:'estime',           icon:'🔵', label:'Estimé (pas de date/priorité fixée)' },
 ];
 function reminderStatusInfo(key){ return REMINDER_STATUSES.find(s=>s.key===key) || REMINDER_STATUSES[3]; }
-let currentTab = 'carnet';
+let currentTab = 'afaire';
 
 const DEFAULT_TYPES = [
   { id:'vidange',    name:'Vidange moteur — huile 10W30 (MS-6395) + filtre', intervalKm:5000,  intervalMonths:12  },
@@ -524,6 +568,43 @@ function kmSincePurchase(){
   return state.currentMileage - PURCHASE_MILEAGE;
 }
 
+// Enregistre un relevé kilométrique dans l'historique (un seul point par date, on garde le plus élevé)
+function recordMileage(date, mileage){
+  if(!date || mileage==null) return;
+  state.mileageHistory = state.mileageHistory || [];
+  const same = state.mileageHistory.find(x=>x.date===date);
+  if(same) same.mileage = Math.max(same.mileage, mileage);
+  else state.mileageHistory.push({ date, mileage });
+}
+
+// Si le compteur actuel dépasse le dernier relevé de l'historique (ex. plein enregistré avant ce correctif),
+// on ajoute le relevé manquant à la date du dernier plein / de la dernière intervention à ce kilométrage.
+function reconcileMileageHistory(){
+  if(state.currentMileage==null) return false;
+  const hist = state.mileageHistory || [];
+  const maxHist = hist.reduce((m,x)=> Math.max(m, x.mileage), 0);
+  if(state.currentMileage <= maxHist) return false;
+  const candidates = [
+    ...(state.fuelEntries||[]).filter(e=>e.mileage===state.currentMileage).map(e=>e.date),
+    ...(state.entries||[]).filter(e=>e.mileage===state.currentMileage).map(e=>e.date),
+  ].sort();
+  const date = candidates.length ? candidates[candidates.length-1] : new Date().toISOString().slice(0,10);
+  recordMileage(date, state.currentMileage);
+  return true;
+}
+
+// Migration unique : échéances faites le 21/10/2026 (facture ETB) -> on retire la priorité manuelle devenue obsolète
+function applyMigrationPrioritesFaites(){
+  state.migrations = state.migrations || {};
+  if(state.migrations.priorites_faites_2026_10_21) return false;
+  ['vidange','liq_frein','refroid'].forEach(id=>{
+    const t = state.types.find(x=>x.id===id);
+    if(t && t.priority) delete t.priority;
+  });
+  state.migrations.priorites_faites_2026_10_21 = true;
+  return true;
+}
+
 // Migration unique (idempotente) : facture ETB AUTO n°2026-00245 du 21/10/2026 à 99 360 km
 function applyMigrationFactureETB(){
   state.migrations = state.migrations || {};
@@ -597,7 +678,10 @@ async function loadState(){
   // Migration : tout rappel existant sans statut est considéré "estimé"
   state.reminders = (state.reminders||[]).map(r=> ({ status:'estime', ...r }));
   state.fuelEntries = state.fuelEntries || [];
-  if(applyMigrationFactureETB()){ try{ await saveState(); }catch(e){ console.error(e); } }
+  const m1 = applyMigrationFactureETB();
+  const m2 = applyMigrationPrioritesFaites();
+  const m3 = reconcileMileageHistory();
+  if(m1 || m2 || m3){ try{ await saveState(); }catch(e){ console.error(e); } }
   const vt = document.getElementById('versionTag');
   if(vt) vt.textContent = 'v' + APP_VERSION;
   render();
@@ -616,7 +700,7 @@ function showStorageWarning(){
   if(document.getElementById('storageWarning')) return;
   const div = document.createElement('div');
   div.id = 'storageWarning';
-  div.style.cssText = 'position:fixed; bottom:0; left:0; right:0; background:#B14A2B; color:#fff; padding:10px 14px; font-family:sans-serif; font-size:12.5px; z-index:999; text-align:center;';
+  div.style.cssText = 'position:fixed; bottom:0; left:0; right:0; background:var(--danger); color:#fff; padding:10px 14px; font-family:sans-serif; font-size:12.5px; z-index:999; text-align:center;';
   div.innerHTML = "⚠️ Impossible d'enregistrer localement (navigation privée, cookies bloqués ou stockage plein). Pense à exporter ta sauvegarde régulièrement.";
   document.body.appendChild(div);
 }
@@ -715,21 +799,280 @@ function fuelConsoForEntry(entry, sortedByMileage){
   return entry.liters / km * 100;
 }
 
+// ===== v2.0 : mise en page par onglets (Journal / À faire / Échéances / Carburant) =====
+const UI = { openGroups: { priorite_haute:true, priorite_moyenne:true, priorite_basse:false, estime:false,
+  e_danger:true, e_warn:true, e_unknown:true, e_estimated:false, e_ok:false } };
+
+const LEVEL_STYLE = {
+  priorite_haute:   { c:'var(--danger)', bg:'color-mix(in srgb, var(--danger) 14%, transparent)', label:'Haute' },
+  priorite_moyenne: { c:'var(--warn)',   bg:'color-mix(in srgb, var(--warn) 14%, transparent)', label:'Moyenne' },
+  priorite_basse:   { c:'var(--ok)',     bg:'color-mix(in srgb, var(--ok) 14%, transparent)', label:'Basse' },
+  estime:           { c:'var(--info)',    bg:'color-mix(in srgb, var(--info) 14%, transparent)', label:'Estimé' },
+  danger:           { c:'var(--danger)', bg:'color-mix(in srgb, var(--danger) 14%, transparent)', label:'En retard' },
+  warn:             { c:'var(--warn)',   bg:'color-mix(in srgb, var(--warn) 14%, transparent)', label:'À prévoir' },
+  ok:               { c:'var(--ok)',     bg:'color-mix(in srgb, var(--ok) 14%, transparent)', label:'À jour' },
+  estimated:        { c:'var(--info)',    bg:'color-mix(in srgb, var(--info) 14%, transparent)', label:'Estimé' },
+  unknown:          { c:'var(--text-dim)', bg:'color-mix(in srgb, var(--text-dim) 14%, transparent)', label:'À renseigner' },
+};
+
+function toggleRow(headEl){ headEl.parentElement.classList.toggle('open'); }
+function toggleGroup(key){ UI.openGroups[key] = !UI.openGroups[key]; render(); }
+function gotoTab(tab, groupKey){ if(groupKey) UI.openGroups[groupKey] = true; switchTab(tab); }
+
+function rowHtml({ level, badge, title, sub, detailHtml, barRatio, showBar }){
+  const st = LEVEL_STYLE[level] || LEVEL_STYLE.estime;
+  return `
+  <div class="row">
+    <div class="row-head" onclick="toggleRow(this)">
+      <span class="dot" style="background:${st.c}"></span>
+      <span class="row-title">${title}</span>
+      ${showBar ? `<span class="mini-bar"><i style="width:${Math.round((barRatio||0)*100)}%; background:${st.c}"></i></span>` : ''}
+      ${sub ? `<span class="row-sub">${sub}</span>` : ''}
+      ${badge ? `<span class="row-badge" style="background:${st.bg}; color:${st.c}">${badge}</span>` : ''}
+      <span class="chev">▾</span>
+    </div>
+    <div class="row-detail">${detailHtml}</div>
+  </div>`;
+}
+
+function groupHtml(key, title, count, color, rowsHtml){
+  const open = !!UI.openGroups[key];
+  return `
+  <div class="grp ${open?'open':''}">
+    <div class="grp-head" onclick="toggleGroup('${key}')">
+      <span class="dot" style="background:${color}"></span>
+      <span class="grp-title">${title}</span>
+      <span class="grp-count">${count}</span>
+      <span class="chev">▾</span>
+    </div>
+    ${open ? `<div class="list">${rowsHtml}</div>` : ''}
+  </div>`;
+}
+
+function typeMetaParts(type, s){
+  const metaParts = [];
+  if(s.last){
+    metaParts.push(`Dernier : ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
+  } else if(s.estimated){
+    metaParts.push("Pas d'historique — estimation depuis achat/kilométrage actuel");
+  } else {
+    metaParts.push('Aucune donnée — à vérifier au prochain entretien');
+  }
+  if(type.intervalKm){
+    metaParts.push(`Intervalle : ${type.intervalKm.toLocaleString('fr-FR')} km`);
+    if(s.nextDueKm!=null) metaParts.push(`Prochaine échéance : ${fmtKm(s.nextDueKm)}`);
+    if(s.projectedDate) metaParts.push(`≈ ${fmtDate(s.projectedDate)} à votre rythme actuel`);
+  }
+  if(type.intervalMonths){
+    metaParts.push(`Intervalle : ${type.intervalMonths} mois`);
+    if(s.monthsInfo){
+      metaParts.push(s.estimated ? `Échéance estimée : ${fmtDate(s.monthsInfo.dueDate)}`
+        : (s.monthsInfo.daysRemaining>=0 ? `Échéance ${fmtDate(s.monthsInfo.dueDate)}` : `Dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`));
+    }
+  }
+  return metaParts;
+}
+
+function echeanceSub(type, s){
+  if(s.level==='unknown') return 'jamais renseigné';
+  if(s.estimated) return 'pas d\'historique';
+  const parts = [];
+  if(s.kmRemaining!=null && s.last){
+    parts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `dépassé de ${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km`);
+  }
+  if(s.monthsInfo && (!parts.length || s.monthsInfo.daysRemaining<0)){
+    parts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
+  }
+  return parts.join(' · ');
+}
+
+function typeRowHtml(type, s, levelOverride){
+  const detail = `
+    <div class="det-meta">${typeMetaParts(type, s).map(p=>`<span>${escapeHtml(p)}</span>`).join('')}</div>
+    ${type.rdvDate? `<div class="det-rdv">📅 RDV le ${fmtDate(type.rdvDate)}</div>` : ''}
+    <div class="card-actions">
+      <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
+      <button class="ghost small" onclick="openTypeModal('${type.id}')">Modifier</button>
+    </div>`;
+  const level = levelOverride || s.level;
+  return rowHtml({
+    level, title: escapeHtml(type.name), sub: echeanceSub(type, s),
+    badge: levelOverride ? LEVEL_STYLE[levelOverride].label : '',
+    showBar: true, barRatio: (s.estimated || s.level==='unknown') ? 0 : s.ratio,
+    detailHtml: detail
+  });
+}
+
+function reminderRowHtml(r, statusKey){
+  const today = new Date();
+  let level = statusKey, sub = '';
+  if(r.date){
+    const daysLeft = daysBetween(today, new Date(r.date));
+    sub = daysLeft<0 ? `dépassé (${Math.abs(daysLeft)} j)` : daysLeft===0 ? "aujourd'hui" : `${daysLeft} j restants`;
+    if(daysLeft<0) level = 'priorite_haute'; else if(daysLeft<=30 && statusKey!=='priorite_haute') level = 'priorite_moyenne';
+  }
+  const detail = `
+    <div class="det-meta"><span>${r.date? 'Échéance : '+fmtDate(r.date) : 'Pas de date fixée'}</span></div>
+    ${r.rdvDate? `<div class="det-rdv">📅 RDV le ${fmtDate(r.rdvDate)}</div>` : ''}
+    ${r.notes? `<div class="det-notes">${escapeHtml(r.notes)}</div>` : ''}
+    <div class="card-actions">
+      <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
+      <button class="ghost small" onclick="openReminderModal('${r.id}')">Modifier</button>
+      <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
+    </div>`;
+  return rowHtml({ level, title: escapeHtml(r.label), sub, badge: LEVEL_STYLE[statusKey].label, detailHtml: detail });
+}
+
+function collectData(){
+  const reminders = state.reminders||[];
+  const periodicTypes = state.types.filter(t=> t.intervalKm || t.intervalMonths);
+  const statused = periodicTypes.map(type=> ({ type, s: computeStatus(type) }));
+  const manual = statused.filter(x=> !!x.type.priority);
+  const auto = statused.filter(x=> !x.type.priority);
+  const countBy = key => reminders.filter(r=>(r.status||'estime')===key).length + manual.filter(x=>x.type.priority===key).length;
+  const echeancesAVoir = auto.filter(x=> ['danger','warn','unknown'].includes(x.s.level)).length;
+  const rdvItems = [];
+  reminders.forEach(r=>{ if(r.rdvDate) rdvItems.push({ kind:'reminder', id:r.id, label:r.label, rdvDate:r.rdvDate, notes:r.notes }); });
+  state.types.forEach(t=>{ if(t.rdvDate) rdvItems.push({ kind:'type', id:t.id, label:t.name, rdvDate:t.rdvDate, notes:null }); });
+  rdvItems.sort((a,b)=> new Date(a.rdvDate)-new Date(b.rdvDate));
+  return { reminders, statused, manual, auto, countBy, echeancesAVoir, rdvItems };
+}
+
+function renderKpisHtml(d){
+  const today = new Date();
+  const nextRdv = d.rdvItems.find(i=> daysBetween(today, new Date(i.rdvDate)) >= 0);
+  const kpi = (value, label, color, onclick) => `
+    <div class="kpi" onclick="${onclick}"><b style="color:${color}">${value}</b><small>${label}</small></div>`;
+  return `<div class="kpis">
+    ${kpi(d.countBy('priorite_haute'), 'Priorité haute', 'var(--danger)', "gotoTab('afaire','priorite_haute')")}
+    ${kpi(d.countBy('priorite_moyenne'), 'Priorité moyenne', 'var(--warn)', "gotoTab('afaire','priorite_moyenne')")}
+    ${kpi(d.echeancesAVoir, 'Échéances à voir', d.echeancesAVoir? 'var(--warn)':'var(--ok)', "gotoTab('echeances')")}
+    ${kpi(nextRdv ? fmtDate(nextRdv.rdvDate) : 'Aucun', 'Prochain RDV', 'var(--text)', "gotoTab('afaire')")}
+  </div>`;
+}
+
+function renderAFaireHtml(d){
+  let html = '';
+  const today = new Date();
+
+  // RDV à venir
+  if(d.rdvItems.length>0){
+    let rows = '';
+    d.rdvItems.forEach(item=>{
+      const daysLeft = daysBetween(today, new Date(item.rdvDate));
+      const level = daysLeft<0 ? 'priorite_haute' : daysLeft<=7 ? 'priorite_moyenne' : 'priorite_basse';
+      const sub = daysLeft<0 ? `passé (${Math.abs(daysLeft)} j)` : daysLeft===0 ? "aujourd'hui" : daysLeft===1 ? 'demain' : `dans ${daysLeft} j`;
+      const edit = item.kind==='reminder' ? `openReminderModal('${item.id}')` : `openTypeModal('${item.id}')`;
+      rows += rowHtml({ level, title: escapeHtml(item.label), sub: `${fmtDate(item.rdvDate)} · ${sub}`,
+        detailHtml: `${item.notes? `<div class="det-notes">${escapeHtml(item.notes)}</div>`:''}<div class="card-actions"><button class="ghost small" onclick="${edit}">Modifier</button></div>` });
+    });
+    html += `<div class="grp open"><div class="grp-head static"><span class="grp-title">🗓️ RDV à venir</span><span class="grp-count">${d.rdvItems.length}</span></div><div class="list">${rows}</div></div>`;
+  }
+
+  // Bannière relevé kilométrique
+  const lastReport = lastMileageReportDate();
+  const daysSinceReport = lastReport ? daysBetween(lastReport, new Date()) : null;
+  if(daysSinceReport==null || daysSinceReport >= 30){
+    const overdueDays = daysSinceReport!=null ? daysSinceReport - 30 : null;
+    html += `
+    <div class="card ${daysSinceReport==null || overdueDays>10 ? 'danger':'warn'}" style="margin:12px 0;">
+      <div class="card-top"><div class="card-name">🔧 Relevé kilométrique mensuel</div><div class="card-status">${lastReport? 'À mettre à jour' : 'Manquant'}</div></div>
+      <div class="card-meta"><span>${lastReport? `Dernier relevé le ${fmtDate(lastReport)} (${daysSinceReport} j) — indique le kilométrage actuel pour affiner les échéances` : "Aucun relevé enregistré — indique le kilométrage actuel"}</span></div>
+    </div>`;
+  }
+
+  // Groupes par priorité
+  const groups = [
+    { key:'priorite_haute',   title:'Priorité haute' },
+    { key:'priorite_moyenne', title:'Priorité moyenne' },
+    { key:'priorite_basse',   title:'Priorité basse' },
+    { key:'estime',           title:'Estimé (pas de date ni de priorité)' },
+  ];
+  if(d.countBy('priorite_haute')+d.countBy('priorite_moyenne')+d.countBy('priorite_basse')+d.countBy('estime')===0){
+    html += `<div class="empty">Aucun rappel programmé.</div>`;
+  }
+  groups.forEach(g=>{
+    const items = d.reminders.filter(r=>(r.status||'estime')===g.key).sort((a,b)=>{
+      if(a.date && b.date) return new Date(a.date)-new Date(b.date);
+      if(a.date) return -1; if(b.date) return 1; return 0; });
+    const typeItems = d.manual.filter(x=>x.type.priority===g.key);
+    const n = items.length + typeItems.length;
+    if(n===0) return;
+    let rows = '';
+    typeItems.forEach(({type,s})=>{ rows += typeRowHtml(type, s, g.key); });
+    items.forEach(r=>{ rows += reminderRowHtml(r, g.key); });
+    html += groupHtml(g.key, g.title, n, LEVEL_STYLE[g.key].c, rows);
+  });
+  html += `<button class="fab-add" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
+  return html;
+}
+
+function renderEcheancesHtml(d){
+  let html = `<div class="tab-note">Kilométrage actuel : <b>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'non renseigné'}</b> · triées par urgence</div>`;
+  const buckets = [
+    { key:'e_danger',    lvl:'danger',    title:'En retard' },
+    { key:'e_warn',      lvl:'warn',      title:'À prévoir bientôt' },
+    { key:'e_unknown',   lvl:'unknown',   title:'Jamais vérifié / renseigné' },
+    { key:'e_estimated', lvl:'estimated', title:'Estimé (aucun historique)' },
+    { key:'e_ok',        lvl:'ok',        title:'À jour' },
+  ];
+  buckets.forEach(b=>{
+    const items = d.auto.filter(x=>x.s.level===b.lvl).sort((a,c)=> c.s.ratio - a.s.ratio);
+    if(items.length===0) return;
+    let rows = '';
+    items.forEach(({type,s})=>{ rows += typeRowHtml(type, s); });
+    html += groupHtml(b.key, b.title, items.length, LEVEL_STYLE[b.lvl].c, rows);
+  });
+  if(d.manual.length>0){
+    html += `<div class="tab-note" style="margin-top:12px;">${d.manual.length} échéance(s) suivie(s) avec une priorité manuelle sont dans l'onglet À faire.</div>`;
+  }
+  return html;
+}
+
+function renderJournalHtml(){
+  let html = `<div class="section-title">✅ Journal d'entretien <small>historique — déjà fait</small></div>`;
+  const sortedEntries = [...state.entries].sort((a,b)=> new Date(b.date)-new Date(a.date));
+  if(sortedEntries.length===0){
+    html += `<div class="empty">Aucune intervention enregistrée pour l'instant.</div>`;
+  } else {
+    html += `<div class="cards">`;
+    sortedEntries.forEach(e=>{
+      html += `
+      <div class="log-entry">
+        <div class="log-left">
+          <div class="log-type">${escapeHtml(e.typeName)}</div>
+          <div class="log-sub">${fmtDate(e.date)}${e.mileage!=null? ' · '+fmtKm(e.mileage):''}</div>
+          ${e.notes? `<div class="log-notes clamp" onclick="this.classList.toggle('open')">${escapeHtml(e.notes)}</div>` : ''}
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="log-cost">${e.cost? e.cost+' €':''}</div>
+          <button class="ghost small" onclick="deleteEntry('${e.id}')">✕</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `<button class="fab-add" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
+  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
+  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="document.getElementById('importFileInput').click()">⭱ Importer une sauvegarde (.json)</button>`;
+  html += `<input type="file" id="importFileInput" accept="application/json" style="display:none;" onchange="importBackup(event)">`;
+  return html;
+}
+
 function render(){
   const app = document.getElementById('app');
   document.getElementById('odoInput').value = state.currentMileage ?? '';
+  ['journal','afaire','echeances','carburant'].forEach(t=>{
+    const b = document.getElementById('tab_'+t);
+    if(b) b.classList.toggle('active', currentTab===t);
+  });
 
-  document.getElementById('tabCarnetBtn').classList.toggle('active', currentTab==='carnet');
-  document.getElementById('tabFuelBtn').classList.toggle('active', currentTab==='carburant');
-
-  // Stats du bandeau : km depuis le dernier relevé, km depuis l'achat, consommation moyenne
   const lastPeriod = kmSinceLastPeriod();
   const sincePurchase = kmSincePurchase();
   const fStats = fuelStats();
   const plateStatsEl = document.getElementById('plateStats');
   if(plateStatsEl){
-    let statsHtml = '';
-    statsHtml += `
+    plateStatsEl.innerHTML = `
     <div class="plate-stat">
       <div class="plate-stat-label">Km mois précédent</div>
       <div class="plate-stat-value">${lastPeriod ? lastPeriod.km.toLocaleString('fr-FR')+' km' : '—'}</div>
@@ -745,7 +1088,6 @@ function render(){
       <div class="plate-stat-value">${fStats ? fStats.avgConso.toFixed(1)+' L/100' : '—'}</div>
       <div class="plate-stat-sub">${fStats ? `sur ${fStats.count} pleins · ${fStats.totalKm.toLocaleString('fr-FR')} km` : 'ajoute au moins 2 pleins'}</div>
     </div>`;
-    plateStatsEl.innerHTML = statsHtml;
   }
 
   if(currentTab==='carburant'){
@@ -753,235 +1095,11 @@ function render(){
     return;
   }
 
-  let html = '';
-
-  // 🗓️ RDV à venir — regroupe tous les rappels ET échéances pour lesquels un RDV est pris
-  const rdvItems = [];
-  (state.reminders||[]).forEach(r=>{
-    if(r.rdvDate) rdvItems.push({ kind:'reminder', id:r.id, label:r.label, rdvDate:r.rdvDate, notes:r.notes });
-  });
-  state.types.forEach(t=>{
-    if(t.rdvDate) rdvItems.push({ kind:'type', id:t.id, label:t.name, rdvDate:t.rdvDate, notes:null });
-  });
-  rdvItems.sort((a,b)=> new Date(a.rdvDate)-new Date(b.rdvDate));
-  if(rdvItems.length>0){
-    html += `<div class="section-title">🗓️ RDV à venir <small>${rdvItems.length}</small></div>`;
-    html += `<div class="cards" style="margin-bottom:20px;">`;
-    const todayForRdv = new Date();
-    rdvItems.forEach(item=>{
-      const daysLeft = daysBetween(todayForRdv, new Date(item.rdvDate));
-      const overdue = daysLeft < 0;
-      const level = overdue ? 'danger' : daysLeft<=7 ? 'warn' : 'ok';
-      const statusLabel = overdue ? `Passé (${Math.abs(daysLeft)} j)` : daysLeft===0 ? "Aujourd'hui" : daysLeft===1 ? 'Demain' : `Dans ${daysLeft} j`;
-      const editAction = item.kind==='reminder'
-        ? `<button class="ghost small" onclick="openReminderModal('${item.id}')">Modifier</button>`
-        : `<button class="ghost small" onclick="openTypeModal('${item.id}')">Modifier</button>`;
-      html += `
-      <div class="card ${level}">
-        <div class="card-top">
-          <div class="card-name">${escapeHtml(item.label)}</div>
-          <div class="card-status">${statusLabel}</div>
-        </div>
-        <div class="card-meta"><span>📅 ${fmtDate(item.rdvDate)}</span></div>
-        ${item.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(item.notes)}</div>`: ''}
-        <div class="card-actions">${editAction}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-
-  // Bannière rappel mensuel de relevé kilométrique
-  const lastReport = lastMileageReportDate();
-  const daysSinceReport = lastReport ? daysBetween(lastReport, new Date()) : null;
-  if(daysSinceReport==null || daysSinceReport >= 30){
-    const overdueDays = daysSinceReport!=null ? daysSinceReport - 30 : null;
-    html += `
-    <div class="card ${daysSinceReport==null || overdueDays>10 ? 'danger':'warn'}" style="margin-bottom:12px;">
-      <div class="card-top">
-        <div class="card-name">🔧 Relevé kilométrique mensuel</div>
-        <div class="card-status">${lastReport? 'À jour' : 'Manquant'}</div>
-      </div>
-      <div class="card-meta"><span>${lastReport? `Dernier relevé le ${fmtDate(lastReport)} (${daysSinceReport} j) — donne le kilométrage actuel pour affiner les échéances` : "Aucun relevé enregistré — indique le kilométrage actuel"}</span></div>
-    </div>`;
-  }
-
-  // Bannière rappel le plus urgent (uniquement parmi les rappels datés)
-  const today = new Date();
-  const allReminders = state.reminders||[];
-  const datedReminders = [...allReminders].filter(r=>r.date).sort((a,b)=> new Date(a.date)-new Date(b.date));
-  const urgent = datedReminders.find(r=> daysBetween(today, new Date(r.date)) <= 30);
-  if(urgent){
-    const daysLeft = daysBetween(today, new Date(urgent.date));
-    const overdue = daysLeft < 0;
-    html += `
-    <div class="card ${overdue?'danger':'warn'}" style="margin-bottom:18px;">
-      <div class="card-top">
-        <div class="card-name">📅 ${urgent.label}</div>
-        <div class="card-status">${overdue? 'Dépassé' : daysLeft===0? "Aujourd'hui" : daysLeft+' j restants'}</div>
-      </div>
-      <div class="card-meta"><span>Échéance : ${fmtDate(urgent.date)}</span></div>
-      ${urgent.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(urgent.notes)}</div>`: ''}
-    </div>`;
-  }
-
-  // Échéances (calculées ici pour pouvoir intégrer les priorités manuelles dans Rappels & RDV ci-dessous)
-  const periodicTypes = state.types.filter(t=> t.intervalKm || t.intervalMonths);
-  const statused = periodicTypes.map(type=> ({ type, s: computeStatus(type) }));
-
-  // Une priorité manuelle explicitement définie fait remonter l'échéance dans Rappels & RDV,
-  // peu importe son statut automatique (en retard / estimé / à jour…)
-  const manualPriorityItems = statused.filter(x=> !!x.type.priority);
-  const autoItems = statused.filter(x=> !x.type.priority);
-
-  const buckets = [
-    { key:'danger',    icon:'🔴', title:'En retard',                    items: autoItems.filter(x=>x.s.level==='danger') },
-    { key:'warn',      icon:'🟡', title:'À prévoir bientôt',             items: autoItems.filter(x=>x.s.level==='warn') },
-    { key:'estimated', icon:'🔵', title:'Estimé (aucun historique)',     items: autoItems.filter(x=>x.s.level==='estimated') },
-    { key:'unknown',   icon:'⚪', title:'Jamais vérifié / renseigné',    items: autoItems.filter(x=>x.s.level==='unknown') },
-    { key:'ok',        icon:'🟢', title:'À jour',                        items: autoItems.filter(x=>x.s.level==='ok') },
-  ];
-
-  function renderTypeCardHtml(type, s){
-    const statusLabel = s.level==='danger' ? 'En retard' : s.level==='warn' ? 'À prévoir' : s.level==='estimated' ? 'Estimé' : s.level==='unknown' ? 'Jamais renseigné' : 'À jour';
-    let metaParts = [];
-    if(s.last){
-      metaParts.push(`Dernier: ${fmtDate(s.last.date)}${s.last.mileage!=null? ' · '+fmtKm(s.last.mileage):''}`);
-    } else if(s.estimated){
-      metaParts.push('Pas d\'historique — estimation depuis achat/kilométrage actuel');
-    } else {
-      metaParts.push('Aucune donnée — à vérifier au prochain entretien');
-    }
-    if(type.intervalKm){
-      metaParts.push(`Intervalle: ${type.intervalKm.toLocaleString('fr-FR')} km`);
-      if(s.nextDueKm!=null){
-        metaParts.push(`Prochaine échéance: ${fmtKm(s.nextDueKm)}`);
-      }
-      if(s.kmRemaining!=null && s.last){
-        metaParts.push(s.kmRemaining>=0 ? `${s.kmRemaining.toLocaleString('fr-FR')} km restants` : `${Math.abs(s.kmRemaining).toLocaleString('fr-FR')} km de dépassement`);
-      }
-      if(s.projectedDate){
-        metaParts.push(`≈ ${fmtDate(s.projectedDate)} à votre rythme actuel`);
-      }
-    }
-    if(type.intervalMonths){
-      metaParts.push(`Intervalle: ${type.intervalMonths} mois`);
-      if(s.monthsInfo){
-        if(s.estimated){
-          metaParts.push(`Échéance estimée: ${fmtDate(s.monthsInfo.dueDate)}`);
-        } else {
-          metaParts.push(s.monthsInfo.daysRemaining>=0 ? `échéance ${fmtDate(s.monthsInfo.dueDate)}` : `dépassé depuis ${fmtDate(s.monthsInfo.dueDate)}`);
-        }
-      }
-    }
-    return `
-      <div class="card ${s.level}">
-        <div class="card-top">
-          <div class="card-name">${type.name}</div>
-          <div class="card-status">${statusLabel}</div>
-        </div>
-        <div class="card-meta">${metaParts.map(p=>`<span>${p}</span>`).join('')}</div>
-        ${type.rdvDate? `<div class="card-meta" style="margin-top:4px; font-weight:600; color:var(--brass);"><span>📅 RDV le ${fmtDate(type.rdvDate)}</span></div>` : ''}
-        ${s.level!=='unknown' ? `<div class="bar"><div class="bar-fill" style="width:${Math.round(s.ratio*100)}%"></div></div>` : ''}
-        <div class="card-actions">
-          <button class="small primary" onclick="openLogModal('${type.id}')">Marquer comme fait</button>
-          <button class="ghost small" onclick="openTypeModal('${type.id}')">Modifier</button>
-        </div>
-      </div>`;
-  }
-
-  // Rappels & RDV — regroupés par statut (priorités en haut, estimés en bas)
-  // Inclut à la fois les rappels manuels ET les échéances auxquelles une priorité a été assignée
-  html += `<div class="section-title">Rappels &amp; RDV</div>`;
-  const totalRappelItems = allReminders.length + manualPriorityItems.length;
-  if(totalRappelItems===0){
-    html += `<div class="cards"><div class="empty">Aucun rappel programmé.</div></div>`;
-  } else {
-    REMINDER_STATUSES.forEach(statusDef=>{
-      const items = allReminders
-        .filter(r=> (r.status||'estime')===statusDef.key)
-        .sort((a,b)=>{
-          if(a.date && b.date) return new Date(a.date)-new Date(b.date);
-          if(a.date) return -1; // items datés d'abord dans chaque groupe
-          if(b.date) return 1;
-          return 0;
-        });
-      const typeItems = manualPriorityItems.filter(x=> x.type.priority===statusDef.key);
-      if(items.length===0 && typeItems.length===0) return;
-      html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${statusDef.icon} ${statusDef.label} <small>${items.length + typeItems.length}</small></div>`;
-      html += `<div class="cards" style="margin-bottom:6px;">`;
-      typeItems.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
-      items.forEach(r=>{
-        let statusLabel, cardLevel;
-        if(r.date){
-          const daysLeft = daysBetween(today, new Date(r.date));
-          cardLevel = daysLeft<0 ? 'danger' : daysLeft<=30 ? 'warn' : statusDef.key;
-          statusLabel = daysLeft<0 ? `Dépassé (${Math.abs(daysLeft)} j)` : daysLeft===0? "Aujourd'hui" : `${daysLeft} j restants`;
-        } else {
-          cardLevel = statusDef.key;
-          statusLabel = statusDef.label;
-        }
-        html += `
-        <div class="card ${cardLevel}">
-          <div class="card-top">
-            <div class="card-name">${escapeHtml(r.label)}</div>
-            <div class="card-status">${statusLabel}</div>
-          </div>
-          <div class="card-meta"><span>${r.date? fmtDate(r.date) : 'Pas de date fixée'}</span></div>
-          ${r.rdvDate? `<div class="card-meta" style="margin-top:4px; font-weight:600; color:var(--brass);"><span>📅 RDV le ${fmtDate(r.rdvDate)}</span></div>` : ''}
-          ${r.notes? `<div class="card-meta" style="margin-top:4px;">${escapeHtml(r.notes)}</div>`: ''}
-          <div class="card-actions">
-            <button class="small primary" onclick="openValidateReminderModal('${r.id}')">Valider</button>
-            <button class="ghost small" onclick="openReminderModal('${r.id}')">Modifier</button>
-            <button class="ghost small" onclick="deleteReminder('${r.id}')">Supprimer</button>
-          </div>
-        </div>`;
-      });
-      html += `</div>`;
-    });
-  }
-  html += `<button class="fab-add" style="margin-top:10px;" onclick="openReminderModal()">+ Ajouter un rappel de RDV</button>`;
-
-
-  // Échéances — regroupées par statut pour une lecture claire (uniquement celles sans priorité manuelle)
-  html += `<div class="section-title" style="margin-top:26px;">Échéances <small>${state.currentMileage!=null? fmtKm(state.currentMileage) : 'kilométrage non renseigné'}</small></div>`;
-
-  buckets.forEach(bucket=>{
-    if(bucket.items.length===0) return;
-    html += `<div class="section-title" style="margin-top:16px; font-size:12.5px; border-bottom:none; padding-bottom:0;">${bucket.icon} ${bucket.title} <small>${bucket.items.length}</small></div>`;
-    html += `<div class="cards" style="margin-bottom:6px;">`;
-    bucket.items.forEach(({type, s})=>{ html += renderTypeCardHtml(type, s); });
-    html += `</div>`;
-  });
-
-  // Journal
-  html += `<div class="section-title" style="margin-top:26px;">✅ Journal d'entretien <small>historique — déjà fait</small></div>`;
-  const sortedEntries = [...state.entries].sort((a,b)=> new Date(b.date)-new Date(a.date));
-  if(sortedEntries.length===0){
-    html += `<div class="empty">Aucune intervention enregistrée pour l'instant.</div>`;
-  } else {
-    html += `<div class="cards">`;
-    sortedEntries.forEach(e=>{
-      html += `
-      <div class="log-entry">
-        <div class="log-left">
-          <div class="log-type">${e.typeName}</div>
-          <div class="log-sub">${fmtDate(e.date)}${e.mileage!=null? ' · '+fmtKm(e.mileage):''}</div>
-          ${e.notes? `<div class="log-notes">${escapeHtml(e.notes)}</div>` : ''}
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <div class="log-cost">${e.cost? e.cost+' €':''}</div>
-          <button class="ghost small" onclick="deleteEntry('${e.id}')">✕</button>
-        </div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-
-  html += `<button class="fab-add" onclick="openLogModal(null)">+ Ajouter une intervention</button>`;
-  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="exportBackup()">⭳ Exporter la sauvegarde (.json)</button>`;
-  html += `<button class="fab-add" style="margin-top:8px; background:transparent; color:var(--text-dim);" onclick="document.getElementById('importFileInput').click()">⭱ Importer une sauvegarde (.json)</button>`;
-  html += `<input type="file" id="importFileInput" accept="application/json" style="display:none;" onchange="importBackup(event)">`;
-
+  const d = collectData();
+  let html = renderKpisHtml(d);
+  if(currentTab==='afaire') html += renderAFaireHtml(d);
+  else if(currentTab==='echeances') html += renderEcheancesHtml(d);
+  else html += renderJournalHtml();
   app.innerHTML = html;
 }
 
@@ -1111,6 +1229,7 @@ async function saveFuelEntry(id){
   }
   if(state.currentMileage==null || mileage > state.currentMileage){
     state.currentMileage = mileage;
+    recordMileage(date, mileage);
   }
   await saveState();
   closeModal();
