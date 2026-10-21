@@ -423,6 +423,14 @@ button.small{padding:5px 9px; font-size:11.5px;}
   .kpi b{font-size:18px;}
 }
 
+
+.plate-next{margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px;}
+.plate-next:empty{display:none;}
+.next-title{grid-column:1/-1; font-family:var(--mono); font-size:10.5px; letter-spacing:2px; text-transform:uppercase; color:#DCE8FF;}
+.next-box{background:#FFFFFF; border-radius:6px; border-left:4px solid var(--accent); padding:9px 12px; cursor:pointer; color:var(--text);}
+.next-name{font-family:var(--disp); font-size:14px; letter-spacing:.4px; text-transform:uppercase; color:var(--text);}
+.next-main{font-family:var(--disp); font-size:22px; font-weight:600; line-height:1.2; margin-top:2px;}
+.next-sub{font-family:var(--mono); font-size:10.5px; color:var(--text-dim); margin-top:2px;}
 </style>
 </head>
 <body>
@@ -444,6 +452,7 @@ button.small{padding:5px 9px; font-size:11.5px;}
     </div>
     <button class="small" id="saveOdoBtn">Mettre à jour</button>
   </div>
+  <div id="plateNext" class="plate-next"></div>
   <div id="plateStats" class="plate-stats"></div>
 </div>
 
@@ -1059,6 +1068,52 @@ function renderJournalHtml(){
   return html;
 }
 
+function nextDueItems(limit){
+  const rate = computeMonthlyRate() || 800;
+  const out = [];
+  state.types.forEach(type=>{
+    if(!(type.intervalKm || type.intervalMonths)) return;
+    const s = computeStatus(type);
+    if(s.estimated || s.level==='unknown' || !s.last) return;
+    const kmDays = (type.intervalKm && s.kmRemaining!=null) ? s.kmRemaining/rate*30.44 : null;
+    const tDays  = (type.intervalMonths && s.monthsInfo) ? s.monthsInfo.daysRemaining : null;
+    const etas = [kmDays, tDays].filter(x=>x!=null);
+    if(!etas.length) return;
+    out.push({ type, s, kmDays, tDays, eta: Math.min(...etas) });
+  });
+  out.sort((a,b)=> a.eta - b.eta);
+  return out.slice(0, limit);
+}
+
+function renderPlateNextHtml(){
+  const items = nextDueItems(2);
+  if(!items.length) return '';
+  const span = d => d<=60 ? Math.round(d)+' j' : Math.round(d/30.44)+' mois';
+  const kmTxt = n => n.toLocaleString('fr-FR')+' km';
+  let html = `<div class="next-title">Prochaines échéances</div>`;
+  items.forEach(({type, s, kmDays, tDays, eta})=>{
+    const kmFirst = kmDays!=null && (tDays==null || kmDays<=tDays);
+    let main, sub = [];
+    if(kmFirst){
+      main = s.kmRemaining>=0 ? 'dans '+kmTxt(s.kmRemaining) : 'dépassé de '+kmTxt(Math.abs(s.kmRemaining));
+      if(s.projectedDate && s.kmRemaining>=0) sub.push('≈ '+fmtDate(s.projectedDate));
+      if(s.monthsInfo && type.intervalMonths) sub.push('ou le '+fmtDate(s.monthsInfo.dueDate));
+    } else {
+      main = tDays<0 ? 'dépassé de '+span(-tDays) : tDays===0 ? "aujourd'hui" : 'dans '+span(tDays);
+      sub.push(fmtDate(s.monthsInfo.dueDate));
+      if(type.intervalKm && s.kmRemaining!=null) sub.push('ou dans '+kmTxt(Math.max(s.kmRemaining,0)));
+    }
+    const color = eta<0 ? 'var(--danger)' : eta<=30 ? 'var(--warn)' : 'var(--accent)';
+    html += `
+    <div class="next-box" style="border-left-color:${color}" onclick="switchTab('echeances')">
+      <div class="next-name">${escapeHtml(type.name.split(' — ')[0])}</div>
+      <div class="next-main" style="color:${color}">${main}</div>
+      <div class="next-sub">${sub.join(' · ')}</div>
+    </div>`;
+  });
+  return html;
+}
+
 function render(){
   const app = document.getElementById('app');
   document.getElementById('odoInput').value = state.currentMileage ?? '';
@@ -1089,6 +1144,9 @@ function render(){
       <div class="plate-stat-sub">${fStats ? `sur ${fStats.count} pleins · ${fStats.totalKm.toLocaleString('fr-FR')} km` : 'ajoute au moins 2 pleins'}</div>
     </div>`;
   }
+
+  const plateNextEl = document.getElementById('plateNext');
+  if(plateNextEl) plateNextEl.innerHTML = renderPlateNextHtml();
 
   if(currentTab==='carburant'){
     app.innerHTML = renderFuelTabHtml(fStats);
